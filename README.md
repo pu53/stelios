@@ -19,3 +19,5 @@ https://docs.djangoproject.com/en/1.10/
 and looking at examples etc...
 
 An extremely good implementation of a go backend and react frontend kappa: https://github.com/kimborgen/kimborgen.no
+
+test
