@@ -3,8 +3,8 @@ from .base import *
 DEBUG = True
 SECRET_KEY = 'x@i2ur#15nyp&us--6dbl)2c2)_6&r6a#55ih9&9x)yt5r07)('
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases

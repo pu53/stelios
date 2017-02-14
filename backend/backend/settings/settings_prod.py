@@ -2,12 +2,12 @@ import os
 import random
 from .base import *
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.stelios.no', '146.185.153.19', 'localhost']
+ALLOWED_HOSTS = ['.stelios.no', '146.185.153.19', 'localhost', '127.0.0.1']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-
+STATIC_URL = '/static/'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -42,7 +42,7 @@ except NameError:
         try:
             import random
             SECRET_KEY = ''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
-            secret = file(SECRET_FILE, 'w')
+            secret = open(SECRET_FILE, 'w')
             secret.write(SECRET_KEY)
             secret.close()
         except IOError:
