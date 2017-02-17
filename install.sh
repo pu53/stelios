@@ -1,5 +1,4 @@
 
-
 curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash - &&
 apt-get install -y build-essential &&
 apt-get install -y nodejs &&
@@ -19,5 +18,5 @@ pip3 install markdown &&
 pip3 install django-filter &&
 pip3 install psycopg2 &&
 pip3 install django-cors-headers &&
-pip3 install gunicorn &&
-pip3 install 
+pip3 install gunicorn
+
