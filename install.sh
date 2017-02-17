@@ -19,4 +19,5 @@ pip3 install markdown &&
 pip3 install django-filter &&
 pip3 install psycopg2 &&
 pip3 install django-cors-headers &&
-pip3 install gunicorn
+pip3 install gunicorn &&
+pip3 install 
