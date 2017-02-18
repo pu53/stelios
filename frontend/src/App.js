@@ -34,7 +34,15 @@ class List extends Component {
 
   fetchData(event) {
     event.preventDefault();
-    var request = new Request('http://localhost:8000/users.json', {
+    var link = '';
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+      link = 'http://localhost:8000/users.json'
+    // dev code
+    } else {
+      link = 'http://api.stelios.no/users.json'
+    // production code
+    }
+    var request = new Request(link, {
       method: 'GET',
       headers: {
               'Accept': 'application/json',
