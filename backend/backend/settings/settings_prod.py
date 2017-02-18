@@ -2,7 +2,7 @@ import os
 import random
 from .base import *
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['.stelios.no', 'api.stelios.no', 'localhost', '127.0.0.1']
 
