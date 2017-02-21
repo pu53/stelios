@@ -17,6 +17,7 @@ class App extends Component {
         <div>
           <Menu>
             <Menu.Item><IndexLink to="/" activeStyle={{color:"red"}}>Home</IndexLink></Menu.Item>
+            <Menu.Item><NavLink to="/wiki" activeStyle={{color:"red"}}>Wiki</NavLink></Menu.Item>
           </Menu>
         </div>
         {this.props.children}
