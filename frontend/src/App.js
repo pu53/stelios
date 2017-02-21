@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { NavLink } from './components/NavLink.jsx';
+import { IndexLink } from 'react-router'
+import { Menu } from 'semantic-ui-react'
+import { Item } from 'semantic-ui-react'
 
 class App extends Component {
     constructor(props) {
@@ -10,14 +14,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+        <div>
+          <Menu>
+            <Menu.Item><IndexLink to="/" activeStyle={{color:"red"}}>Home</IndexLink></Menu.Item>
+          </Menu>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload to kappa
-        </p>
-        <List />
+        {this.props.children}
       </div>
     );
   }
