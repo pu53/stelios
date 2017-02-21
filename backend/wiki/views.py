@@ -15,6 +15,17 @@ class TopicList(generics.ListCreateAPIView):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
 
+    def get_queryset(self):
+        if self.request.method == 'GET':
+            pk_list = self.request.GET.get('list_of_pk')
+            if pk_list:
+                queryset = Topic.objects.filter(pk__in=pk_list)
+            else:
+                queryset = Topic.objects.all()
+        else:
+            queryset = Topic.objects.all()
+        return queryset
+
 class TopicDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
