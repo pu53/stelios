@@ -5,18 +5,23 @@ from django.contrib.auth.models import User
 
 SUBJECT_CHOICES = [(1,"TDT4140 - programutvikling"), (2,"TTM4100 - kommunikasjon tjenester og nett"),]
 
-
-class Subject(models.Model):
-    name = models.CharField(choices = SUBJECT_CHOICES, max_length=140, default='fugletitting')
+class SubTopic(models.Model):
+    name = models.CharField(max_length = 140,default='kappa')
     description = models.TextField(default='')
+    content = models.TextField(default='')
+    def __str__(self):
+        return(self.name)
 
 class Topic(models.Model):
     name = models.CharField(max_length = 140, default='kappa')
     description = models.TextField(default='')
-    subject = models.ManyToManyField(Subject)
+    sub_topics = models.ManyToManyField(SubTopic, blank=True, related_name='subtopics')
+    def __str__(self):
+        return(self.name)
 
-class SubTopic(models.Model):
-    name = models.CharField(max_length = 140,default='kappa')
+class Subject(models.Model):
+    name = models.CharField(choices = SUBJECT_CHOICES, max_length=140, default='fugletitting')
     description = models.TextField(default='')
-    topics = models.ManyToManyField(Topic)
-    content = models.TextField(default='')
+    topic = models.ManyToManyField(Topic, blank=True, related_name='topics')
+    def __str__(self):
+        return(self.name)
