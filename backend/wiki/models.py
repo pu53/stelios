@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-SUBJECT_CHOICES = [(1,"TDT4140 - programutvikling"), (2,"TTM4100 - kommunikasjon tjenester og nett"),]
-
 class SubTopic(models.Model):
     name = models.CharField(max_length = 140,default='kappa')
     description = models.TextField(default='')
@@ -20,7 +18,7 @@ class Topic(models.Model):
         return(self.name)
 
 class Subject(models.Model):
-    name = models.CharField(choices = SUBJECT_CHOICES, max_length=140, default='fugletitting')
+    name = models.CharField(max_length=140, default='fugletitting')
     description = models.TextField(default='')
     topic = models.ManyToManyField(Topic, blank=True, related_name='topics')
     def __str__(self):
