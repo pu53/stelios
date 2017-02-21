@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
-from wiki.models import Subject, Topic, SubTopic
-from wiki.serializers import SubjectSerializer, TopicSerializer, SubTopicSerializer
+from wiki.models import Subject, Topic, Subtopic
+from wiki.serializers import SubjectSerializer, TopicSerializer, SubtopicSerializer
 from rest_framework import generics
+import json
 
 class SubjectList(generics.ListCreateAPIView):
     queryset = Subject.objects.all()
@@ -15,25 +16,41 @@ class TopicList(generics.ListCreateAPIView):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
 
-    def get_queryset(self):
-        if self.request.method == 'GET':
-            pk_list = self.request.GET.get('list_of_pk')
-            if pk_list:
-                queryset = Topic.objects.filter(pk__in=pk_list)
-            else:
-                queryset = Topic.objects.all()
-        else:
-            queryset = Topic.objects.all()
-        return queryset
+#    def get_queryset(self):
+#        print(self.request.method)
+#        if self.request.method == 'POST':
+#            print("yes")
+#            print(self.request)
+#            received_json_data=json.loads(self.request.body)
+#            print(received_json_data)
+#            pk_list = self.request.GET.get('list_of_pk')
+#            print(pk_list)
+#            if pk_list:
+#                queryset = Topic.objects.filter(pk__in=pk_list)
+#            else:
+#                queryset = Topic.objects.all()
+#            print(queryset)
+#        else:
+#            queryset = Topic.objects.all()
+#        return queryset
+#
+#class TopicSubsetList(generics.ListCreateAPIView):
+#    serializer_class = TopicSerializer
+#
+#    def get_queryset(self):
+#        lst = self.kwargs['topic_list']
+#        print(lst)
+#        queryset = Topic.objects.filter(pk__in=pk_list)
+#        return queryset
 
 class TopicDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
 
-class SubTopicList(generics.ListCreateAPIView):
-    queryset = SubTopic.objects.all()
-    serializer_class = SubTopicSerializer
+class SubtopicList(generics.ListCreateAPIView):
+    queryset = Subtopic.objects.all()
+    serializer_class = SubtopicSerializer
 
-class SubTopicDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = SubTopic.objects.all()
-    serializer_class = SubTopicSerializer
+class SubtopicDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Subtopic.objects.all()
+    serializer_class = SubtopicSerializer

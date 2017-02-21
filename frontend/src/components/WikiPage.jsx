@@ -14,7 +14,7 @@ export class WikiPage extends React.Component{
 	}
 
 	render(){
-		return 	(<div> 
+		return 	(<div>
 					Hello Worlds!
 					<ListIt elms={this.elms} />
 				</div>);
@@ -22,7 +22,6 @@ export class WikiPage extends React.Component{
 }
 
 function ListIt(props){
-
 		const elms = props.elms;
 
 		const listelms = elms.map((elm) =>

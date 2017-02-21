@@ -1,24 +1,23 @@
 from rest_framework import serializers
-from wiki.models import Subject, Topic, SubTopic
+from wiki.models import Subject, Topic, Subtopic
 from django.contrib.auth.models import User
 
-class SubTopicSerializer(serializers.ModelSerializer):
+class SubtopicSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SubTopic
+        model = Subtopic
         fields = ('__all__')
 
 class TopicSerializer(serializers.ModelSerializer):
-    subTopics = SubTopicSerializer(required=False, many=True, read_only = True)
+    subtopics = SubtopicSerializer(required=False, many=True, read_only=True)
     class Meta:
         model = Topic
         fields = ('__all__')
-
 
 class SubjectSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(required=False, many=True, read_only=True)
     class Meta:
         model = Subject
-        fields = ('__all__')
+        fields= ('__all__')
 #    def create(self, validated_data):
 #        print(validated_data)
 #        topics_data = validated_data.pop('topics')

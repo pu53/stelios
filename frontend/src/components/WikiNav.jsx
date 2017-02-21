@@ -14,10 +14,10 @@ export class WikiNav extends React.Component {
       event.preventDefault();
       var link = '';
       if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-        link = 'http://localhost:8000/subject.json'
+        link = 'http://localhost:8000/subjects/' + this.props.wiki_id + '.json';
       // dev code
       } else {
-        link = 'http://api.stelios.no/subject.json'
+        link = 'http://api.stelios.no/subjects/' + this.props.wiki_id + '.json'
       // production code
       }
       var request = new Request(link, {
