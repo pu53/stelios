@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from wiki.models import Subject, Topic, Subtopic
 from django.contrib.auth.models import User
+from drf_queryfields import QueryFieldsMixin
+
 
 class SubtopicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,11 +15,13 @@ class TopicSerializer(serializers.ModelSerializer):
         model = Topic
         fields = ('__all__')
 
-class SubjectSerializer(serializers.ModelSerializer):
+class SubjectSerializer(QueryFieldsMixin,serializers.ModelSerializer):
     topics = TopicSerializer(required=False, many=True, read_only=True)
     class Meta:
         model = Subject
         fields= ('__all__')
+    
+
 #    def create(self, validated_data):
 #        print(validated_data)
 #        topics_data = validated_data.pop('topics')
