@@ -8,10 +8,13 @@
     "semantic-ui": "^2.2.7"
   },
   "dependencies": {
+    "gulp": "^3.9.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-router": "^3.0.2",
-    "semantic-ui-react": "^0.65.0"
+    "react-simplemde-editor": "^3.6.10",
+    "semantic-ui-react": "^0.65.0",
+    "simplemde": "^1.11.2"
   },
   "scripts": {
     "start": "react-scripts start",
