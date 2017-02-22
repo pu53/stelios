@@ -1,7 +1,7 @@
 import React from 'react'
 var SimpleMDE = require('react-simplemde-editor');
 
-export class Markdown extends React.Component {
+export class Editor extends React.Component {
     render() {
         return (
         <SimpleMDE

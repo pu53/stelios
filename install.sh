@@ -7,6 +7,7 @@ apt-get install dos2unix &&
 
 npm install -g create-react-app &&
 npm install -g react-scripts &&
+npm install -g simplemde --save &&
 
 apt-get install libpq-dev &&
 apt install python3-pip &&
