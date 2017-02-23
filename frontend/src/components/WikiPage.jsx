@@ -1,36 +1,118 @@
 import React from 'react'
+import { WikiNav} from './WikiNav.jsx'
+import { Dimmer, Loader, Grid} from 'semantic-ui-react'
+import { Topic } from './Topic'
 
-import {Topic} from './Topic'
-
-//supposed to render a single subject w/topics
+//supposed to render a single subject w/topics jabbe
 export class WikiPage extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = ({
-			isAdmin: props.isAdmin
+			result: [],
+			id: 0,
+			name: "",
+			description: "",
+			topics: [],
+			active_topic: 0
 		});
-		this.topics = props.topics;
-		this.elms = props.elms;
+		this.fetchData = this.fetchData.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 	}
+
+	componentDidMount(){
+		this.fetchData("subjects","1");
+	}
+
+	fetchData(domain,elm) {
+		var link = '';
+		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+			link = 'http://localhost:8000/'+domain+'/'+elm
+    		// dev code
+    	} else {
+    		link = 'http://api.stelios.no/'+domain+'/'+elm
+		    // production code
+		}
+		var request = new Request(link, {
+			method: 'GET',
+			headers: {
+				'Accept': 'application/json',
+			},
+		});
+		fetch(request).then((res) => {
+			return res.json();
+		})
+		.then((res) => {
+			console.log(res);
+			// const subjectKeys = Object.keys(res[0]);
+			// console.log(subjectKeys);
+			this.setState({
+				result: res,
+				id: res["id"],
+				name: res["name"],
+				description: res["description"],
+				topics: res["topics"]});
+		}).catch((e) => {console.log(e)});
+	}
+
+	handleClick(key) {
+			this.setState({
+				active_topic: key
+		  });
+	 }
+
 
 	render(){
-		return 	(<div>
-					Hello Worlds!
-					<ListIt elms={this.elms} />
-				</div>);
-	}
+		if(Object.keys(this.state.result).length){
+			const subject = this.state.result[0];
+			var topics = this.state.topics;
+			return(
+				<Grid>
+					<Grid.Row>
+						<Grid.Column width={3}>
+							<li>
+								{
+									Object.keys(topics).map(key => {
+					        return (
+										<ul>
+											<a href="#" onClick={() => this.handleClick(key)} value={key}>{topics[key].name}</a>
+										</ul>
+									);
+					    	})}
+							</li>
+						</Grid.Column>
+						<Grid.Column width={13}>
+							<h1>Subject: {this.state.name}</h1>
+							<h3>{this.state.description}</h3>
+							<br />
+							<Topic topic={this.state.topics[this.state.active_topic]} />
+						</Grid.Column>
+					</Grid.Row>
+				</Grid>
+			);
+		}else{
+			return (
+				<Dimmer active inverted>
+        	<Loader inverted>Loading</Loader>
+      	</Dimmer>
+			);
+		}
+}
 }
 
-function ListIt(props){
-		const elms = props.elms;
 
-		const listelms = elms.map((elm) =>
-			<Topic isAdmin={true} header={elm} fill="fill"/>
-		);
 
-		return (
-			<div>
-				{listelms}
-			</div>
-			);
-	}
+
+
+			// { this.state.result.map((user) =>
+			// 	(
+			// 		<ul key={user.id}>
+			// 			{Object.keys(user).map((key) =>
+			// 			(
+			// 				<li key={key}>{key}:  {user[key].toString()}</li>
+			// 				)
+			// 			)}
+			// 			<br />
+			// 			</ul>
+			// 		)
+			// 	)
+			// }

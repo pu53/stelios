@@ -26,6 +26,33 @@ class App extends Component {
       </div>
     );
   }
+
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import { NavLink } from './components/NavLink.jsx';
+import { IndexLink } from 'react-router'
+import { Menu } from 'semantic-ui-react'
+import { Item } from 'semantic-ui-react'
+
+export class App extends Component {
+    constructor(props) {
+      super();
+    }
+
+  render() {
+    return (
+      <div className="App">
+        <div>
+          <Menu>
+            <Menu.Item><IndexLink to="/" activeStyle={{color:"red"}}>Home</IndexLink></Menu.Item>
+            <Menu.Item><NavLink to="/wiki" activeStyle={{color:"red"}}>Wiki</NavLink></Menu.Item>
+          </Menu>
+        </div>
+        {this.props.children}
+      </div>
+    );
+  }
 }
 
 class List extends Component {
@@ -41,7 +68,7 @@ class List extends Component {
     event.preventDefault();
     var link = '';
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      link = 'http://localhost:8000/users.json'
+      link = 'http://localhost:8000/subjects/1'
     // dev code
     } else {
       link = 'http://api.stelios.no/users.json'

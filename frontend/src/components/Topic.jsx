@@ -1,35 +1,31 @@
 import React from 'react'
+import { SubTopic } from './SubTopic'
 
 export class Topic extends React.Component{
 	constructor(props){
 		super(props);
-		this.state=({
-			isAdmin: props.isAdmin
-		});
-		this.header = <h1>{props.header}</h1>;
-		this.fill = <div>{props.fill}</div>;
-		this.subtopics = props.subtopics;
-	}	
+	}
 
 
 	render(){
+		var subtopics=this.props.topic["subtopics"]
 		return (
 			<div>
-				{this.header} 
-				{this.fill}
-				<EditButton isAdmin={this.state.isAdmin} />
+				<h2>Topic name: {this.props.topic["name"]}</h2>
+				<h3>{this.props.topic["description"]}</h3>
+				<br/>
+				{
+					Object.keys(subtopics).map(function(key){
+	        return (
+						<div>
+							<SubTopic subtopic={subtopics[key]} />
+							<br/>
+						</div>
+					);
+	    	})}
+
 			</div>
 		);
 	}
 
-}
-
-//button to edit if admin
-function EditButton(props){
-	return (props.isAdmin ? (
-			<button>edit</button>
-		) : (
-			null
-		)
-	);
 }
