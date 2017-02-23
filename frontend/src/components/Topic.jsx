@@ -3,21 +3,24 @@ import React from 'react'
 export class Topic extends React.Component{
 	constructor(props){
 		super(props);
-		this.state=({
-			isAdmin: props.isAdmin
+		this.state = ({
+			id: props.id,
+			name: props.name,
+			description: props.description,
+			subtopics: props.subtopics
 		});
-		this.header = <h1>{props.header}</h1>;
-		this.fill = <div>{props.fill}</div>;
-		this.subtopics = props.subtopics;
+		this.getSubTopics = this.getSubTopics.bind(this);
 	}	
+
+	getSubTopics(){
+
+	}
 
 
 	render(){
 		return (
 			<div>
-				{this.header} 
-				{this.fill}
-				<EditButton isAdmin={this.state.isAdmin} />
+				{this.state.name}		
 			</div>
 		);
 	}
