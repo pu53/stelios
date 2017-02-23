@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { NavLink } from './components/NavLink.jsx';
-import { IndexLink } from 'react-router'
-import { Menu } from 'semantic-ui-react'
-import { Item } from 'semantic-ui-react'
+import { IndexLink } from 'react-router';
+import { Menu } from 'semantic-ui-react';
+import { Item } from 'semantic-ui-react';
+import { SearchBar } from './components/SearchBar.jsx';
 
 class App extends Component {
     constructor(props) {
-      super();
+		super();
     }
 
-  render() {
+	render() {
     return (
       <div className="App">
         <div>
@@ -21,6 +22,7 @@ class App extends Component {
           </Menu>
         </div>
         {this.props.children}
+        <SearchBar></SearchBar>
       </div>
     );
   }
