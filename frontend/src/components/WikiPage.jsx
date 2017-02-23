@@ -1,9 +1,9 @@
 import React from 'react'
 import { WikiNav} from './WikiNav.jsx'
-import { Dimmer, Loader } from 'semantic-ui-react'
+import { Dimmer, Loader, Grid} from 'semantic-ui-react'
+import { Topic } from './Topic'
 
-
-//supposed to render a single subject w/topics
+//supposed to render a single subject w/topics jabbe
 export class WikiPage extends React.Component{
 	constructor(props){
 		super(props);
@@ -12,9 +12,11 @@ export class WikiPage extends React.Component{
 			id: 0,
 			name: "",
 			description: "",
-			topics: []
+			topics: [],
+			active_topic: 0
 		});
 		this.fetchData = this.fetchData.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 	}
 
 	componentDidMount(){
@@ -52,20 +54,40 @@ export class WikiPage extends React.Component{
 		}).catch((e) => {console.log(e)});
 	}
 
+	handleClick(key) {
+			this.setState({
+				active_topic: key
+		  });
+	 }
+
+
 	render(){
 		if(Object.keys(this.state.result).length){
 			const subject = this.state.result[0];
+			var topics = this.state.topics;
 			return(
-				<div>
-					<h1>Subject: {this.state.name}</h1>
-					<h3>{this.state.description}</h3>
-					<br></br>
-					<WikiNav topics={this.state.topics} />
-
-
-
-
-				</div>
+				<Grid>
+					<Grid.Row>
+						<Grid.Column width={3}>
+							<li>
+								{
+									Object.keys(topics).map(key => {
+					        return (
+										<ul>
+											<a href="#" onClick={() => this.handleClick(key)} value={key}>{topics[key].name}</a>
+										</ul>
+									);
+					    	})}
+							</li>
+						</Grid.Column>
+						<Grid.Column width={13}>
+							<h1>Subject: {this.state.name}</h1>
+							<h3>{this.state.description}</h3>
+							<br />
+							<Topic topic={this.state.topics[this.state.active_topic]} />
+						</Grid.Column>
+					</Grid.Row>
+				</Grid>
 			);
 		}else{
 			return (

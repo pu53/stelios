@@ -1,5 +1,6 @@
 import React from 'react'
-import { Topic } from './Topic'
+
+
 
 export class WikiNav extends React.Component {
 
@@ -9,10 +10,7 @@ export class WikiNav extends React.Component {
 
     render() {
         return (
-          <div>
-            {/* wikinav here */}
-            <Topic topic={this.props.topics[0]} />
-          </div>
+          <p>test</p>
         );
     }
 }
