@@ -12,6 +12,7 @@ ReactDOM.render((
     <Route path="/" component={App}>
       <IndexRoute component={Home}/>
       <Route path="/wiki" component={WikiPage}></Route>
+		<Route path="/subjects/:subjectName"></Route>
     </Route>
   </Router>),
   document.getElementById('root')

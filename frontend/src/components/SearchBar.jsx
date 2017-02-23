@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Link } from 'react-router';
 export class SearchBar extends Component {
 	constructor(props) {
 		super(props);
@@ -66,8 +66,9 @@ export class SearchBar extends Component {
 				</form>
 				<ul>
 					{this.state.name.map((user) => {
-						if(this.state.value != 0 && user.search(this.state.value) != -1) {
-							return(<li>{user}</li>);
+					var link = "/wiki/subjects";
+						if(this.state.value != "" && user.toUpperCase().search(this.state.value.toUpperCase()) != -1) {
+							return(<li><Link to="/wiki/subjects" activeStyle={{color:"red"}}>{user}</Link></li>);
 						}
 					})}
 					<h2> {this.state.value} </h2>
