@@ -11,9 +11,9 @@ ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={Home}/>
+      <Route path="/wiki" component={App, WikiPage}/>
+      <Route path="/test" component={List} />
     </Route>
-    <Route path="/wiki" component={App, WikiPage}/>
-    <Route path="/test" component={List} />
   </Router>),
   document.getElementById('root')
 );

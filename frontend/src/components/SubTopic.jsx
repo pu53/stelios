@@ -1,17 +1,21 @@
 import React from 'react'
+var ReactMarkdown = require('react-markdown');
 
 export class SubTopic extends React.Component {
-	// lete i databasen etter tekst som man skal vise
 	constructor(props){
 		super(props);
-		this.state={
-			contentList: []
-		};
-
 	}
 
 
 	render(){
-		return <h1>{fetchData()}</h1>;
-	}	
+		var content = this.props.subtopic["content"];
+		return (
+			<div>
+				<h3>Subtopic: {this.props.subtopic["name"]}</h3>
+				<h4>{this.props.subtopic["description"]}</h4>
+				<br></br>
+				<ReactMarkdown source={content} />
+			</div>
+		);
+	}
 }

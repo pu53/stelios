@@ -1,6 +1,7 @@
 import React from 'react'
-import {App} from '../App.js'
-import Topic from './Topic.jsx'
+import { WikiNav} from './WikiNav.jsx'
+import { Dimmer, Loader } from 'semantic-ui-react'
+
 
 //supposed to render a single subject w/topics
 export class WikiPage extends React.Component{
@@ -13,11 +14,11 @@ export class WikiPage extends React.Component{
 			description: "",
 			topics: []
 		});
-		this.getTopics = this.getTopics.bind(this);
+		this.fetchData = this.fetchData.bind(this);
 	}
 
 	componentDidMount(){
-		this.fetchData("subjects","");
+		this.fetchData("subjects","1");
 	}
 
 	fetchData(domain,elm) {
@@ -42,41 +43,35 @@ export class WikiPage extends React.Component{
 			console.log(res);
 			// const subjectKeys = Object.keys(res[0]);
 			// console.log(subjectKeys);
-			this.setState({ 
+			this.setState({
 				result: res,
-				id: res[0]["id"],
-				name: res[0]["name"],
-				description: res[0]["description"],
-				topics: res[0]["topics"]});
+				id: res["id"],
+				name: res["name"],
+				description: res["description"],
+				topics: res["topics"]});
 		}).catch((e) => {console.log(e)});
 	}
 
-	getTopics(){
-		const topics = this.state.topics;
-
-	}
-
 	render(){
-		console.log(this.state.topics);
-		if(this.state.result.length > 0){
+		if(Object.keys(this.state.result).length){
 			const subject = this.state.result[0];
 			return(
 				<div>
-					<App />
-					<h1>{this.state.name}</h1>
+					<h1>Subject: {this.state.name}</h1>
 					<h3>{this.state.description}</h3>
-					{
-						// this.state.topics.map((topic) =>
-						// 	<Topic id={topic["id"]} name={topic["name"]} description={topic["description"]}  />
-						// )
-					}
+					<br></br>
+					<WikiNav topics={this.state.topics} />
+
+
+
+
 				</div>
 			);
 		}else{
 			return (
-				<div>
-					<div>Fækk Øff</div>
-				</div>
+				<Dimmer active inverted>
+        	<Loader inverted>Loading</Loader>
+      	</Dimmer>
 			);
 		}
 }
