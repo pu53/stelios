@@ -6,7 +6,7 @@ import { IndexLink } from 'react-router'
 import { Menu } from 'semantic-ui-react'
 import { Item } from 'semantic-ui-react'
 
-class App extends Component {
+export class App extends Component {
     constructor(props) {
       super();
     }
@@ -39,7 +39,7 @@ class List extends Component {
     event.preventDefault();
     var link = '';
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      link = 'http://localhost:8000/users.json'
+      link = 'http://localhost:8000/subjects/1'
     // dev code
     } else {
       link = 'http://api.stelios.no/users.json'

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import {App, List} from './App';
 import './index.css';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { Home } from './components/Home'
@@ -11,8 +11,9 @@ ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={Home}/>
-      <Route path="/wiki" component={WikiPage}></Route>
     </Route>
+    <Route path="/wiki" component={App, WikiPage}/>
+    <Route path="/test" component={List} />
   </Router>),
   document.getElementById('root')
 );
