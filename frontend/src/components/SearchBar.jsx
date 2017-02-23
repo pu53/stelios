@@ -5,8 +5,7 @@ export class SearchBar extends Component {
 		super(props);
 		this.state={pressed:false,
 					value: '',
-					id: [],
-					name: []
+					data: []
 					};
 					
 		this.fetchData = this.fetchData.bind(this);
@@ -46,8 +45,7 @@ export class SearchBar extends Component {
 		}
 		
 		this.setState({
-			id: idArr,
-			name: nameArr
+			data:res
 			});
 		}).catch((e) => {console.log(e)});
 		console.log(this.state);
@@ -59,22 +57,23 @@ export class SearchBar extends Component {
 	
 	render() {
 		return (
-			<div>
+			
 			<div>
 				<form onSubmit={this.enterText}>
 					<input type="text" onChange={this.enterText}></input>
 				</form>
 				<ul>
-					{this.state.name.map((user) => {
-					var link = "/wiki/subjects";
-						if(this.state.value != "" && user.toUpperCase().search(this.state.value.toUpperCase()) != -1) {
-							return(<li><Link to="/wiki/subjects" activeStyle={{color:"red"}}>{user}</Link></li>);
+					{this.state.data.map((user) => {							
+						
+						var link = "/wiki/".concat(user['id']);
+						if(this.state.value !== "" && user["name"].toUpperCase().search(this.state.value.toUpperCase()) !== -1) {
+							return(<li><Link to={link} activeStyle={{color:"red"}}>{user["name"]}</Link></li>);
 						}
-					})}
-					<h2> {this.state.value} </h2>
+					}
+					)}
 				</ul>
 			</div>
-			</div>
+			
 		);
 	}	 
 }
