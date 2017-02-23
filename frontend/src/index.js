@@ -11,10 +11,12 @@ ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={Home}/>
-	  <Route path="/subjects/:subjectName"></Route>
-      <Route path="/wiki" component={App, WikiPage}/>
+      <Route path="/wiki" component={WikiPage}>
+	       <Route path="/wiki/:subjectId" component={WikiPage}>
+           <Route path="/wiki/:subjectId/:topicId" component={WikiPage} />
+	       </Route>
+      </Route>
       <Route path="/test" component={List} />
-      <Redirect from='*' to='/' />
     </Route>
   </Router>),
   document.getElementById('root')

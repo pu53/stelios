@@ -2,25 +2,36 @@ import React from 'react'
 import { WikiNav} from './WikiNav.jsx'
 import { Dimmer, Loader, Grid} from 'semantic-ui-react'
 import { Topic } from './Topic'
+import { browserHistory } from 'react-router'
 
 //supposed to render a single subject w/topics jabbe
 export class WikiPage extends React.Component{
 	constructor(props){
 		super(props);
+		var topicId = this.props.params.topicId;
+		console.log(this.props.params);
+		if (undefined === topicId) {
+			topicId = 0;
+		}
 		this.state = ({
 			result: [],
 			id: 0,
 			name: "",
 			description: "",
 			topics: [],
-			active_topic: 0
+			active_topic: topicId
 		});
 		this.fetchData = this.fetchData.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 	}
 
 	componentDidMount(){
-		this.fetchData("subjects","1");
+		var id = this.props.params.subjectId;
+		if (undefined != id) {
+			this.fetchData("subjects", id);
+		} else {
+			this.fetchData("subjects", "1");
+		}
 	}
 
 	fetchData(domain,elm) {
@@ -42,15 +53,19 @@ export class WikiPage extends React.Component{
 			return res.json();
 		})
 		.then((res) => {
-			console.log(res);
+			if(res.detail === "Not found.") {
+				this.fetchData(domain,"1");
+			} else {
+				this.setState({
+					result: res,
+					id: res["id"],
+					name: res["name"],
+					description: res["description"],
+					topics: res["topics"]});
+			}
 			// const subjectKeys = Object.keys(res[0]);
 			// console.log(subjectKeys);
-			this.setState({
-				result: res,
-				id: res["id"],
-				name: res["name"],
-				description: res["description"],
-				topics: res["topics"]});
+
 		}).catch((e) => {console.log(e)});
 	}
 
@@ -63,7 +78,6 @@ export class WikiPage extends React.Component{
 
 	render(){
 		if(Object.keys(this.state.result).length){
-			const subject = this.state.result[0];
 			var topics = this.state.topics;
 			return(
 				<Grid>

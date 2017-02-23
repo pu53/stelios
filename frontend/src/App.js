@@ -2,35 +2,6 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { NavLink } from './components/NavLink.jsx';
-import { IndexLink } from 'react-router';
-import { Menu } from 'semantic-ui-react';
-import { Item } from 'semantic-ui-react';
-import { SearchBar } from './components/SearchBar.jsx';
-
-class App extends Component {
-    constructor(props) {
-		super();
-    }
-
-	render() {
-    return (
-      <div className="App">
-        <div>
-          <Menu>
-            <Menu.Item><IndexLink to="/" activeStyle={{color:"red"}}>Home</IndexLink></Menu.Item>
-            <Menu.Item><NavLink to="/wiki" activeStyle={{color:"red"}}>Wiki</NavLink></Menu.Item>
-          </Menu>
-        </div>
-        {this.props.children}
-        <SearchBar></SearchBar>
-      </div>
-    );
-  }
-
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { NavLink } from './components/NavLink.jsx';
 import { IndexLink } from 'react-router'
 import { Menu } from 'semantic-ui-react'
 import { Item } from 'semantic-ui-react'
