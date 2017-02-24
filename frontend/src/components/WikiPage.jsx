@@ -27,15 +27,8 @@ export class WikiPage extends React.Component{
 		console.log("subject id: ", id)
 		if (undefined !== id) {
 			this.fetchData("subjectsonlytopicidandname", id);
-			if (this.props.params.topicId !== undefined) {
-				//TODO: check if topic id actually exists
-				this.handleClick(this.props.params.topicId);
-			} else {
-				this.handleClick(1);
-			}
 		} else {
 			this.fetchData("subjectsonlytopicidandname", "1");
-			this.handleClick(1);
 		}
 	}
 
@@ -76,7 +69,15 @@ export class WikiPage extends React.Component{
 					name: nam
 				});
 			}
-    }).catch((e) => {console.log(e)});
+    }).then(() => {
+			console.log(this.state.topics[0].id)
+			if (this.props.params.topicId !== undefined) {
+				this.handleClick(this.props.params.topicId);
+			} else {
+				this.handleClick(this.state.topics[0].id);
+			}
+		}).catch((e) => {console.log(e)});
+
 	}
 
 	handleClick(id) {
@@ -120,7 +121,7 @@ export class WikiPage extends React.Component{
 									this.state.topics.map(topic => {
 					        return (
 										<ul>
-											<a href="#"	 onClick={() => this.handleClick(topic.id)} value={topic.id}>{topic.name}</a>
+											<a href="#" onClick={() => this.handleClick(topic.id)} value={topic.id}>{topic.name}</a>
 										</ul>
 									);
 					    	})}
