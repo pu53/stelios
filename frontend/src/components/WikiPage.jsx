@@ -116,16 +116,16 @@ export class WikiPage extends React.Component{
 				<Grid>
 					<Grid.Row>
 						<Grid.Column width={3}>
-							<li>
+							<ul>
 								{
 									this.state.topics.map(topic => {
 					        return (
-										<ul>
+										<li>
 											<a href="#" onClick={() => this.handleClick(topic.id)} value={topic.id}>{topic.name}</a>
-										</ul>
+										</li>
 									);
 					    	})}
-							</li>
+							</ul>
 						</Grid.Column>
 						<Grid.Column width={13}>
 							<h1>Subject: {this.state.name}</h1>
