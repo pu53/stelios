@@ -3,8 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { NavLink } from './components/NavLink.jsx';
 import { IndexLink } from 'react-router'
-import { Menu } from 'semantic-ui-react'
-import { Item } from 'semantic-ui-react'
+import { Menu, Item, Grid } from 'semantic-ui-react'
 import { SearchBar } from './components/SearchBar'
 
 export class App extends Component {
@@ -21,8 +20,16 @@ export class App extends Component {
             <Menu.Item><NavLink to="/wiki" activeStyle={{color:"red"}}>Wiki</NavLink></Menu.Item>
           </Menu>
         </div>
-        <SearchBar/>
-        {this.props.children}
+        <div id="main_content">
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width={16}>
+                <SearchBar/>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+          {this.props.children}
+        </div>
       </div>
     );
   }

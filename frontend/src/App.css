@@ -1,4 +1,8 @@
-
+#main_content {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 20px;
+}
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;

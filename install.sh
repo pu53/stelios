@@ -9,6 +9,10 @@ npm install -g create-react-app &&
 npm install -g react-scripts &&
 npm install -g simplemde --save &&
 npm install -g --save react-markdown &&
+npm i -g npm &&
+cd frontend/ &&
+npm i --save lodash &&
+cd .. &&
 
 apt-get install libpq-dev &&
 apt install python3-pip &&
