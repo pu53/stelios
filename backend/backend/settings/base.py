@@ -111,3 +111,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+CORS_ORIGIN_WHITELIST = (
+    'stelios.no',
+    'localhost',
+    'api.stelios.no'
+)
