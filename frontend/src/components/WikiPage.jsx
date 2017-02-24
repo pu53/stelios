@@ -120,7 +120,7 @@ export class WikiPage extends React.Component{
 									this.state.topics.map(topic => {
 					        return (
 										<ul>
-											<a href="#" onClick={() => this.handleClick(topic.id)} value={topic.id}>{topic.name}</a>
+											<a href="#"	 onClick={() => this.handleClick(topic.id)} value={topic.id}>{topic.name}</a>
 										</ul>
 									);
 					    	})}

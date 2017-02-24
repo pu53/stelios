@@ -21,8 +21,8 @@ export class App extends Component {
             <Menu.Item><NavLink to="/wiki" activeStyle={{color:"red"}}>Wiki</NavLink></Menu.Item>
           </Menu>
         </div>
-        {this.props.children}
         <SearchBar/>
+        {this.props.children}
       </div>
     );
   }
