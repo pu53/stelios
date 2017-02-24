@@ -5,6 +5,7 @@ import { NavLink } from './components/NavLink.jsx';
 import { IndexLink } from 'react-router'
 import { Menu } from 'semantic-ui-react'
 import { Item } from 'semantic-ui-react'
+import { SearchBar } from './components/SearchBar'
 
 export class App extends Component {
     constructor(props) {
@@ -21,6 +22,7 @@ export class App extends Component {
           </Menu>
         </div>
         {this.props.children}
+        <SearchBar/>
       </div>
     );
   }
