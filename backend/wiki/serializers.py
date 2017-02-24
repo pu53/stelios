@@ -4,12 +4,12 @@ from django.contrib.auth.models import User
 from drf_queryfields import QueryFieldsMixin
 
 
-class SubtopicSerializer(serializers.ModelSerializer):
+class SubtopicSerializer(QueryFieldsMixin,serializers.ModelSerializer):
     class Meta:
         model = Subtopic
         fields = ('__all__')
 
-class TopicSerializer(serializers.ModelSerializer):
+class TopicSerializer(QueryFieldsMixin,serializers.ModelSerializer):
     subtopics = SubtopicSerializer(required=False, many=True, read_only=True)
     class Meta:
         model = Topic
@@ -20,7 +20,17 @@ class SubjectSerializer(QueryFieldsMixin,serializers.ModelSerializer):
     class Meta:
         model = Subject
         fields= ('__all__')
-    
+
+class TopicOnlyIdAndNameSerializer(QueryFieldsMixin,serializers.ModelSerializer):
+    class Meta:
+        model = Topic
+        fields = ('id','name')
+
+class SubjectOnlyTopicIdAndNameSerializer(QueryFieldsMixin,serializers.ModelSerializer):
+    topics = TopicOnlyIdAndNameSerializer(required=False, many=True, read_only=True)
+    class Meta:
+        model = Subject
+        fields = ('__all__')
 
 #    def create(self, validated_data):
 #        print(validated_data)
