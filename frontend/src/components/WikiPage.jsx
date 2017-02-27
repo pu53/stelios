@@ -35,7 +35,7 @@ export class WikiPage extends React.Component{
 	fetchData(domain,elm) {
 		var link = '';
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			link = 'http://api.stelios.no/'+domain+'/'+elm
+			link = 'http://localhost:8000/'+domain+'/'+elm
     		// dev code
     } else {
     		link = 'http://api.stelios.no/'+domain+'/'+elm
@@ -84,7 +84,7 @@ export class WikiPage extends React.Component{
 		console.log("handleclick id: ", id)
 		var link = '';
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			link = 'http://api.stelios.no/'+ 'topics/' + id
+			link = 'http://localhost:8000/'+ 'topics/' + id
     		// dev code
     } else {
     		link = 'http://api.stelios.no/'+ 'topics/' + id

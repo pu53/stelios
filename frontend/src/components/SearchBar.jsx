@@ -27,7 +27,7 @@ export class SearchBarNotCustom extends Component {
 		console.log('halla')
 		var link = '';
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			link = 'http://api.stelios.no/subjects/?fields=id,name'
+			link = 'http://localhost:8000/subjects/?fields=id,name'
 		// dev code
 		} else {
 			link = 'http://api.stelios.no/subjects/?fields=id,name'

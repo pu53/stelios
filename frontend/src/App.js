@@ -48,7 +48,7 @@ class List extends Component {
     event.preventDefault();
     var link = '';
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      link = 'http://api.stelios.no/subjects/1'
+      link = 'http://localhost:8000/subjects/1'
     // dev code
     } else {
       link = 'http://api.stelios.no/users.json'
