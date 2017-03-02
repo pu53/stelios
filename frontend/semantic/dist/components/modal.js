@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.2.7 - Modal
+ * # Semantic UI 2.2.9 - Modal
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -847,7 +847,7 @@ $.fn.modal.settings = {
 
   allowMultiple  : false,
   detachable     : true,
-  closable       : true,
+  closable       : false,
   autofocus      : true,
 
   inverted       : false,

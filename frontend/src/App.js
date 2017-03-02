@@ -5,23 +5,62 @@ import { NavLink } from './components/NavLink.jsx';
 import { IndexLink } from 'react-router'
 import { Menu, Item, Grid } from 'semantic-ui-react'
 import { SearchBar } from './components/SearchBar'
+import { Login } from './components/Login'
+
 
 export class App extends Component {
     constructor(props) {
       super();
+      this.state = ({
+        token: localStorage.getItem('stelios_token'),
+        show_login: false
+      })
+    }
+
+    handleLogin(e) {
+      if (e === "login") {
+        this.setState({
+          show_login: true
+        });
+      } else {
+        this.setState({
+          token: "null"
+        });
+        localStorage.setItem('stelios_token', "null");
+      }
+    }
+
+    successLogin() {
+      this.setState({
+        token: localStorage.getItem('stelios_token'),
+        show_login: false
+      });
     }
 
   render() {
+    var login_text = this.state.token === "null" ? "login" : "logout"
     return (
       <div className="App">
         <div>
           <Menu>
             <Menu.Item><IndexLink to="/" activeStyle={{color:"red"}}>Home</IndexLink></Menu.Item>
             <Menu.Item><NavLink to="/wiki" activeStyle={{color:"red"}}>Wiki</NavLink></Menu.Item>
+            <Menu.Menu position='right'>
+              <Menu.Item>
+                <div onClick={() => this.handleLogin(login_text)}>{login_text}</div>
+              </Menu.Item>
+            </Menu.Menu>
           </Menu>
         </div>
         <div id="main_content">
           <Grid>
+            {this.state.show_login ?
+              <Grid.Row centered>
+                <Login show={this.state.show_login} success={() => this.successLogin()} />
+              </Grid.Row>
+              :
+              null
+            }
             <Grid.Row>
               <Grid.Column width={16}>
                 <SearchBar/>
