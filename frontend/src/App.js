@@ -20,11 +20,12 @@ export class App extends Component {
     handleLogin(e) {
       if (e === "login") {
         this.setState({
-          show_login: true
+          show_login: !this.state.show_login
         });
       } else {
         this.setState({
-          token: "null"
+          token: "null",
+          show_login: false
         });
         localStorage.setItem('stelios_token', "null");
       }
