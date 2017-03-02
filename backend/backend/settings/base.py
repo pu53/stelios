@@ -120,3 +120,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     )
 }
+
+CORS_ORIGIN_WHITELIST = (
+    'stelios.no',
+    'localhost',
+    'api.stelios.no'
+)

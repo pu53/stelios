@@ -17,6 +17,7 @@ ReactDOM.render((
 	       </Route>
       </Route>
       <Route path="/test" component={List} />
+      <Route path="*" component={Home} />
     </Route>
   </Router>),
   document.getElementById('root')
