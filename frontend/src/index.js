@@ -20,5 +20,5 @@ ReactDOM.render((
 		<Route path="*" component={Home} />
 		</Route>
 	</Router>),
-	document.getElementById('root');
+	document.getElementById('root')
 );
