@@ -1,6 +1,6 @@
 import React from 'react'
 import { SubTopic } from './SubTopic'
-import { Dimmer, Loader, Grid, Button } from 'semantic-ui-react'
+import { Dimmer, Loader, Grid, Button, Divider} from 'semantic-ui-react'
 var Scroll = require('react-scroll');
 var Element = Scroll.Element;
 var scroller = Scroll.scroller;
@@ -34,6 +34,9 @@ export class Topic extends React.Component{
 					<br/>
 					<p><b>{this.props.topic.description}</b></p>
 					<br/>
+						<Grid.Column width={16}>
+							<Divider />
+						</Grid.Column>
 					<Grid>
 						<Grid.Column width={4} floated="right">
 							<Button basic content="New subtopic" onClick={() => {
@@ -46,6 +49,7 @@ export class Topic extends React.Component{
 								}} />
 						</Grid.Column>
 					</Grid>
+
 					{
 						this.props.topic.subtopics.map(sub => {
 		        return (
