@@ -847,7 +847,7 @@ $.fn.modal.settings = {
 
   allowMultiple  : false,
   detachable     : true,
-  closable       : true,
+  closable       : false,
   autofocus      : true,
 
   inverted       : false,

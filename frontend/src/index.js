@@ -10,14 +10,15 @@ import '../semantic/dist/semantic.min.css';
 ReactDOM.render((
 	<Router history={browserHistory}>
 		<Route path="/" component={App}>
-			<IndexRoute component={Home}/>
-			<Route path="/wiki" component={WikiPage}>
-				<Route path="/wiki/:subjectId" component={WikiPage}>
-					<Route path="/wiki/:subjectId/:topicId" component={WikiPage} />
-				</Route>
+		<IndexRoute component={Home}/>
+		<Route path="/wiki" component={WikiPage}>
+			<Route path="/wiki/:subjectId" component={WikiPage}>
+			<Route path="/wiki/:subjectId/:topicId" component={WikiPage} />
 			</Route>
-			<Route path="/test" component={List} />
+		</Route>
+		<Route path="/test" component={List} />
+		<Route path="*" component={Home} />
 		</Route>
 	</Router>),
-document.getElementById('root')
+	document.getElementById('root');
 );

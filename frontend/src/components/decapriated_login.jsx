@@ -56,30 +56,22 @@ export class Login extends React.Component{
       return res.json();
     })
     .then((res) => {
-			if (res.non_field_errors !== undefined && res.non_field_errors[0] === "Unable to log in with provided credentials.") {
-				this.setState({
-					login_error_message: "Wrong username or password",
-					loading: false
-				});
-			} else {
-				this.setState({
-	        token: res.token,
-					login_error_message: "",
-					loading: false
-	      })
-	      localStorage.setItem('stelios_token', res.token);
-				this.props.success();
-			}
+			this.setState({
+        token: res.token,
+				loading: false
+      })
+      localStorage.setItem('stelios_token', res.token);
+			throw Error
     }).catch((e) => {
-			console.log(e);
+      console.log(e);
 			if (e instanceof TypeError) {
 				this.setState({
-					login_error_message: "Couldnt connect to server",
+					login_error_message: "Couldnt connect to api.stelios.no",
 					loading: false
 	      });
 			} else {
 				this.setState({
-					login_error_message: e,
+					login_error_message: "Wrong username or password",
 					loading: false
 				});
 			}
@@ -87,31 +79,50 @@ export class Login extends React.Component{
 
   }
 
+  handleLogout() {
+    this.setState({
+      token: "null"
+    });
+    localStorage.setItem('stelios_token', "null");
+  }
+
 	render(){
     var disable_button = false;
     if(this.state.username === "" || this.state.password === "") {
       disable_button = true
     }
-    if (this.props.show === true) {
+    if (this.state.token === "null") {
       return (
-				<div>
-          	<Grid.Column width={16}>
-				      <Message negative hidden={this.state.login_error_message === ""}>
-				        <Message.Header>{this.state.login_error_message}</Message.Header>
-				      </Message>
-            	<Form>
-              	<Form.Group>
-									<Form.Input placeholder='Username' onChange={(e) => this.handleUsername(e)} />
-									<Form.Input type='password' placeholder='Password' onChange={(e) => this.handlePassword(e)} />
-              	</Form.Group>
-								<Button disabled={disable_button} positive fluid loading={this.state.loading} onClick={(e) => this.handleLogin(e)}>Login</Button>
-            	</Form>
-          	</Grid.Column>
-				</div>
+        <Modal trigger={<div>Login</div>}>
+          <Header content='Login or signup' />
+          <Modal.Content>
+            <Grid centered>
+              <Grid.Row centered>
+                <Grid.Column width={14}>
+				          <Message negative hidden={this.state.login_error_message === ""}>
+				            <Message.Header>{this.state.login_error_message}</Message.Header>
+				          </Message>
+                  <Form>
+                    <Form.Field>
+                      <label>Username</label>
+                      <Input onChange={(e) => this.handleUsername(e)} />
+                    </Form.Field>
+                    <Form.Field>
+                      <label>Password</label>
+                      <Input type="password" onChange={(e) => this.handlePassword(e)} />
+                    </Form.Field>
+                    <Button disabled={disable_button} positive fluid loading={this.state.loading} onClick={(e) => this.handleLogin(e)}>Login</Button>
+                    <br></br>
+                  </Form>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Modal.Content>
+        </Modal>
       );
     } else {
       return(
-        null
+        <div onClick={() => this.handleLogout()}>Logout</div>
       );
     }
 	}

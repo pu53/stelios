@@ -1,6 +1,6 @@
 import React from 'react'
 import { WikiNav} from './WikiNav.jsx'
-import { Dimmer, Loader, Grid} from 'semantic-ui-react'
+import { Dimmer, Loader, Grid, Button, Divider, Segment, List} from 'semantic-ui-react'
 import { Topic } from './Topic'
 import { browserHistory } from 'react-router'
 
@@ -116,22 +116,40 @@ export class WikiPage extends React.Component{
 				<Grid>
 					<Grid.Row>
 						<Grid.Column width={3}>
-							<ul>
+							<Segment raised>
+								<h4>Topics: </h4>
+								<List selection >
 								{
 									this.state.topics.map(topic => {
-					        return (
-									<li key={topic.id}>
-										<a href="#" onClick={() => this.handleClick(topic.id)} value={topic.id}>{topic.name}</a>
-									</li>
+									return (
+										<List.Item as='a' onClick={() => this.handleClick(topic.id)} value={topic.id}>{topic.name}</List.Item>
 									);
-					    	})}
-							</ul>
+						    	})}
+								</List>
+							</Segment>
 						</Grid.Column>
 						<Grid.Column width={13}>
-							<h1>Subject: {this.state.name}</h1>
-							<h3>{this.state.description}</h3>
-							<br />
-							<Topic topic={this.state.active_topic} />
+							<Segment raised>
+								<Grid>
+									<Grid.Column width={12}>
+										<h1>Subject: {this.state.name}</h1>
+									</Grid.Column>
+									<Grid.Column width={4}>
+										<Button.Group basic float="right">
+											<Button content="Edit" />
+											<Button content="New" />
+										</Button.Group>
+
+									</Grid.Column>
+								</Grid>
+								<br></br>
+								<p><b>{this.state.description}</b></p>
+									<Grid.Column width={16}>
+										<Divider />
+									</Grid.Column>
+									<br />
+								<Topic topic={this.state.active_topic} />
+							</Segment>
 						</Grid.Column>
 					</Grid.Row>
 				</Grid>
