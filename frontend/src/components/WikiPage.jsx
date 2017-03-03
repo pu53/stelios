@@ -1,6 +1,6 @@
 import React from 'react'
 import { WikiNav} from './WikiNav.jsx'
-import { Dimmer, Loader, Grid} from 'semantic-ui-react'
+import { Dimmer, Loader, Grid, Button} from 'semantic-ui-react'
 import { Topic } from './Topic'
 import { browserHistory } from 'react-router'
 
@@ -128,9 +128,21 @@ export class WikiPage extends React.Component{
 							</ul>
 						</Grid.Column>
 						<Grid.Column width={13}>
-							<h1>Subject: {this.state.name}</h1>
-							<h3>{this.state.description}</h3>
-							<br />
+							<Grid>
+								<Grid.Column width={12}>
+									<h1>Subject: {this.state.name}</h1>
+								</Grid.Column>
+								<Grid.Column width={4}>
+									<Button.Group basic float="right">
+										<Button content="Edit" />
+										<Button content="New" />
+									</Button.Group>
+
+								</Grid.Column>
+							</Grid>
+							<br></br>
+							<p><b>{this.state.description}</b></p>
+							<br></br>
 							<Topic topic={this.state.active_topic} />
 						</Grid.Column>
 					</Grid.Row>

@@ -56,7 +56,7 @@ export class Login extends React.Component{
       return res.json();
     })
     .then((res) => {
-			if (!res.non_field_errors === undefined && res.non_field_errors[0] === "Unable to log in with provided credentials.") {
+			if (res.non_field_errors !== undefined && res.non_field_errors[0] === "Unable to log in with provided credentials.") {
 				this.setState({
 					login_error_message: "Wrong username or password",
 					loading: false
@@ -74,7 +74,7 @@ export class Login extends React.Component{
 			console.log(e);
 			if (e instanceof TypeError) {
 				this.setState({
-					login_error_message: "Couldnt connect to api.stelios.no",
+					login_error_message: "Couldnt connect to server",
 					loading: false
 	      });
 			} else {
