@@ -24,7 +24,7 @@ export class App extends Component {
           <Grid>
             <Grid.Row>
               <Grid.Column width={16}>
-                <SearchBar type="semantic" template="Test" tables="Table" />
+                <SearchBar type="semantic" template="subjects" />
               </Grid.Column>
             </Grid.Row>
           </Grid>

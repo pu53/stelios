@@ -51,9 +51,9 @@ export class WikiPage extends React.Component{
 		});
 
 		fetch(request).then((res) => {
-      return res.json();
-    })
-    .then((res) => {
+		return res.json();
+		})
+		.then((res) => {
 
 			if (res.detail === "Not found.") {
 				console.log("rip recursive");
@@ -116,16 +116,16 @@ export class WikiPage extends React.Component{
 				<Grid>
 					<Grid.Row>
 						<Grid.Column width={3}>
-							<li>
+							<ul>
 								{
 									this.state.topics.map(topic => {
 					        return (
-										<ul>
-											<a href="#" onClick={() => this.handleClick(topic.id)} value={topic.id}>{topic.name}</a>
-										</ul>
+									<li key={topic.id}>
+										<a href="#" onClick={() => this.handleClick(topic.id)} value={topic.id}>{topic.name}</a>
+									</li>
 									);
 					    	})}
-							</li>
+							</ul>
 						</Grid.Column>
 						<Grid.Column width={13}>
 							<h1>Subject: {this.state.name}</h1>

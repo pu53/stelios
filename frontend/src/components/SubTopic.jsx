@@ -5,8 +5,8 @@ export class SubTopic extends React.Component {
 	constructor(props){
 		super(props);
 	}
-
-
+	
+	
 	render(){
 		var content = this.props.subtopic["content"];
 		return (

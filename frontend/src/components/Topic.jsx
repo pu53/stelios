@@ -19,10 +19,10 @@ export class Topic extends React.Component{
 					{
 						this.props.topic.subtopics.map(sub => {
 		        return (
-							<div>
-								<SubTopic subtopic={sub} />
-								<br/>
-							</div>
+						<div>
+							<SubTopic subtopic={sub} />
+							<br/>
+						</div>
 						);
 					})
 				}
