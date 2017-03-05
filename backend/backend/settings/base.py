@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'profiles.apps.ProfilesConfig',
     'wiki.apps.WikiConfig',
+    'quiz.apps.QuizConfig',
 ]
 
 MIDDLEWARE = [

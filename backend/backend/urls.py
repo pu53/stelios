@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^', include('profiles.urls')),
     url(r'^', include('wiki.urls')),
+    url(r'^', include('quiz.urls'))
 ]

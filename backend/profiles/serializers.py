@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from profiles.models import Profile, STUDY_PROGRAM_CHOICES
+from profiles.models import Profile
 from django.contrib.auth.models import User
 
 class ProfileSerializer(serializers.ModelSerializer):
