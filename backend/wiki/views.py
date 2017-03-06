@@ -5,23 +5,23 @@ from rest_framework import generics
 import json
 
 class SubjectList(generics.ListCreateAPIView):
-    queryset = Subject.objects.all()
+    queryset = Subject.objects.all().order_by('id')
     serializer_class = SubjectSerializer
 
 class SubjectDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Subject.objects.all()
+    queryset = Subject.objects.all().order_by('id')
     serializer_class = SubjectSerializer
 
 class SubjectOnlyTopicIdAndNameList(generics.ListCreateAPIView):
-    queryset = Subject.objects.all()
+    queryset = Subject.objects.all().order_by('id')
     serializer_class = SubjectOnlyTopicIdAndNameSerializer
 
 class SubjectOnlyTopicIdAndNameDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Subject.objects.all()
+    queryset = Subject.objects.all().order_by('id')
     serializer_class = SubjectOnlyTopicIdAndNameSerializer
 
 class TopicList(generics.ListCreateAPIView):
-    queryset = Topic.objects.all()
+    queryset = Topic.objects.all().order_by('id')
     serializer_class = TopicSerializer
 
 
@@ -53,13 +53,13 @@ class TopicList(generics.ListCreateAPIView):
 #        return queryset
 
 class TopicDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Topic.objects.all()
+    queryset = Topic.objects.all().order_by('id')
     serializer_class = TopicSerializer
 
 class SubtopicList(generics.ListCreateAPIView):
-    queryset = Subtopic.objects.all()
+    queryset = Subtopic.objects.all().order_by('id')
     serializer_class = SubtopicSerializer
 
 class SubtopicDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Subtopic.objects.all()
+    queryset = Subtopic.objects.all().order_by('id')
     serializer_class = SubtopicSerializer

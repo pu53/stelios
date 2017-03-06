@@ -16,6 +16,7 @@ export class SubTopic extends React.Component {
 			loading: false
 		});
 		this.editClick = this.editClick.bind(this);
+		console.log("constructor is called")
 	}
 
 
@@ -170,7 +171,7 @@ export class SubTopic extends React.Component {
 		} else {
 			return (
 					<Form>
-						<h2>{this.props.new ? "New subtopic: " : "Update subtopic: "}</h2>
+						<h2>{this.props.new ? "New subtopic: " : ""}</h2>
 						{this.message()}
 						<Form.Field>
 							<label>Subtopic name:</label>
