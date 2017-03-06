@@ -206,7 +206,7 @@ export class Topic extends React.Component{
 
 					{
 						this.props.topic.subtopics.map(sub => {
-		        return (
+				return (
 							<div>
 								<SubTopic subtopic={sub} new={false} topicId={this.props.topic.id}/>
 								<Grid.Column width={16}>

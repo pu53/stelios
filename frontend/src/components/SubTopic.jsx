@@ -18,8 +18,6 @@ export class SubTopic extends React.Component {
 		this.editClick = this.editClick.bind(this);
 		console.log("constructor is called")
 	}
-
-
 	editClick() {
 		this.setState({
 			edit: !this.state.edit

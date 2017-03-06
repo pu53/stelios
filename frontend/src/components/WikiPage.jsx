@@ -113,6 +113,7 @@ export class WikiPage extends React.Component{
     }).catch((e) => {console.log(e)});
 	}
 
+
 	show(header, description, clickEdit, clickNew) {
  		return(
  			<div>
@@ -565,11 +566,11 @@ export class WikiPage extends React.Component{
 							<Segment raised>
 								<h4>Topics: </h4>
 								<List selection >
-									{
-										this.state.topics.map(topic => {
-						        return (
-											<List.Item as='a' onClick={() => this.handleClick(topic.id)} value={topic.id}>{topic.name}</List.Item>
-										);
+								{
+									this.state.topics.map(topic => {
+									return (
+										<List.Item as='a' onClick={() => this.handleClick(topic.id)} value={topic.id}>{topic.name}</List.Item>
+									);
 						    	})}
 								</List>
 							</Segment>
