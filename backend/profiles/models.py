@@ -14,7 +14,7 @@ class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	# study = models.CharField(choices = STUDY_PROGRAM_CHOICES, max_length=100, default='dragvoll')
 	# year = models.IntegerField(choices = [(i,i) for i in range(8)], default='0')
-	subjects = models.ManyToManyField("wiki.Subject")
+	subjects = models.ManyToManyField("wiki.Subject", blank=True, related_name='profile')
 	def __str__(self):
 		return(self.user.username)
 
