@@ -41,11 +41,12 @@ export class App extends Component {
   render() {
     var login_text = this.state.token === "null" ? "login" : "logout"
     return (
-      <div className="App">
+      <div className="App" style={{width:'100%'}}>
         <div>
           <Menu>
             <Menu.Item><IndexLink to="/" activeStyle={{color:"red"}}>Home</IndexLink></Menu.Item>
             <Menu.Item><NavLink to="/wiki" activeStyle={{color:"red"}}>Wiki</NavLink></Menu.Item>
+            <Menu.Item><NavLink to="/quiz" activeStyle={{color:"red"}}>Quiz</NavLink></Menu.Item>
             <Menu.Menu position='right'>
               <Menu.Item>
                 <div onClick={() => this.handleLogin(login_text)}>{login_text}</div>
