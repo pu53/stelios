@@ -113,7 +113,7 @@ export class WikiPage extends React.Component{
 	render(){
 		if(this.state.name !== ""){
 			return(
-				<Grid style={{width:'100%'}}>
+				<Grid>
 					<Grid.Row>
 						<Grid.Column width={3}>
 							<Segment raised>
