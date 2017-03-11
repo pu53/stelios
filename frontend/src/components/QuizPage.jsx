@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { Container, Grid, Button } from 'semantic-ui-react';
+import { Container, Grid, Button, Segment} from 'semantic-ui-react';
 import { SearchBar } from './SearchBar';
 import { Quiz } from './Quiz'
 
