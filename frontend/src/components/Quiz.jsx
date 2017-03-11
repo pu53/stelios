@@ -14,8 +14,6 @@ export class Quiz extends Component {
 			currently_asking:0,
 			questions:[]
 			};
-			
-		this.setState({questions:{hilsen:'hei', utrop:'ånei!'}})
 	}
 	
 	componentDidMount() {
@@ -33,13 +31,13 @@ export class Quiz extends Component {
 		
 		var url = host
 		
-		var Request = new Request({url});
+		var request = new Request({url});
 		
 		return("");
 	}
 	
 	render() {
-		
+		/*Generates header*/
 		return(
 			<Container style={{overflow:'auto', borderStyle:'dashed', position:'relative', minWidth:'100%'}}>
 				<h1 style={{textAlign:'center'}}>
@@ -69,14 +67,16 @@ class Question extends Component {
 	render() {
 		return (
 			<div style={{marginLeft:'15%', marginRight:'15%', width:'70%', borderStyle:'dotted', overflow:'hidden', position:'relative'}}>
-				<div text style={{fontSize:'20', overflow:'hidden', padding:'5px'}}>
+				<div style={{fontSize:'20px', overflow:'hidden', padding:'5px'}}>
 					How and why the great badger of doom ended the mayas has long been a hotly debated topic
 					in south american ancient history. What, however, is today the most recognised theory?
 				</div>
-				<Answer opNr={1}/>
-				<Answer opNr={2}/>
-				<Answer opNr={3}/>
-				<Answer opNr={4}/>
+				<div>
+					<Answer opNr={1}/>
+					<Answer opNr={2}/>
+					<Answer opNr={3}/>
+					<Answer opNr={4}/>
+				</div>
 			</div>
 		)
 	}
@@ -87,24 +87,78 @@ class Answer extends Component {
 	constructor(props) {
 		super(props);
 		this.state={
-			chosen:0,
-			idNum:parseInt(this.props.opNr)
+			toggeled:false,
+			idNum:parseInt(this.props.opNr),
+			text:""
 			};
 		this.handleChange = this.handleChange.bind(this);
 	}
 	
 	handleChange() {
-		var num = this.state.idNum;
-		this.setState({idNum:num+1});
+		this.setState({toggeled:(!this.state.toggeled)});
+		console.log("State toggeled!");
+	}
+	
+	render() {
+		var background ='';
+		if(this.state.toggeled) {
+			background='#445566'
+		}
+		else {
+			background='#ffffff'
+		}
+		return (
+			<div style={{cursor:'pointer', textAlign:'center', backgroundColor:background}} onClick={this.handleChange}>
+			Option {this.state.idNum}
+			</div>
+			)
+	}
+}
+
+/*export class TestClass extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			number_of_questions:0,
+			number_of_right:0,
+			number_of_wrong:0,
+			currently_asking:0,
+			questions:[]
+			};
+	}
+	
+	componentDidMount() {
+		this.fetchData();
+	}
+	
+	fetchData() {
+		var host = '';
+		if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+			host = 'http://localhost:8000';
+		}
+		else {
+			host ='http://api.stelios.no';
+		}
+		
+		var url = host
+		
+		var request = new Request(url, {
+			method: 'GET',
+			headers: {
+				'Accept': 'application/json',
+			},
+		});
 	}
 	
 	render() {
 		return (
-		<div style={{cursor:'pointer', textAlign:'center'}} onClick={this.handleChange}>
-			Option {this.state.idNum}
-		</div>
+			<Container style={{overflow:'auto', borderStyle:'dashed', position:'relative', minWidth:'100%'}}>
+				<h1 style={{textAlign:'center'}}>
+				{'This is a quiz in '.concat('testTopic')}
+				</h1>
+				<Question/>
+			</Container>
 		)
-	}
-}
-
+	};
+}*/
 

@@ -22,7 +22,12 @@ export class QuizPage extends Component {
 		return(
 			<Grid>
 				<Grid.Row>
-					<Quiz/>
+					<Grid.Column width={8}>
+						<Quiz/>
+					</Grid.Column>
+					<Grid.Column width={8}>
+						<Quiz/>
+					</Grid.Column>
 				</Grid.Row>
 			</Grid>
 		);
