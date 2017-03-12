@@ -2,6 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { Container, Grid, Button } from 'semantic-ui-react';
 import { SearchBar } from './SearchBar';
 
+/**TODO: Make nav buttons stay in the same place?
+ * TODO: Quiz generation
+ * TODO: Scramble order of alternatives
+ */
+
 /*The head element of a quiz. Fetches all the data for all the quiestions included
  * in the quiz and passes them on to the subcomponents when needed*/
 export class Quiz extends Component {
@@ -12,16 +17,23 @@ export class Quiz extends Component {
 	 */
 	constructor(props) {
 		super(props);
+		
+		/*The quiz state contains info on the quiz, and what answers have been
+		 * selected*/
 		this.state = {
 			number_of_questions:0,
 			number_of_right:0,
 			number_of_wrong:0,
-			currently_asking:0,
-			questions:[]
+			currently_asking:1,
+			title:"This is a quiz about something",
+			questions:[],
+			answers:[]
 			};
+		
+		this.changeQuestion=this.changeQuestion.bind(this);
 	}
 	
-	componentDidMount() {
+	componentWillMount() {
 		this.fetchData()
 	}
 	
@@ -40,7 +52,7 @@ export class Quiz extends Component {
 	 * 		sub-topics:[] #subjects and topics gets broken down into sub-topics
 	 * 		questions:[] #might as well implement support for random bonus questions
 	 *  }
-	 * 
+	 * NB: Question id -1 is reserved as default answer
 	 * 	Idea: Difficulty property per question?
 	 */
 	fetchData() {
@@ -56,17 +68,100 @@ export class Quiz extends Component {
 		
 		var request = new Request({url});
 		
-		return("");
+		/*test data*/
+		const question1 = {
+		text:"How and why the great badger of doom ended "+
+			"the mayas has long been a hotly debated topic "+
+			"in south american ancient history. What, however, "+
+			"is today the most recognised theory?",
+		alternatives:[
+			{id:1, text:"It ate them"},
+			{id:2, text:"It scared them to death"},
+			{id:3, text:"The adverse effect the badger had on local fauna"}
+			],
+		correct:3,
+		subtopic:'badgers'
+		};
+		
+		const question2 = {
+		text:"What is considered the most influential paper on tea and crackers?",
+		alternatives:[
+			{id:1, text:"Objectivity in a subjective science, on the importance of peer review when doing taste tests"},
+			{id:2, text:"Air humidity and cracker elasticity"},
+			{id:3, text:"An unhealthy orthodoxy-on how black tea has been displaced by fruit tea"}
+			],
+		correct:1,
+		subtopic:'foodstuffs'
+		};
+		
+		const question3 = {
+		text:"Which data structure benefits greatly when implementations do so-called \"Robin Hooding\"?",
+		alternatives:[
+			{id:1, text:"Priority Stack"},
+			{id:2, text:"Hash Map"},
+			{id:3, text:"Priority Queue"}
+			],
+		correct:2,
+		subtopic:'Algorithms'
+		};
+		const all_questions = [question1, question2, question3]
+		this.setState({
+			questions:all_questions, 
+			number_of_questions:all_questions.length
+			
+		});
+		
+		console.log(this.state.questions)
+	}
+	
+	changeQuestion(increment, chosenAlternative) {
+		if(this.state.currently_asking + increment < 1 || 
+		   this.state.currently_asking + increment > this.state.number_of_questions) {
+		}
+		else {
+			this.setState({currently_asking:this.state.currently_asking+increment});
+		}
 	}
 	
 	render() {
 		/*TODO: Generates title if no title is specified*/
-		return(
-			<Container style={{overflow:'auto', borderStyle:'dashed', position:'relative', minWidth:'100%'}}>
+		var styleTopInfo= {
+			display:'flex',
+			margin:'5px',
+			fontSize:'20px',
+			overflow:'auto',
+			position:'relative',
+			paddingBottom:'5px'
+		}
+		
+		var styleContainer= {
+			overflow:'auto',
+			borderStyle:'dashed',
+			position:'relative',
+		}
+		
+		return (
+			<Container style={styleContainer}>
+				<div style={styleTopInfo}>
+					<div style={{width:'50%'}}>
+						{this.state.currently_asking}/{this.state.number_of_questions}
+					</div>
+					<div style={{width:'50%', textAlign:'right'}}>
+						{this.state.questions[this.state.currently_asking-1].subtopic}
+					</div>
+				</div>
+				
 				<h1 style={{textAlign:'center'}}>
-				{'This is a quiz in '.concat('testTopic')}
+					{this.state.title}
 				</h1>
-				<Question data={{text:"How and why the great badger of doom ended the mayas has long been a hotly debated topic in south american ancient history. What, however, is today the most recognised theory?"}}/>
+				
+				<div>
+					<Question 
+						data={this.state.questions[this.state.currently_asking-1]}
+						onChange={this.changeQuestion}
+						firstQuestion={this.state.currently_asking === 1}
+						lastQuestion={this.state.currently_asking === this.state.number_of_questions}/>
+				</div>
 			</Container>
 		);
 	}
@@ -77,15 +172,25 @@ class Question extends Component {
 	constructor(props) {
 		super(props);
 		this.state= {
-			chosen:0
+			chosen:-1,
+			number:0,
+			data: this.props.data,
+			firstQuestion:false,
+			lastQuestion:false
 			};
 		
-		this.handleChange = this.handleChange.bind(this);
 		this.changeToggle = this.changeToggle.bind(this);
+		this.nextQuestion = this.nextQuestion.bind(this);
+		this.prevQuestion = this.prevQuestion.bind(this);
+		this.requestFinish = this.requestFinish.bind(this);
 	}
 	
-	handleChange(e) {
-		return("");
+	componentWillMount() {
+		this.setState({
+			data:this.props.data,
+			firstQuestion:this.props.firstQuestion,
+			lastQuestion:this.props.lastQuestion
+		});
 	}
 	
 	changeToggle(id) {
@@ -93,18 +198,126 @@ class Question extends Component {
 		this.setState({chosen:id});
 	}
 	
+	nextQuestion() {
+		this.props.onChange(1,this.state.chosen);
+	}
+	
+	prevQuestion() {
+		this.props.onChange(-1, this.state.chosen);
+	}
+	
+	requestFinish() {
+		
+	}
+	
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			data:nextProps.data,
+			firstQuestion:nextProps.firstQuestion,
+			lastQuestion:nextProps.lastQuestion
+		});
+	}
+	
 	render() {
-		/*console.log("Render Question!");*/
+		/*defining styles within render like this is probably not great
+		 * but for the first draft it's ok*/
+		var styleQuestion= {
+			witdth:'100%', 
+			borderStyle:'dotted', 
+			overflow:'auto', 
+			position:'relative',
+			marginLeft:'10%', 
+			marginRight:'10%', 
+			minWidth:'80%',
+		}
+		
+		var styleText= {
+			fontSize:'18px', 
+			overflow:'hidden', 
+			padding:'5px',
+			marginBottom:'20px',
+			lineHeight:'1.5',
+		}
+		
+		var styleNavButtons= {
+			display:'flex',
+			position:'relative',
+			overflow:'hidden',
+			cursor:'pointer',
+			margin:'10px',
+		}
+		
+		var styleNavButtonPrev= {
+			minHeight:'50px',
+			backgroundColor:'#6c6c6c',
+			color:'#ffffff',
+			minWidth:'50%',
+			position:'relative',
+			display:'flex',
+			alignItems:'center',
+			borderRadius:'10px'
+		}
+		var styleNavButtonNext= {
+			minHeight:'50px',
+			backgroundColor:'#6c6c6c',
+			color:'#ffffff',
+			minWidth:'50%',
+			position:'relative',
+			display:'flex',
+			alignItems:'center',
+			borderRadius:'10px'
+		}
+		
+		var style3= {
+			textAlign:'center',
+			width:'100%',
+			MozUserSelect:'none',
+			WebkitUserSelect:'none',
+			MsUserSelect:'none',
+			UserSelect:'none'
+		};
+		
+		/*console.log("This is the options: "+this.state.data.alternatives[0].text);*/
+		/*chechs to see if any of the navbuttons needs adjustment for edgecase*/
+		var nextText='Next';
+		console.log(this.state.firstQuestion + " " + this.state.lastQuestion);
+		if(this.state.lastQuestion===true) {
+			nextText='Finish';
+			styleNavButtonNext.backgroundColor='#EF4E45';
+		}
+		
+		if(this.state.firstQuestion===true) {
+			styleNavButtonPrev.backgroundColor='#efefef';
+		}
+		else {
+			styleNavButtonPrev.backgroundColor='#6c6c6c';
+		}
 		return (
-			<div style={{marginLeft:'15%', marginRight:'15%', width:'70%', borderStyle:'dotted', overflow:'hidden', position:'relative'}}>
-				<div style={{fontSize:'20px', overflow:'hidden', padding:'5px'}}>
-					{this.props.data["text"]}
+			<div style={styleQuestion}>
+				<div style={styleText}>
+					{this.state.data["text"]}
 				</div>
-				<div>
-					<Answer opNr={1} toggleCallback={this.changeToggle} curOn={this.state.chosen}/>
-					<Answer opNr={2} toggleCallback={this.changeToggle} curOn={this.state.chosen}/>
-					<Answer opNr={3} toggleCallback={this.changeToggle} curOn={this.state.chosen}/>
-					<Answer opNr={4} toggleCallback={this.changeToggle} curOn={this.state.chosen}/>
+				<div style={{borderStyle:'solid'}}>
+					{
+						
+						this.state.data.alternatives.map((alternative)=> {
+							return(<Answer 
+									key={alternative.text}
+									opNr={alternative.id}
+									text={alternative.text}
+									toggleCallback={this.changeToggle}
+									curOn={this.state.chosen}/>)
+						})
+					}
+					
+					<div style={styleNavButtons}>
+						<button style={styleNavButtonPrev} onClick={this.prevQuestion} disabled={this.state.firstQuestion}>
+							<div style={style3}>Previous</div>
+						</button>
+						<button style={styleNavButtonNext} onClick={this.nextQuestion}>
+							<div style={style3}>{nextText}</div>
+						</button>
+					</div>
 				</div>
 			</div>
 		)
@@ -116,10 +329,10 @@ class Question extends Component {
 class Answer extends Component {
 	constructor(props) {
 		super(props);
-		this.state={
+		this.state= {
 			toggeled:false,
-			idNum:parseInt(this.props.opNr),
-			text:""
+			idNum:this.props.opNr,
+			text:this.props.text
 			};
 		this.handleChange = this.handleChange.bind(this);
 	}
@@ -142,37 +355,48 @@ class Answer extends Component {
 		/*console.log("render number " +this.state.idNum+ ", chosen=" + this.state.chosen);*/
 		var background ='';
 		if(this.state.chosen) {
-			background='#00ff11';
+			background='#4C7CFF';
 		}
 		else {
 			background='#68B1FF';
 		}
 		
-		const style1={
+		const style1= {
 			position:'relative',
 			cursor:'pointer', 
 			textAlign:'center', 
 			backgroundColor:background,
 			color:'#ffffff',
 			minHeight:'50px',
+			width:'100%',
 			display:'flex',
-			alignItems: 'center'
+			alignItems: 'center',
+			borderColor:background,
+			borderRadius:'10px',
+			borderStyle:'none'
 		}
 		
-		const style2={
+		const style2= {
 			textAlign:'center',
 			width:'100%',
 			MozUserSelect:'none',
 			WebkitUserSelect:'none',
 			MsUserSelect:'none',
-			UserSelect:'none'
+			UserSelect:'none',
+		}
+		
+		const answerWrapper= {
+			position:'relative',
+			margin:'10px'
 		}
 		
 		return (
-			<div style={style1} onClick={this.handleChange}>
-				<div style={style2}>
-					Option {this.state.idNum}, currently chosen: {this.props.curOn}
-				</div>
+			<div style={answerWrapper}>
+				<button style={style1} onClick={this.handleChange}>
+					<div style={style2}>
+						Option {this.state.idNum}: {this.state.text}
+					</div>
+				</button>
 			</div>
 			)
 	}
