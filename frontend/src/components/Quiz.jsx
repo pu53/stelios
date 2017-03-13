@@ -1,6 +1,5 @@
 import React, { Component} from 'react';
-import { Container, Grid, Button } from 'semantic-ui-react';
-import { SearchBar } from './SearchBar';
+import { Container} from 'semantic-ui-react';
 
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
@@ -24,8 +23,6 @@ export class Quiz extends Component {
 		this.state = {
 			finished:false,
 			number_of_questions:0,
-			number_of_right:0,
-			number_of_wrong:0,
 			currently_asking:1,
 			title:"This is a quiz about something",
 			questions:[],
@@ -34,11 +31,11 @@ export class Quiz extends Component {
 		
 		this.changeQuestion=this.changeQuestion.bind(this);
 	}
-	
+
 	componentWillMount() {
 		this.fetchData();
 	}
-	
+
 	/*
 	 * If the quiz is a saved quiz, (explicitly saved with an id), the component
 	 * should load relevant data. Otherwise it can either take a dictionary
@@ -62,76 +59,43 @@ export class Quiz extends Component {
 	 * 			id:int
 	 * 			text:""}
 	 * 		subtopic:foregin key
-	 * 		correct:int
 	 * }
 	 * NB: Question id -1 is reserved as default answer
 	 * 	Idea: Difficulty property per question?
 	 */
 	fetchData() {
-		var host = '';
-		if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			host = 'http://localhost:8000';
+		if (this.props.data !== undefined) {
+			this.setState({
+				title:this.props.data.title,
+				questions:this.props.data.questions,
+				number_of_questions:this.props.data.questions.length
+			});
 		}
 		else {
-			host ='http://api.stelios.no';
+			
+			var host = '';
+			if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+				host = 'http://localhost:8000';
+			}
+			else {
+				host ='http://api.stelios.no';
+			}
+			
+			var url = host
+			
+			var request = new Request({url});
 		}
-		
-		var url = host
-		
-		var request = new Request({url});
-		
 		/*test data*/
-		const question1 = {
-		text:"How and why the great badger of doom ended "+
-			"the mayas has long been a hotly debated topic "+
-			"in south american ancient history. What, however, "+
-			"is today the most recognised theory?",
-		alternatives:[
-			{id:1, text:"It ate them"},
-			{id:2, text:"It scared them to death"},
-			{id:3, text:"The adverse effect the badger had on local fauna"}
-			],
-		correct:3,
-		subtopic:'badgers'
-		};
 		
-		const question2 = {
-		text:"What is considered the most influential paper on tea and crackers?",
-		alternatives:[
-			{id:1, text:"Objectivity in a subjective science, on the importance of peer review when doing taste tests"},
-			{id:2, text:"Air humidity and cracker elasticity"},
-			{id:3, text:"An unhealthy orthodoxy-on how black tea has been displaced by fruit tea"}
-			],
-		correct:1,
-		subtopic:'foodstuffs'
-		};
-		
-		const question3 = {
-		text:"Which data structure benefits greatly when implementations do so-called \"Robin Hooding\"?",
-		alternatives:[
-			{id:1, text:"Priority Stack"},
-			{id:2, text:"Hash Map"},
-			{id:3, text:"Priority Queue"},
-			{id:5, text:"Red-Black Tree"}
-			],
-		correct:2,
-		subtopic:'Algorithms'
-		};
-		var all_questions = [question1, question2, question3];
 		var all_answers = [];
 		
-		for(var i=0; i<all_questions.length;i++) {
-			console.log(i)
+		for(var i=0; i<this.props.data.questions.length;i++) {
 			all_answers[i]=-1;
 		}
 		
 		this.setState({
-			questions:all_questions, 
-			number_of_questions:all_questions.length,
 			answers:all_answers
 		});
-		
-		console.log(this.state.answers)
 	}
 	
 	/*Updates the answer*/
@@ -149,9 +113,6 @@ export class Quiz extends Component {
 			});
 		}
 		else {
-			
-			/*console.log("Ought to record answer " + chosenAlternative +
-				" for " + this.state.currently_asking);*/
 			var tempAnsw=this.state.answers;
 			tempAnsw[this.state.currently_asking-1] = chosenAlternative;
 			this.setState({
@@ -195,7 +156,6 @@ export class Quiz extends Component {
 				</h1>
 				
 				<div>
-					<div>{this.state.answers[this.state.currently_asking-1]}</div>
 					<Question 
 						data={this.state.questions[this.state.currently_asking-1]}
 						onChange={this.changeQuestion}
@@ -236,7 +196,6 @@ class Question extends Component {
 	}
 	
 	componentWillMount() {
-		console.log("Will mount with " + this.props.chosen + " as chosen option");
 		this.setState({
 			data:this.props.data,
 			firstQuestion:this.props.firstQuestion,
@@ -271,7 +230,6 @@ class Question extends Component {
 	}
 	
 	componentWillReceiveProps(nextProps) {
-		console.log('Setting chosenAnswer to ' + nextProps.chosen);
 		this.setState({
 			data:nextProps.data,
 			firstQuestion:nextProps.firstQuestion,
@@ -357,7 +315,7 @@ class Question extends Component {
 				<div style={styleText}>
 					{this.state.data["text"]}
 				</div>
-				chosen:{this.state.chosenAnswer}
+				{/*chosen:{this.state.chosenAnswer}*/}
 				<div style={{borderStyle:'solid'}}>
 					{
 					/*Consider whether to use text or id as key. 
