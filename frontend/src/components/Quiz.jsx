@@ -5,7 +5,7 @@ import { SearchBar } from './SearchBar';
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
  * TODO: Scramble order of alternatives
- * TODO: Show earlier answers via toggle
+ * TODO: Show earlier answers
  */
 
 /*The head element of a quiz. Fetches all the data for all the quiestions included
@@ -45,7 +45,7 @@ export class Quiz extends Component {
 	 * with data passed by props to turn into a quiz, or get a list of topics, 
 	 * subtopics and subjects and use these to generate a quiz. Pass topics etc
 	 * via id
-	 * 
+	 *
 	 * Quiz data format: 
 	 * 	{
 	 * 		title:String #bonus feature:if undefined, generate name based on contents
@@ -117,10 +117,11 @@ export class Quiz extends Component {
 		correct:2,
 		subtopic:'Algorithms'
 		};
-		const all_questions = [question1, question2, question3];
-		const all_answers = [];
+		var all_questions = [question1, question2, question3];
+		var all_answers = [];
 		
 		for(var i=0; i<all_questions.length;i++) {
+			console.log(i)
 			all_answers[i]=-1;
 		}
 		
@@ -130,10 +131,12 @@ export class Quiz extends Component {
 			answers:all_answers
 		});
 		
-		console.log(this.state.questions)
+		console.log(this.state.answers)
 	}
 	
+	/*Updates the answer*/
 	changeQuestion(increment, chosenAlternative) {
+		if(chosenAlternative===undefined){chosenAlternative=-1}
 		if(this.state.currently_asking + increment < 1){
 		   
 		}
@@ -147,8 +150,8 @@ export class Quiz extends Component {
 		}
 		else {
 			
-			console.log("Ought to record answer " + chosenAlternative + 
-				" for " + this.state.currently_asking);
+			/*console.log("Ought to record answer " + chosenAlternative +
+				" for " + this.state.currently_asking);*/
 			var tempAnsw=this.state.answers;
 			tempAnsw[this.state.currently_asking-1] = chosenAlternative;
 			this.setState({
@@ -187,12 +190,12 @@ export class Quiz extends Component {
 						{this.state.questions[this.state.currently_asking-1].subtopic}
 					</div>
 				</div>
-				
 				<h1 style={{textAlign:'center'}}>
 					{this.state.title}
 				</h1>
 				
 				<div>
+					<div>{this.state.answers[this.state.currently_asking-1]}</div>
 					<Question 
 						data={this.state.questions[this.state.currently_asking-1]}
 						onChange={this.changeQuestion}
@@ -221,19 +224,19 @@ class Question extends Component {
 	constructor(props) {
 		super(props);
 		this.state= {
-			chosen:-1,
+			chosenAnswer:-1,
 			number:0,
 			data: this.props.data,
 			firstQuestion:false,
 			lastQuestion:false
 			};
-		
 		this.changeToggle = this.changeToggle.bind(this);
 		this.nextQuestion = this.nextQuestion.bind(this);
 		this.prevQuestion = this.prevQuestion.bind(this);
 	}
 	
 	componentWillMount() {
+		console.log("Will mount with " + this.props.chosen + " as chosen option");
 		this.setState({
 			data:this.props.data,
 			firstQuestion:this.props.firstQuestion,
@@ -242,39 +245,39 @@ class Question extends Component {
 		
 		if(this.props.chosen !== undefined) {
 			this.setState({
-				chosen:this.props.chosen
+				chosenAnswer:this.props.chosen
 			});
 		}
 	}
 	
 	changeToggle(id) {
 		/*console.log("Callback from" + id);*/
-		if(id === this.state.chosen) {
-			this.setState({chosen:-1});
+		if(id === this.state.chosenAnswer) {
+			this.setState({chosenAnswer:-1});
 		}
 		else {
-			this.setState({chosen:id});
+			this.setState({chosenAnswer:id});
 		}
 	}
 	
 	nextQuestion() {
-		console.log("internaly chosen: " + this.state.chosen);
-		this.props.onChange(1,this.state.chosen);
+		//console.log("internaly chosen: " + this.state.chosenAnswer);
+		this.props.onChange(1,this.state.chosenAnswer);
 	}
 	
 	prevQuestion() {
-		console.log("internaly chosen: " + this.state.chosen);
-		this.props.onChange(-1, this.state.chosen);
+		//console.log("internaly chosen: " + this.state.chosenAnswer);
+		this.props.onChange(-1, this.state.chosenAnswer);
 	}
 	
 	componentWillReceiveProps(nextProps) {
+		console.log('Setting chosenAnswer to ' + nextProps.chosen);
 		this.setState({
 			data:nextProps.data,
 			firstQuestion:nextProps.firstQuestion,
 			lastQuestion:nextProps.lastQuestion,
-			chosen:nextProps.chosen
+			chosenAnswer:nextProps.chosen
 		});
-		this.changeToggle();
 	}
 	
 	render() {
@@ -354,7 +357,7 @@ class Question extends Component {
 				<div style={styleText}>
 					{this.state.data["text"]}
 				</div>
-				chosen:{this.state.chosen}
+				chosen:{this.state.chosenAnswer}
 				<div style={{borderStyle:'solid'}}>
 					{
 					/*Consider whether to use text or id as key. 
@@ -365,7 +368,7 @@ class Question extends Component {
 									opNr={alternative.id}
 									text={alternative.text}
 									toggleCallback={this.changeToggle}
-									curOn={this.state.chosen}/>)
+									curOn={this.state.chosenAnswer}/>)
 						})
 					}
 					
@@ -401,8 +404,16 @@ class Answer extends Component {
 		/*console.log("Handle change");*/
 	}
 	
+	componentWillMount() {
+		if(this.props.curOn === this.state.idNum) {
+			this.setState({chosen:true});
+		}
+		else {
+			this.setState({chosen:false});
+		}
+	}
+	
 	componentWillReceiveProps(nextProps) {
-		console.log("Will receive props!");
 		if(nextProps.curOn === this.state.idNum) {
 			this.setState({chosen:true});
 		}
