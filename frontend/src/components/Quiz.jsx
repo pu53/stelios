@@ -1,10 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import { Container, Grid, Button } from 'semantic-ui-react';
 import { SearchBar } from './SearchBar';
 
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
  * TODO: Scramble order of alternatives
+ * TODO: Show earlier answers via toggle
  */
 
 /*The head element of a quiz. Fetches all the data for all the quiestions included
@@ -21,6 +22,7 @@ export class Quiz extends Component {
 		/*The quiz state contains info on the quiz, and what answers have been
 		 * selected*/
 		this.state = {
+			finished:false,
 			number_of_questions:0,
 			number_of_right:0,
 			number_of_wrong:0,
@@ -34,7 +36,7 @@ export class Quiz extends Component {
 	}
 	
 	componentWillMount() {
-		this.fetchData()
+		this.fetchData();
 	}
 	
 	/*
@@ -50,8 +52,18 @@ export class Quiz extends Component {
 	 * 		subjects:[] 
 	 * 		topics:[]
 	 * 		sub-topics:[] #subjects and topics gets broken down into sub-topics
-	 * 		questions:[] #might as well implement support for random bonus questions
+	 * 		questions:[]
 	 *  }
+	 * 
+	 * Question data format:
+	 * {
+	 * 		text:""
+	 * 		alternatives:{
+	 * 			id:int
+	 * 			text:""}
+	 * 		subtopic:foregin key
+	 * 		correct:int
+	 * }
 	 * NB: Question id -1 is reserved as default answer
 	 * 	Idea: Difficulty property per question?
 	 */
@@ -99,32 +111,55 @@ export class Quiz extends Component {
 		alternatives:[
 			{id:1, text:"Priority Stack"},
 			{id:2, text:"Hash Map"},
-			{id:3, text:"Priority Queue"}
+			{id:3, text:"Priority Queue"},
+			{id:5, text:"Red-Black Tree"}
 			],
 		correct:2,
 		subtopic:'Algorithms'
 		};
-		const all_questions = [question1, question2, question3]
+		const all_questions = [question1, question2, question3];
+		const all_answers = [];
+		
+		for(var i=0; i<all_questions.length;i++) {
+			all_answers[i]=-1;
+		}
+		
 		this.setState({
 			questions:all_questions, 
-			number_of_questions:all_questions.length
-			
+			number_of_questions:all_questions.length,
+			answers:all_answers
 		});
 		
 		console.log(this.state.questions)
 	}
 	
 	changeQuestion(increment, chosenAlternative) {
-		if(this.state.currently_asking + increment < 1 || 
-		   this.state.currently_asking + increment > this.state.number_of_questions) {
+		if(this.state.currently_asking + increment < 1){
+		   
+		}
+		else if(this.state.currently_asking + increment > this.state.number_of_questions){
+			var tempAnswers=this.state.answers;
+			tempAnswers[this.state.currently_asking-1] = chosenAlternative;
+			this.setState({
+				finished:true,
+				answers:tempAnswers
+			});
 		}
 		else {
-			this.setState({currently_asking:this.state.currently_asking+increment});
+			
+			console.log("Ought to record answer " + chosenAlternative + 
+				" for " + this.state.currently_asking);
+			var tempAnsw=this.state.answers;
+			tempAnsw[this.state.currently_asking-1] = chosenAlternative;
+			this.setState({
+				answers:tempAnsw,
+				currently_asking:this.state.currently_asking+increment
+			});
 		}
 	}
 	
 	render() {
-		/*TODO: Generates title if no title is specified*/
+		/*TODO: Make the quiz generate a title if none is specified*/
 		var styleTopInfo= {
 			display:'flex',
 			margin:'5px',
@@ -140,7 +175,9 @@ export class Quiz extends Component {
 			position:'relative',
 		}
 		
-		return (
+		
+		if(this.state.finished===false) {
+			return (
 			<Container style={styleContainer}>
 				<div style={styleTopInfo}>
 					<div style={{width:'50%'}}>
@@ -160,10 +197,22 @@ export class Quiz extends Component {
 						data={this.state.questions[this.state.currently_asking-1]}
 						onChange={this.changeQuestion}
 						firstQuestion={this.state.currently_asking === 1}
-						lastQuestion={this.state.currently_asking === this.state.number_of_questions}/>
+						lastQuestion={this.state.currently_asking === this.state.number_of_questions}
+						chosen={this.state.answers[this.state.currently_asking-1]}/>
 				</div>
 			</Container>
 		);
+		}
+		else {
+			return(
+				<Container style={styleContainer}>
+					<h1>the quiz is finished!</h1>
+					{this.state.answers[0]}
+					{this.state.answers[1]}
+					{this.state.answers[2]}
+				</Container>
+			);
+		}
 	}
 }
 
@@ -182,40 +231,50 @@ class Question extends Component {
 		this.changeToggle = this.changeToggle.bind(this);
 		this.nextQuestion = this.nextQuestion.bind(this);
 		this.prevQuestion = this.prevQuestion.bind(this);
-		this.requestFinish = this.requestFinish.bind(this);
 	}
 	
 	componentWillMount() {
 		this.setState({
 			data:this.props.data,
 			firstQuestion:this.props.firstQuestion,
-			lastQuestion:this.props.lastQuestion
+			lastQuestion:this.props.lastQuestion,
 		});
+		
+		if(this.props.chosen !== undefined) {
+			this.setState({
+				chosen:this.props.chosen
+			});
+		}
 	}
 	
 	changeToggle(id) {
 		/*console.log("Callback from" + id);*/
-		this.setState({chosen:id});
+		if(id === this.state.chosen) {
+			this.setState({chosen:-1});
+		}
+		else {
+			this.setState({chosen:id});
+		}
 	}
 	
 	nextQuestion() {
+		console.log("internaly chosen: " + this.state.chosen);
 		this.props.onChange(1,this.state.chosen);
 	}
 	
 	prevQuestion() {
+		console.log("internaly chosen: " + this.state.chosen);
 		this.props.onChange(-1, this.state.chosen);
-	}
-	
-	requestFinish() {
-		
 	}
 	
 	componentWillReceiveProps(nextProps) {
 		this.setState({
 			data:nextProps.data,
 			firstQuestion:nextProps.firstQuestion,
-			lastQuestion:nextProps.lastQuestion
+			lastQuestion:nextProps.lastQuestion,
+			chosen:nextProps.chosen
 		});
+		this.changeToggle();
 	}
 	
 	render() {
@@ -277,10 +336,8 @@ class Question extends Component {
 			UserSelect:'none'
 		};
 		
-		/*console.log("This is the options: "+this.state.data.alternatives[0].text);*/
-		/*chechs to see if any of the navbuttons needs adjustment for edgecase*/
+		/*chechs to see if any of the navbuttons needs adjustment for first/last*/
 		var nextText='Next';
-		console.log(this.state.firstQuestion + " " + this.state.lastQuestion);
 		if(this.state.lastQuestion===true) {
 			nextText='Finish';
 			styleNavButtonNext.backgroundColor='#EF4E45';
@@ -297,9 +354,11 @@ class Question extends Component {
 				<div style={styleText}>
 					{this.state.data["text"]}
 				</div>
+				chosen:{this.state.chosen}
 				<div style={{borderStyle:'solid'}}>
 					{
-						
+					/*Consider whether to use text or id as key. 
+					 * Chose whichever is unique/most likely to be*/
 						this.state.data.alternatives.map((alternative)=> {
 							return(<Answer 
 									key={alternative.text}
@@ -330,7 +389,7 @@ class Answer extends Component {
 	constructor(props) {
 		super(props);
 		this.state= {
-			toggeled:false,
+			chosen:false,
 			idNum:this.props.opNr,
 			text:this.props.text
 			};
@@ -343,6 +402,7 @@ class Answer extends Component {
 	}
 	
 	componentWillReceiveProps(nextProps) {
+		console.log("Will receive props!");
 		if(nextProps.curOn === this.state.idNum) {
 			this.setState({chosen:true});
 		}
