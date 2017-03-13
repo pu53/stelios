@@ -30,9 +30,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_nose',
+    'rest_framework.authtoken',
     'corsheaders',
     'profiles.apps.ProfilesConfig',
     'wiki.apps.WikiConfig',
+    'quiz.apps.QuizConfig',
 ]
 
 MIDDLEWARE = [
@@ -107,9 +109,25 @@ USE_TZ = True
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
+
+REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
 }
+
+CORS_ORIGIN_WHITELIST = (
+    'stelios.no',
+    'localhost',
+    'api.stelios.no'
+)

@@ -4,8 +4,7 @@ var SimpleMDE = require('react-simplemde-editor');
 export class Editor extends React.Component {
     render() {
         return (
-        <SimpleMDE
-        />
+        <SimpleMDE />
         );
     }
 }
