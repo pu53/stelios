@@ -130,45 +130,55 @@ export class Quiz extends Component {
 			fontSize:'20px',
 			overflow:'auto',
 			position:'relative',
-			paddingBottom:'5px'
 		}
 		
-		var styleContainer= {
+		var quizWrapper= {
 			overflow:'auto',
-			borderStyle:'dashed',
 			position:'relative',
 		}
 		
+		var quizContainer= {
+			marginLeft:'10%',
+			marginRight:'10%',
+			minWidth:'80%',
+			padding:'10px',
+			position:'relative',
+			backgroundColor:'#F2F2F2',
+			borderRadius:'5px',
+			borderStyle:'solid',
+			borderColor:'#f5f5f5'
+		}
 		
 		if(this.state.finished===false) {
 			return (
-			<Container style={styleContainer}>
-				<div style={styleTopInfo}>
-					<div style={{width:'50%'}}>
-						{this.state.currently_asking}/{this.state.number_of_questions}
+			<Container style={quizWrapper}>
+				<div style={quizContainer}>
+					<h1 style={{textAlign:'center'}}>
+						{this.state.title}
+					</h1>
+					<div style={styleTopInfo}>
+						<div style={{width:'50%'}}>
+							Question: {this.state.currently_asking}/{this.state.number_of_questions}
+						</div>
+						<div style={{width:'50%', textAlign:'right'}}>
+							About: {this.state.questions[this.state.currently_asking-1].subtopic}
+						</div>
 					</div>
-					<div style={{width:'50%', textAlign:'right'}}>
-						{this.state.questions[this.state.currently_asking-1].subtopic}
+					<div>
+						<Question
+							data={this.state.questions[this.state.currently_asking-1]}
+							onChange={this.changeQuestion}
+							firstQuestion={this.state.currently_asking === 1}
+							lastQuestion={this.state.currently_asking === this.state.number_of_questions}
+							chosen={this.state.answers[this.state.currently_asking-1]}/>
 					</div>
-				</div>
-				<h1 style={{textAlign:'center'}}>
-					{this.state.title}
-				</h1>
-				
-				<div>
-					<Question 
-						data={this.state.questions[this.state.currently_asking-1]}
-						onChange={this.changeQuestion}
-						firstQuestion={this.state.currently_asking === 1}
-						lastQuestion={this.state.currently_asking === this.state.number_of_questions}
-						chosen={this.state.answers[this.state.currently_asking-1]}/>
 				</div>
 			</Container>
 		);
 		}
 		else {
 			return(
-				<Container style={styleContainer}>
+				<Container style={quizWrapper}>
 					<h1>the quiz is finished!</h1>
 					{this.state.answers[0]}
 					{this.state.answers[1]}
@@ -243,12 +253,11 @@ class Question extends Component {
 		 * but for the first draft it's ok*/
 		var styleQuestion= {
 			witdth:'100%', 
-			borderStyle:'dotted', 
 			overflow:'auto', 
 			position:'relative',
-			marginLeft:'10%', 
-			marginRight:'10%', 
-			minWidth:'80%',
+			borderTopStyle:'solid',
+			borderTopColor:'#c5c5c5',
+			paddingTop:'5px'
 		}
 		
 		var styleText= {
@@ -257,6 +266,7 @@ class Question extends Component {
 			padding:'5px',
 			marginBottom:'20px',
 			lineHeight:'1.5',
+			textAlign:'justify'
 		}
 		
 		var styleNavButtons= {
@@ -265,6 +275,7 @@ class Question extends Component {
 			overflow:'hidden',
 			cursor:'pointer',
 			margin:'10px',
+			marginTop:'20px'
 		}
 		
 		var styleNavButtonPrev= {
@@ -305,7 +316,7 @@ class Question extends Component {
 		}
 		
 		if(this.state.firstQuestion===true) {
-			styleNavButtonPrev.backgroundColor='#efefef';
+			styleNavButtonPrev.backgroundColor='#e2e2e2';
 		}
 		else {
 			styleNavButtonPrev.backgroundColor='#6c6c6c';
@@ -316,7 +327,7 @@ class Question extends Component {
 					{this.state.data["text"]}
 				</div>
 				{/*chosen:{this.state.chosenAnswer}*/}
-				<div style={{borderStyle:'solid'}}>
+				<div>
 					{
 					/*Consider whether to use text or id as key. 
 					 * Chose whichever is unique/most likely to be*/
