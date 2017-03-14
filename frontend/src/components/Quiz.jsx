@@ -1,11 +1,11 @@
-import React, { Component} from 'react';
-import { Container} from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { Container, Segment } from 'semantic-ui-react';
 
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
  * TODO: Scramble order of alternatives
  * TODO: Show earlier answers
- */
+ */ 
 
 /*The head element of a quiz. Fetches all the data for all the quiestions included
  * in the quiz and passes them on to the subcomponents when needed*/
@@ -144,14 +144,11 @@ export class Quiz extends Component {
 			padding:'10px',
 			position:'relative',
 			backgroundColor:'#F2F2F2',
-			borderRadius:'5px',
-			borderStyle:'solid',
-			borderColor:'#f5f5f5'
 		}
 		
 		if(this.state.finished===false) {
 			return (
-			<Container style={quizWrapper}>
+			<Container raised style={quizWrapper}>
 				<div style={quizContainer}>
 					<h1 style={{textAlign:'center'}}>
 						{this.state.title}
@@ -309,10 +306,11 @@ class Question extends Component {
 		};
 		
 		/*chechs to see if any of the navbuttons needs adjustment for first/last*/
+		/*Nice pale error red:#EF4E45*/
 		var nextText='Next';
 		if(this.state.lastQuestion===true) {
 			nextText='Finish';
-			styleNavButtonNext.backgroundColor='#EF4E45';
+			styleNavButtonNext.backgroundColor='#5EBC43';
 		}
 		
 		if(this.state.firstQuestion===true) {
@@ -418,6 +416,7 @@ class Answer extends Component {
 		
 		const style2= {
 			textAlign:'center',
+			fontSize:'15',
 			width:'100%',
 			MozUserSelect:'none',
 			WebkitUserSelect:'none',
