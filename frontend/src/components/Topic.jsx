@@ -6,10 +6,11 @@ var Element = Scroll.Element;
 var scroller = Scroll.scroller;
 
 export class Topic extends React.Component{
+	displayName="Topic"
 	constructor(props){
 		super(props);
 		this.state = ({
-			id: null,
+			id: -1,
 			name: '',
 			description: '',
 			newSubtopic: false,
@@ -18,8 +19,18 @@ export class Topic extends React.Component{
 			loading: false,
 			message: '',
 			neg: true,
-			subjects: []
-		})
+			subjects: [],
+			dropdown_id: 0,
+			all_sub_topic: [],
+			sub_topics: [],
+			prev_sub_topics: []
+		});
+		this.show = this.props.show.bind(this)
+		this.buttonGroup = this.props.buttonGroup.bind(this)
+		this.dataLoad = this.props.dataLoad.bind(this)
+		this.edit = this.props.edit.bind(this)
+		this.handleSave = this.props.handleSave.bind(this)
+		this.message = this.props.message.bind(this)
 	}
 
 	componentDidUpdate() {
@@ -35,159 +46,187 @@ export class Topic extends React.Component{
 		}
 	}
 
-	topicShow() {
-		return(
-			<div>
-				<Grid>
-					<Grid.Column width={12}>
-						<h2>Topic: {this.state.name}</h2>
-					</Grid.Column>
-					<Grid.Column width={4}>
-						<Button.Group basic float="right">
-							<Button content="Edit" onClick={() => {this.setState({edit: true})}}/>
-							<Button content="New" onClick={() => {this.setState({new: true})}} />
-						</Button.Group>
-					</Grid.Column>
-				</Grid>
-				<br/>
-				<p><b>{this.state.description}</b></p>
-				<br/>
-			</div>
-		);
+	getSubTopics() {
+		//TODO implement
 	}
 
-	topicEdit() {
-		return(
-			<Form>
-				<Grid>
-					<Grid.Column width={12}>
-						<h2>Edit topic:</h2>
-					</Grid.Column>
-					<Grid.Column width={4}>
-						<Button.Group basic float="right">
-							<Button content="New" onClick={() => {this.setState({new: true})}} />
-						</Button.Group>
-					</Grid.Column>
-				</Grid>
-				<Form.Field>
-					<label>Topic name: </label>
-					<Input fluid focus value={this.state.name} onChange={(e) => {this.setState({name: e.target.value})}} />
-					</Form.Field>
-				<Form.Field>
-					<label>Description: </label>
-					<Input fluid focus value={this.state.description} onChange={(e) => {this.setState({description: e.target.value})}} />
-				</Form.Field>
-				<Grid>
-					<Grid.Row>
-						<Grid.Column width={8}>
-							<Button positive fluid loading={this.state.loading} content="Save" onClick={(e) => this.handleSaveClick(e)} />
-						</Grid.Column>
-						<br />
-						<Grid.Column width={8}>
-							<Button negative fluid content="Cancel" onClick={() => {this.setState({
-									name: this.props.topic.name,
-									description: this.props.topic.description,
-									edit: false
-								})}} />
-						</Grid.Column>
-					</Grid.Row>
-				</Grid>
-				<br />
-			</Form>
-		);
+	updateTopicSubTopic() {
+
 	}
 
-	handleSaveClick(e) {
-		e.preventDefault()
-		this.setState({
-			loading: true
-		});
-
-		var token = localStorage.getItem('stelios_token');
-		if (token === "null") {
-			this.setState({
-				message: "You need to login first",
-				neg: true,
-				loading: false
-			});
-			setTimeout(() => {
-			  this.setState({ message: "" });
-			}, 10000);
-			return
+	topic() {
+		console.log("topic", this.state.new, this.state.edit);
+		if(this.state.new) {
+			return(
+				this.edit(
+					"Create topic: ",
+					this.state.name,
+					this.state.description,
+					"topic",
+					this.state.all_sub_topics,
+					((e) => {
+						e.preventDefault();
+						this.getSubTopics();
+						this.setState({
+						id: -1,
+						name: "",
+						description: "",
+						subjects: [this.props.subjectId],
+						sub_topics: []
+					});}),
+					((e) => {this.setState({name: e.target.value})}),
+					((e) => {this.setState({description: e.target.value})}),
+					((e) => {this.handleSave(e,
+						'topics/',
+						"POST",
+						"topic",
+						{name: this.state.name, description: this.state.description, subjects: this.state.subjects},
+						((res) => {
+							if (res.status === 200 || res.status === 201) {
+								this.setState({
+									message: "Topic created",
+									neg: false
+								});
+								setTimeout(() => {
+								  this.setState({ message: "" });
+								}, 10000);
+							} else if (res.status === 403) {
+								this.setState({
+									message: "You dont have access to create this topic",
+									neg: true
+								});
+								setTimeout(() => {
+								  this.setState({ message: "" });
+								}, 10000);
+							}
+						})
+					)}),
+					((e) => {e.preventDefault(); this.setState({
+						id: this.props.topic.id,
+						name: this.props.topic.name,
+						description: this.props.topic.description,
+						subjects: this.props.topic.subjects,
+						sub_topics: this.state.prev_sub_topics,
+						new: false
+					})}),
+					(() => this.updateTopicSubTopic())
+				)
+			)
+		} else if (this.state.edit) {
+			return(
+				this.edit(
+					"Edit topic: ",
+					this.state.name,
+					this.state.description,
+					"Sub Topics",
+					this.state.all_sub_topics,
+					((e) => {
+						e.preventDefault();
+						this.getSubTopics();
+						this.setState({
+						id: -1,
+						new: true,
+						edit: false,
+						name: "",
+						description: "",
+						sub_topics: [],
+						subjects: [this.props.subjectId]
+					})}),
+					((e) => {this.setState({name: e.target.value})}),
+					((e) => {this.setState({description: e.target.value})}),
+					((e) => {this.handleSave(e,
+						'topics/' + this.state.id + '/',
+						"PUT",
+						"topic",
+						{name: this.state.name, description: this.state.description, subjects: this.state.subjects},
+						((res) => {
+							if (res.status === 200 || res.status === 201) {
+								this.setState({
+									message: "Topic updated",
+									neg: false
+								});
+								setTimeout(() => {
+								  this.setState({ message: "" });
+								}, 10000);
+							} else if (res.status === 403) {
+								this.setState({
+									message: "You dont have access to edit/create this topic",
+									neg: true
+								});
+								setTimeout(() => {
+								  this.setState({ message: "" });
+								}, 10000);
+							}
+						})
+					)}),
+					((e) => {e.preventDefault(); this.setState({
+						id: this.props.topic.id,
+						name: this.props.topic.name,
+						description: this.props.topic.description,
+						subjects: this.props.topic.subjects,
+						sub_topics: this.state.prev_sub_topics,
+						edit: false
+					})}),
+					(() => this.updateTopicSubTopic()),
+					((e) => {this.handleSave(e,
+						'topics/' + this.state.id + '/',
+					 	"DELETE",
+						"topics",
+						null,
+						((res) => {
+							if (res.status === 403) {
+								this.setState({
+									message: "You dont have access to delete this topic",
+									neg: true
+								});
+								setTimeout(() => {
+								  this.setState({ message: "" });
+								}, 10000);
+							} else if (res.status === 204) {
+								this.setState({
+									message: "topic deleted",
+									neg: false,
+									edit: false,
+									new: false,
+								});
+								setTimeout(() => {
+								  this.setState({ message: "" });
+								}, 10000);
+								this.componentDidMount();
+							}
+						})
+					)})
+				));
+		} else {
+			return(this.show(
+				this.state.name,
+				this.state.description,
+				((e) => {
+					e.preventDefault();
+					this.setState({
+						edit: true
+					})
+					//get subtopics here
+				}),
+				((e) => this.setState({
+					id: -1,
+					new: true,
+					name: "",
+					description: "",
+					sub_topics: [],
+				}))
+			));
 		}
-		var url = '';
-		if (!this.props.new) {
-			url = this.props.topic["id"] + '/'
-		}
-		var link = '';
-		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			link = 'http://localhost:8000/'+ 'topics/' + url;
-    		// dev code
-    } else {
-    		link = 'http://api.stelios.no/'+ 'topics/' +url;
-		    // production code
-		}
-
-		var method_ = 'PUT';
-		if (this.props.new) {
-			method_ = 'POST'
-		}
-		var request = new Request(link, {
-			method: method_,
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Token ' + token
-			},
-      body: JSON.stringify({
-        name: this.state.name,
-				description: this.state.description,
-				subjects: this.state.subjects.length < 1 ? this.props.subjectId : this.state.subjects
-      })
-		});
-
-		fetch(request).then((res) => {
-			if (res.status === 200 || res.status === 201) {
-				this.setState({
-					message: this.state.edit ? "topic updated" : "topic created",
-					neg: false,
-					edit: false
-				});
-				setTimeout(() => {
-				  this.setState({ message: "" });
-				}, 10000);
-			} else if (res.status === 403) {
-				this.setState({
-					message: "You dont have access to edit/create this topic",
-					neg: true,
-					edit: false
-				});
-				setTimeout(() => {
-				  this.setState({ message: "" });
-				}, 10000);
-			}
-      return res.json();
-    })
-    .then((res) => {
-			this.setState({
-				loading: false
-			});
-    }).catch((e) => {
-			console.log(e);
-			this.setState({
-				loading: false
-			});
-		});
 	}
-
 
 	render(){
 		var basic_subtopic = {'name':'', 'description':'','content':''};
 
-		if (this.props.topic !== undefined) {
+		if (this.props.topic !== undefined && !this.state.new) {
 
 			return (
 				<div>
-					{this.state.edit ? this.topicEdit() : this.topicShow()}
+						{this.topic()}
 						<Grid.Column width={16}>
 							<Divider />
 						</Grid.Column>

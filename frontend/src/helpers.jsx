@@ -36,7 +36,7 @@ export function getData(url, handleStatus, handleData, handleError) {
       'Accept': 'application/json',
     },
   });
-
+  
   //javascripts fetch method. after fetch is executed and respone is recived,
   //the first .then() is called, and after that the next .then()
   fetch(request).then((res) => {
@@ -47,7 +47,7 @@ export function getData(url, handleStatus, handleData, handleError) {
   .then((res) => {
     handleData(res);
   }).catch((e) => {
-    console.log(e);
+    console.log(this, e);
     handleError(e);
   });
 }

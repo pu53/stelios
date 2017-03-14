@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from wiki.models import Subject, Topic, Subtopic
-from wiki.serializers import SubjectSerializer, TopicSerializer, SubtopicSerializer, SubjectOnlyTopicIdAndNameSerializer
+from wiki.serializers import SubjectSerializer, TopicSerializer, SubtopicSerializer, SubjectOnlyTopicIdAndNameSerializer, SubjectWithoutSubtopicsSerializer
 from rest_framework import generics
 import json
 
@@ -19,6 +19,14 @@ class SubjectOnlyTopicIdAndNameList(generics.ListCreateAPIView):
 class SubjectOnlyTopicIdAndNameDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Subject.objects.all().order_by('id')
     serializer_class = SubjectOnlyTopicIdAndNameSerializer
+
+class SubjectWithoutSubtopicsList(generics.ListCreateAPIView):
+    queryset = Subject.objects.all().order_by('id')
+    serializer_class = SubjectWithoutSubtopicsSerializer
+
+class SubjectWithoutSubtopicsDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Subject.objects.all().order_by('id')
+    serializer_class = SubjectWithoutSubtopicsSerializer
 
 class TopicList(generics.ListCreateAPIView):
     queryset = Topic.objects.all().order_by('id')

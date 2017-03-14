@@ -6,12 +6,13 @@ import { browserHistory } from 'react-router'
 
 //supposed to render a single subject w/topics jabbe
 export class WikiPage extends React.Component{
+	displayName="WikiPage"
 	constructor(props){
 		super(props);
 
 		this.state = ({
 			result: [],
-			id: 1,
+			id: -1,
 			name: "",
 			description: "",
 			topics: [],
@@ -113,8 +114,35 @@ export class WikiPage extends React.Component{
     }).catch((e) => {console.log(e)});
 	}
 
+	buttonGroup(clickEdit=((e) => {e.preventDefault();}), clickNew=((e) => {e.preventDefault();}), clickDelete=((e) => {e.preventDefault();}), clickRemove=((e) => {e.preventDefault()})) {
+		return(<Button.Group basic float="right">
+			{ this.state.new || this.state.edit ?
+			null
+			:
+			<Button content="Edit"  onClick={(e) => clickEdit(e)} />
+			}
+			{ !this.state.new ?
+				<Button content="New" onClick={(e) => clickNew(e)} />
+				:
+				null
+			}
+			{
+				this.displayName !== "WikiPage" && this.state.edit ?
+				<Button basic negative content={"Remove from " + this.displayName} onClick={(e) => clickRemove(e)} />
+				:
+				null
+			}
+			{ this.state.edit ?
+				<Button basic negative content="Delete" onClick={(e) => clickDelete(e)} />
+				:
+				null
+			}
+		</Button.Group>
+		);
+	}
 
 	show(header, description, clickEdit, clickNew) {
+		console.log("show is called in", this.displayName);
  		return(
  			<div>
  				<Grid>
@@ -122,10 +150,7 @@ export class WikiPage extends React.Component{
  						<h2>{header}</h2>
  					</Grid.Column>
  					<Grid.Column width={4}>
- 						<Button.Group basic float="right">
- 							<Button content="Edit" onClick={(e) => clickEdit(e)}/>
- 							<Button content="New" onClick={(e) => clickNew(e)} />
- 						</Button.Group>
+ 					{this.buttonGroup(clickEdit, clickNew, ((e) => {e.preventDefault();}))}
  					</Grid.Column>
  				</Grid>
  				<br/>
@@ -135,7 +160,8 @@ export class WikiPage extends React.Component{
  		);
  	}
 
- 	edit(header, name, description, belongs_to, all_sub_things, clickNew, changeName, changeDescription, clickSave, clickCancel, update, clickDelete=((e) => {e.preventDefault()})) {
+ 	edit(header, name, description, belongs_to, all_sub_things, clickNew, changeName, changeDescription, clickSave, clickCancel, update=(() => {}), clickDelete=((e) => {e.preventDefault()})) {
+		console.log(this.state.id);
 		return(
  			<Form>
  				<Grid>
@@ -143,19 +169,7 @@ export class WikiPage extends React.Component{
  						<h2>{header}</h2>
  					</Grid.Column>
  					<Grid.Column width={4}>
- 						<Button.Group float="right">
-							{ !this.state.new ?
-								<Button content="New" onClick={(e) => clickNew(e)} />
-								:
-								null
-							}
-							{ this.state.edit ?
-							<Button negative content="Delete" onClick={(e) => clickDelete(e)} />
-							:
-							null
-							}
-
- 						</Button.Group>
+ 						{this.buttonGroup(((e) => {e.preventDefault();}),clickNew, clickDelete)}
  					</Grid.Column>
  				</Grid>
  				<Form.Field>
@@ -181,7 +195,7 @@ export class WikiPage extends React.Component{
 				</Form.Field>
 				<Form.Field>
 					<label>{"Add " + belongs_to}</label>
-					<Dropdown placeholder={'ps: ' + belongs_to + ' are added automaticly when chosen'} fluid search selection scrolling onChange={(e,{value}) => {this.setState({dropdown_id: value})}} options={all_sub_things} />
+					<Dropdown placeholder={this.state.id ===-1 ? 'Create subject before selecting topics' : 'ps: ' + belongs_to + ' are added automaticly when chosen'} disabled={this.state.id===-1} fluid search selection scrolling onChange={(e,{value}) => {this.setState({dropdown_id: value})}} options={all_sub_things} />
 				</Form.Field>
  				<br />
  			</Form>
@@ -260,7 +274,7 @@ export class WikiPage extends React.Component{
 			"topics/?fields!=subtopics",
 			(() => {}),
 			((res) => {
-				console.log(this);
+				console.log(res);
 				var all_top = [];
 				res.map((topic, index) => {
 					all_top.push({
@@ -399,6 +413,7 @@ export class WikiPage extends React.Component{
 						e.preventDefault();
 						this.getTopics();
 						this.setState({
+						id: -1,
 						name: "",
 						description: "",
 						topics: [],
@@ -433,6 +448,7 @@ export class WikiPage extends React.Component{
 						})
 					)}),
 					((e) => {e.preventDefault(); this.setState({
+						id: this.state.result.id,
 						name: this.state.result.name,
 						description: this.state.result.description,
 						topics: this.state.result.topics,
@@ -454,6 +470,7 @@ export class WikiPage extends React.Component{
 						e.preventDefault();
 						this.getTopics();
 						this.setState({
+						id: -1,
 						new: true,
 						edit: false,
 						name: "",
@@ -490,6 +507,7 @@ export class WikiPage extends React.Component{
 						})
 					)}),
 					((e) => {e.preventDefault(); this.setState({
+						id: this.state.result.id,
 						name: this.state.result.name,
 						description: this.state.result.description,
 						edit: false,
@@ -537,6 +555,7 @@ export class WikiPage extends React.Component{
 						e.preventDefault();
 						this.getTopics();
 						this.setState({
+						id: -1,
 						new: true,
 						name: "",
 						description: "",
@@ -583,7 +602,16 @@ export class WikiPage extends React.Component{
 										<Divider />
 									</Grid.Column>
 									<br />
-								<Topic topic={this.state.active_topic} subjectId={this.state.id}/>
+								<Topic
+									topic={this.state.active_topic}
+									subjectId={this.state.id}
+									dataLoad = {this.dataLoad}
+									buttonGroup = {this.buttonGroup}
+									show={this.show}
+									edit={this.edit}
+									handleSave = {this.handleSave}
+									message= {this.message}
+									/>
 							</Segment>
 						</Grid.Column>
 					</Grid.Row>

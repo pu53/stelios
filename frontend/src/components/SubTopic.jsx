@@ -4,6 +4,7 @@ import {Button, Input, Grid, Form, Message} from 'semantic-ui-react'
 var SimpleMDE = require('react-simplemde-editor');
 
 export class SubTopic extends React.Component {
+	displayName="SubTopic"
 	constructor(props){
 		super(props);
 		this.state = ({

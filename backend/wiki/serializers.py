@@ -33,6 +33,18 @@ class SubjectOnlyTopicIdAndNameSerializer(QueryFieldsMixin,serializers.ModelSeri
         model = Subject
         fields = ('__all__')
 
+class TopicWithoutSubtopicsSerializer(QueryFieldsMixin,serializers.ModelSerializer):
+    class Meta:
+        model = Topic
+        fields = ('id', 'name', 'description', 'subjects')
+
+class SubjectWithoutSubtopicsSerializer(QueryFieldsMixin,serializers.ModelSerializer):
+    topics = TopicWithoutSubtopicsSerializer(required=False, many=True, read_only=True)
+    class Meta:
+        model = Subject
+        fields = ('__all__')
+
+
 #    def update(self, instance, validated_data):
 #        print(self.context["topics"])
 #        print(validated_data)
