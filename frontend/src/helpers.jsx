@@ -40,6 +40,7 @@ export function getData(url, handleStatus, handleData, handleError) {
   //javascripts fetch method. after fetch is executed and respone is recived,
   //the first .then() is called, and after that the next .then()
   fetch(request).then((res) => {
+    console.log(res.status)
     handleStatus(res)
     return res.json();
   })
@@ -51,11 +52,8 @@ export function getData(url, handleStatus, handleData, handleError) {
   });
 }
 
-export function sendData(url, method_, header, body, handleStatus, handleData, handleError, e=undefined) {
-  console.log(url, method_, header, body);
-  if (e !== undefined) {
-    e.preventDefault();
-  }
+export function sendData(url, method_, body, handleStatus, handleData, handleError) {
+  console.log(url, method_, body);
   var token = localStorage.getItem('stelios_token');
   if (token === "null") {
     this.setState({
@@ -87,15 +85,23 @@ export function sendData(url, method_, header, body, handleStatus, handleData, h
     body: JSON.stringify(body)
   });
   fetch(request).then((res) => {
-    console.log(res.status);
+    console.log("statusFunc: ", res);
     handleStatus(res);
-    return res.json();
+    if (res.status >= 200 && res.status <= 203) {
+      return res.json();
+    } else if (res.status === 204) {
+      return true
+    }
+    return false
   })
   .then((res) => {
-    handleData(res)
+    console.log("status: ", res);
+    if (res !== false) {
+      handleData(res)
+    }
   }).catch((e) => {
     console.log(e);
-    handleError(e);
+    handleError(e.toString());
   });
 }
 
