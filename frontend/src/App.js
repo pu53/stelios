@@ -20,11 +20,12 @@ export class App extends Component {
     handleLogin(e) {
       if (e === "login") {
         this.setState({
-          show_login: true
+          show_login: !this.state.show_login
         });
       } else {
         this.setState({
-          token: "null"
+          token: "null",
+          show_login: false
         });
         localStorage.setItem('stelios_token', "null");
       }
@@ -63,7 +64,7 @@ export class App extends Component {
             }
             <Grid.Row>
               <Grid.Column width={16}>
-                <SearchBar/>
+                <SearchBar type="semantic" template="subjects" />
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -73,7 +74,7 @@ export class App extends Component {
     );
   }
 }
-
+/*
 class List extends Component {
   constructor(props) {
     super();
@@ -142,5 +143,5 @@ class List extends Component {
       );
     }
   }
-}
+}*/
 export default App;
