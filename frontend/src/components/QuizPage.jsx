@@ -9,7 +9,7 @@ export class QuizPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			inQuiz:false,
+			inQuiz:true,
 			quizData:[]
 		};
 	}
@@ -22,6 +22,7 @@ export class QuizPage extends Component {
 		
 		
 		const question1 = {
+		id:4,
 		text:"How and why the great badger of doom ended "+
 			"the mayas has long been a hotly debated topic "+
 			"in south american ancient history. What, however, "+
@@ -36,6 +37,7 @@ export class QuizPage extends Component {
 		};
 		
 		const question2 = {
+		id:7,
 		text:"What is considered the most influential paper on tea and crackers?",
 		alternatives:[
 			{id:1, text:"Objectivity in a subjective science, on the importance of peer review when doing taste tests"},
@@ -47,6 +49,7 @@ export class QuizPage extends Component {
 		};
 		
 		const question3 = {
+		id:8,
 		text:"Which data structure benefits greatly when implementations do so-called \"Robin Hooding\"?",
 		alternatives:[
 			{id:1, text:"Priority Stack"},

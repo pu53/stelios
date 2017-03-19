@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from quiz.models import Choice, Quiz, Question 
 from quiz.serializers import ChoiceSerializer, QuestionSerializer, QuizSerializer
-from rest_framework import generics
+from rest_framework import generics, response
 import json
 
 # creating a list and detail view for all models using generics
@@ -29,3 +29,5 @@ class QuizList(generics.ListCreateAPIView):
 class QuizDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Quiz.objects.all()
 	serializer_class = QuizSerializer
+	
+

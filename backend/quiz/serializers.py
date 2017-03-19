@@ -18,3 +18,4 @@ class QuizSerializer(QueryFieldsMixin,serializers.ModelSerializer):
 	class Meta:
 		model = Quiz
 		fiels = ('__all__')
+		

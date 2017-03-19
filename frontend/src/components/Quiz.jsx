@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../styles/quiz.css'
 import { Container, Segment } from 'semantic-ui-react';
 
 /**TODO: Make nav buttons stay in the same place?
@@ -97,6 +98,10 @@ export class Quiz extends Component {
 			answers:all_answers
 		});
 	}
+	/*Sends the result back to the server*/
+	passData(){
+		
+	}
 	
 	/*Updates the answer*/
 	changeQuestion(increment, chosenAlternative) {
@@ -124,40 +129,19 @@ export class Quiz extends Component {
 	
 	render() {
 		/*TODO: Make the quiz generate a title if none is specified*/
-		var styleTopInfo= {
-			display:'flex',
-			margin:'5px',
-			fontSize:'20px',
-			overflow:'auto',
-			position:'relative',
-		}
-		
-		var quizWrapper= {
-			overflow:'auto',
-			position:'relative',
-		}
-		
-		var quizContainer= {
-			marginLeft:'10%',
-			marginRight:'10%',
-			minWidth:'80%',
-			padding:'10px',
-			position:'relative',
-			backgroundColor:'#F2F2F2',
-		}
 		
 		if(this.state.finished===false) {
 			return (
-			<Container raised style={quizWrapper}>
-				<div style={quizContainer}>
-					<h1 style={{textAlign:'center'}}>
+			<Container className="quizWrapper">
+				<div className="quizContainer">
+					<h1 className="mainTitle">
 						{this.state.title}
 					</h1>
-					<div style={styleTopInfo}>
-						<div style={{width:'50%'}}>
+					<div className="topInfo">
+						<div className="topInfoProgres">
 							Question: {this.state.currently_asking}/{this.state.number_of_questions}
 						</div>
-						<div style={{width:'50%', textAlign:'right'}}>
+						<div className="topInfoSubTopic">
 							About: {this.state.questions[this.state.currently_asking-1].subtopic}
 						</div>
 					</div>
@@ -174,12 +158,18 @@ export class Quiz extends Component {
 		);
 		}
 		else {
+			
+			var counter=-1;
+			console.log("questions "+this.props.data.questions)
 			return(
-				<Container style={quizWrapper}>
+				<Container className="quizWrapper">
 					<h1>the quiz is finished!</h1>
-					{this.state.answers[0]}
-					{this.state.answers[1]}
-					{this.state.answers[2]}
+					{
+						this.state.answers.map((answer)=>{
+							counter++;
+							return <div key={this.props.data.questions[counter].id}>Question: {this.props.data.questions[counter].id}Answer: {answer}</div>
+						})
+					}
 				</Container>
 			);
 		}
@@ -339,11 +329,11 @@ class Question extends Component {
 						})
 					}
 					
-					<div style={styleNavButtons}>
-						<button style={styleNavButtonPrev} onClick={this.prevQuestion} disabled={this.state.firstQuestion}>
+					<div className="navButtons" style={styleNavButtons}>
+						<button className="styleNavButtonPrev" style={styleNavButtonPrev} onClick={this.prevQuestion} disabled={this.state.firstQuestion}>
 							<div style={style3}>Previous</div>
 						</button>
-						<button style={styleNavButtonNext} onClick={this.nextQuestion}>
+						<button className="styleNavButtonNext" style={styleNavButtonNext} onClick={this.nextQuestion}>
 							<div style={style3}>{nextText}</div>
 						</button>
 					</div>
@@ -416,7 +406,7 @@ class Answer extends Component {
 		
 		const style2= {
 			textAlign:'center',
-			fontSize:'15',
+			fontSize:'15px',
 			width:'100%',
 			MozUserSelect:'none',
 			WebkitUserSelect:'none',
