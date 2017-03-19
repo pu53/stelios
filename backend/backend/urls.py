@@ -1,3 +1,4 @@
+
 """backend URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -23,4 +24,5 @@ urlpatterns = [
     url(r'^api-token-auth/', views.obtain_auth_token),
     url(r'^', include('profiles.urls')),
     url(r'^', include('wiki.urls')),
+    url(r'^', include('quiz.urls'))
 ]

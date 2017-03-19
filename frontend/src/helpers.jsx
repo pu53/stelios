@@ -36,7 +36,7 @@ export function getData(url, handleStatus, handleData, handleError) {
       'Accept': 'application/json',
     },
   });
-  
+
   //javascripts fetch method. after fetch is executed and respone is recived,
   //the first .then() is called, and after that the next .then()
   fetch(request).then((res) => {
@@ -47,7 +47,7 @@ export function getData(url, handleStatus, handleData, handleError) {
   .then((res) => {
     handleData(res);
   }).catch((e) => {
-    console.log(this, e);
+    console.log(e);
     handleError(e);
   });
 }
@@ -103,50 +103,4 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
     console.log(e);
     handleError(e.toString());
   });
-}
-
-
-
-
-import React from 'react'
-export function editWrapper(Edit) {
-  return class EditWrapper extends React.Component {
-    constructor(props) {
-      super(props)
-      this.state = {
-        name: '',
-        description: '',
-        markdown_content: '',
-      }
-    }
-
-    onNameChange = (e) => {
-      this.setState({
-        name: e.target.value
-      })
-    }
-
-    onDescriptionChange = (e) => {
-      this.setState({
-        description: e.target.value
-      })
-    }
-
-
-    render() {
-      const newProps = {
-        header: "Edit " + Edit.displayName,
-        name: {
-          value: this.state.name,
-          onChange: this.onNameChange
-        },
-        description: {
-          value: this.state.description,
-          onChange: this.onDescriptionChange
-        }
-      }
-
-      return <Edit {...this.props} {...newProps}/>
-    }
-  }
 }
