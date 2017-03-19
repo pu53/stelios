@@ -4,6 +4,7 @@ import {Button, Input, Grid, Form, Message} from 'semantic-ui-react'
 var SimpleMDE = require('react-simplemde-editor');
 
 export class SubTopic extends React.Component {
+	displayName="SubTopic"
 	constructor(props){
 		super(props);
 		this.state = ({
@@ -16,6 +17,7 @@ export class SubTopic extends React.Component {
 			loading: false
 		});
 		this.editClick = this.editClick.bind(this);
+		console.log("constructor is called")
 	}
 	editClick() {
 		this.setState({
@@ -168,7 +170,7 @@ export class SubTopic extends React.Component {
 		} else {
 			return (
 					<Form>
-						<h2>{this.props.new ? "New subtopic: " : "Update subtopic: "}</h2>
+						<h2>{this.props.new ? "New subtopic: " : ""}</h2>
 						{this.message()}
 						<Form.Field>
 							<label>Subtopic name:</label>

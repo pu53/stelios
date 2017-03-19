@@ -104,6 +104,3 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
     handleError(e.toString());
   });
 }
-
-
-
