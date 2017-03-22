@@ -6,7 +6,7 @@ import wiki
 class Quiz(models.Model):
 	name = models.CharField(max_length=200)
 	subject = models.ForeignKey("wiki.Subject", default=None)
-	deadline = models.DateTimeField('Deadline')
+	deadline = models.DateTimeField('Deadline', default=None)
 	def __str__(self):
 		return(self.name)
 
@@ -24,7 +24,7 @@ class Choice(models.Model):
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
 	choice_text = models.CharField(max_length=200)
 	#Subtopic is included for potential later use
-	subtopic = models.CharField(max_length=200)
+	subtopic = models.CharField(max_length=200, default=None)
 	def __str__(self):
 		return(self.choice_text)
 

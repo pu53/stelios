@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../styles/quiz.css'
 import { Container, Segment } from 'semantic-ui-react';
+import {FeedbackContainer} from './Feedback.jsx'
 
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
@@ -129,7 +130,7 @@ export class Quiz extends Component {
 	
 	render() {
 		/*TODO: Make the quiz generate a title if none is specified*/
-		
+		this.state.finished=true;	
 		if(this.state.finished===false) {
 			return (
 			<Container className="quizWrapper">
@@ -170,6 +171,7 @@ export class Quiz extends Component {
 							return <div key={this.props.data.questions[counter].id}>Question: {this.props.data.questions[counter].id}Answer: {answer}</div>
 						})
 					}
+					<FeedbackContainer />
 				</Container>
 			);
 		}
