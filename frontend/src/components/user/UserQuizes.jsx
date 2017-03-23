@@ -1,7 +1,7 @@
 import React from 'react'
 import { Menu } from 'semantic-ui-react'
 
-export class UserSubjects extends React.Component {
+export class UserQuizes extends React.Component {
     constructor(props) {
 		super(props);
 		this.state = ({
@@ -51,8 +51,8 @@ export class UserSubjects extends React.Component {
                 <div>
                 <br />
                     <Menu fluid vertical>
-                       {this.state.data.subjects.map(function(subject){
-                           return <Menu.Item href= {'/wiki/'+subject.id}>{ subject.name }</Menu.Item>;
+                       {this.state.data.quizes.map(function(quiz){
+                           return <Menu.Item href= {'/quiz/'+quiz.id}>{ quiz.title }</Menu.Item>;
                          })}
                     </Menu>
                </div>
