@@ -1,25 +1,25 @@
 import React, { Component} from 'react';
 import { Container, Grid, Button, Segment} from 'semantic-ui-react';
-import { SearchBar } from './SearchBar';
+import { SearchBar } from '../SearchBar';
 import { Quiz } from './Quiz';
-import { getData } from '../helpers.jsx';
-import '../styles/quiz_page.css'
+import { getData } from '../../helpers.jsx';
+import '../../styles/quiz_page.css'
 
 export class QuizPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			inQuiz:false,
-			quiz_data:[], 
+			quiz_data:[],
 			url_suffix:"quiz/data/9/"
 		};
 		this.fetchData = this.fetchData.bind(this)
 	}
-	
+
 	componentWillMount() {
 		this.fetchData()
 	}
-	
+
 	fetchData() {
 		var url = this.state.url_suffix
 		var link = '';
@@ -35,7 +35,7 @@ export class QuizPage extends Component {
 				'Accept': 'application/json',
 			},
 		});
-		
+
 		fetch(request).then((res) => {
 			console.log("Status: "+ res.status)
 			return res.json();
@@ -49,8 +49,8 @@ export class QuizPage extends Component {
 			console.log(e);
 		});
 	}
-		
-		
+
+
 		/*
 		const question1 = {
 		id:4,
@@ -65,7 +65,7 @@ export class QuizPage extends Component {
 			],
 		subtopic:'badgers',
 		};
-		
+
 		const question2 = {
 		id:7,
 		text:"What is considered the most influential paper on tea and crackers?",
@@ -76,7 +76,7 @@ export class QuizPage extends Component {
 			],
 		subtopic:'foodstuffs',
 		};
-		
+
 		const question3 = {
 		id:8,
 		text:"Which data structure benefits greatly when implementations do so-called \"Robin Hooding\"?",
@@ -95,7 +95,7 @@ export class QuizPage extends Component {
 		};
 		this.setState({quiz_data:data});
 		*/
-	
+
 	render() {
 		console.log("in render, the data in state is: " + this.state.quiz_data)
 		if(this.state.inQuiz) {
@@ -115,7 +115,7 @@ export class QuizPage extends Component {
 					<Grid.Row>
 						<h1 className="test">This is the quiz page</h1>
 					</Grid.Row>
-					
+
 					<Grid.Row>
 						<Grid.Column width={4}>
 							<div>{this.state.quiz_data.id}</div>

@@ -2,7 +2,7 @@
 import React, { Component} from 'react';
 import { Container, Grid, Button, Segment} from 'semantic-ui-react';
 import { Quiz } from './Quiz';
-import { getData } from '../helpers.jsx';
+import { getData } from '../../helpers.jsx';
 
 // Component for interpreting a Quiz-result and generate feedback
 // Will be the more bot-like component
@@ -102,7 +102,7 @@ export class FeedbackContainer extends React.Component{
 
 		console.log(weaktopics);
 
-	}	
+	}
 
 	render(){
 		this.weakTopics();
