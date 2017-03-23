@@ -14,7 +14,7 @@ class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	study = models.CharField(max_length=100, default='MTDT')
 	#year = models.IntegerField(default='0')
-	#subjects = models.ManyToManyField("wiki.Subject", blank=True, related_name='profile')
+	subjects = models.ManyToManyField("wiki.Subject", blank=True, related_name='profile')
 	def __str__(self):
 		return(self.user.username)
 

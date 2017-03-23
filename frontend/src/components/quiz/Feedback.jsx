@@ -2,7 +2,7 @@
 import React, { Component} from 'react';
 import { Container, Grid, Button, Segment, List, Divider} from 'semantic-ui-react';
 import { Quiz } from './Quiz';
-import { getData } from '../helpers.jsx'
+import { getData } from '../../helpers.jsx'
 var Markdown = require('react-remarkable');;
 
 // Component for interpreting a Quiz-result and generate feedback
