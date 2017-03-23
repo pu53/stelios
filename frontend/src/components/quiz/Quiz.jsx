@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import '../styles/quiz.css'
+import '../../styles/quiz.css'
 import { Container, Segment } from 'semantic-ui-react';
+import {FeedbackContainer} from './Feedback.jsx'
 
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
  * TODO: Scramble order of alternatives
  * TODO: Show earlier answers
- */ 
+ */
 
 /*The head element of a quiz. Fetches all the data for all the quiestions included
  * in the quiz and passes them on to the subcomponents when needed*/
@@ -18,18 +19,18 @@ export class Quiz extends Component {
 	 */
 	constructor(props) {
 		super(props);
-		
+
 		/*The quiz state contains info on the quiz, and what answers have been
 		 * selected*/
 		this.state = {
 			finished:false,
 			number_of_questions:0,
 			currently_asking:1,
-			title:"This is a quiz about something",
+			title:"No title found",
 			questions:[],
 			answers:[]
 			};
-		
+
 		this.changeQuestion=this.changeQuestion.bind(this);
 	}
 
@@ -37,35 +38,37 @@ export class Quiz extends Component {
 		this.fetchData();
 	}
 
+	componentWillReceiveProps(nextProps) {
+		this.fetchData();
+	}
 	/*
 	 * If the quiz is a saved quiz, (explicitly saved with an id), the component
 	 * should load relevant data. Otherwise it can either take a dictionary
-	 * with data passed by props to turn into a quiz, or get a list of topics, 
+	 * with data passed by props to turn into a quiz, or get a list of topics,
 	 * subtopics and subjects and use these to generate a quiz. Pass topics etc
 	 * via id
 	 *
-	 * Quiz data format: 
-	 * 	{
-	 * 		title:String #bonus feature:if undefined, generate name based on contents
-	 * 		subjects:[] 
-	 * 		topics:[]
-	 * 		sub-topics:[] #subjects and topics gets broken down into sub-topics
+	 * Quiz data format:
+	 * {
+	 * 		id:int
+	 * 		title:"",
 	 * 		questions:[]
-	 *  }
-	 * 
+	 * }
+	 *
 	 * Question data format:
 	 * {
 	 * 		text:""
-	 * 		alternatives:{
+	 * 		choices:{
 	 * 			id:int
-	 * 			text:""}
-	 * 		subtopic:foregin key
+	 * 			choice_text:""}
+	 * 		subtopic:""
 	 * }
 	 * NB: Question id -1 is reserved as default answer
 	 * 	Idea: Difficulty property per question?
 	 */
 	fetchData() {
 		if (this.props.data !== undefined) {
+			console.log("The quiz received this data: " + this.props.data)
 			this.setState({
 				title:this.props.data.title,
 				questions:this.props.data.questions,
@@ -73,41 +76,31 @@ export class Quiz extends Component {
 			});
 		}
 		else {
-			
-			var host = '';
-			if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-				host = 'http://localhost:8000';
-			}
-			else {
-				host ='http://api.stelios.no';
-			}
-			
-			var url = host
-			
-			var request = new Request({url});
+			console.error("Give the quiz element some data!")
+			//this.props.fetchData()
 		}
 		/*test data*/
-		
+
 		var all_answers = [];
-		
+
 		for(var i=0; i<this.props.data.questions.length;i++) {
 			all_answers[i]=-1;
 		}
-		
+
 		this.setState({
 			answers:all_answers
 		});
 	}
 	/*Sends the result back to the server*/
 	passData(){
-		
+
 	}
-	
+
 	/*Updates the answer*/
 	changeQuestion(increment, chosenAlternative) {
 		if(chosenAlternative===undefined){chosenAlternative=-1}
 		if(this.state.currently_asking + increment < 1){
-		   
+
 		}
 		else if(this.state.currently_asking + increment > this.state.number_of_questions){
 			var tempAnswers=this.state.answers;
@@ -126,10 +119,10 @@ export class Quiz extends Component {
 			});
 		}
 	}
-	
+
 	render() {
 		/*TODO: Make the quiz generate a title if none is specified*/
-		
+		/*
 		if(this.state.finished===false) {
 			return (
 			<Container className="quizWrapper">
@@ -158,9 +151,9 @@ export class Quiz extends Component {
 		);
 		}
 		else {
-			
+
 			var counter=-1;
-			console.log("questions "+this.props.data.questions)
+			//console.log("questions "+this.props.data.questions)
 			return(
 				<Container className="quizWrapper">
 					<h1>the quiz is finished!</h1>
@@ -170,9 +163,10 @@ export class Quiz extends Component {
 							return <div key={this.props.data.questions[counter].id}>Question: {this.props.data.questions[counter].id}Answer: {answer}</div>
 						})
 					}
+					<FeedbackContainer />
 				</Container>
 			);
-		}
+		}*/
 	}
 }
 
@@ -191,21 +185,21 @@ class Question extends Component {
 		this.nextQuestion = this.nextQuestion.bind(this);
 		this.prevQuestion = this.prevQuestion.bind(this);
 	}
-	
-	componentWillMount() {
+
+	componentDidMount() {
 		this.setState({
 			data:this.props.data,
 			firstQuestion:this.props.firstQuestion,
 			lastQuestion:this.props.lastQuestion,
 		});
-		
+
 		if(this.props.chosen !== undefined) {
 			this.setState({
 				chosenAnswer:this.props.chosen
 			});
 		}
 	}
-	
+
 	changeToggle(id) {
 		/*console.log("Callback from" + id);*/
 		if(id === this.state.chosenAnswer) {
@@ -215,17 +209,17 @@ class Question extends Component {
 			this.setState({chosenAnswer:id});
 		}
 	}
-	
+
 	nextQuestion() {
 		//console.log("internaly chosen: " + this.state.chosenAnswer);
 		this.props.onChange(1,this.state.chosenAnswer);
 	}
-	
+
 	prevQuestion() {
 		//console.log("internaly chosen: " + this.state.chosenAnswer);
 		this.props.onChange(-1, this.state.chosenAnswer);
 	}
-	
+
 	componentWillReceiveProps(nextProps) {
 		this.setState({
 			data:nextProps.data,
@@ -234,28 +228,28 @@ class Question extends Component {
 			chosenAnswer:nextProps.chosen
 		});
 	}
-	
+
 	render() {
 		/*defining styles within render like this is probably not great
 		 * but for the first draft it's ok*/
 		var styleQuestion= {
-			witdth:'100%', 
-			overflow:'auto', 
+			witdth:'100%',
+			overflow:'auto',
 			position:'relative',
 			borderTopStyle:'solid',
 			borderTopColor:'#c5c5c5',
 			paddingTop:'5px'
 		}
-		
+
 		var styleText= {
-			fontSize:'18px', 
-			overflow:'hidden', 
+			fontSize:'18px',
+			overflow:'hidden',
 			padding:'5px',
 			marginBottom:'20px',
 			lineHeight:'1.5',
 			textAlign:'justify'
 		}
-		
+
 		var styleNavButtons= {
 			display:'flex',
 			position:'relative',
@@ -264,7 +258,7 @@ class Question extends Component {
 			margin:'10px',
 			marginTop:'20px'
 		}
-		
+
 		var styleNavButtonPrev= {
 			minHeight:'50px',
 			backgroundColor:'#6c6c6c',
@@ -273,7 +267,9 @@ class Question extends Component {
 			position:'relative',
 			display:'flex',
 			alignItems:'center',
-			borderRadius:'10px'
+			borderRadius:'10px',
+			visibility:'visible',
+			cursor: 'default'
 		}
 		var styleNavButtonNext= {
 			minHeight:'50px',
@@ -285,7 +281,7 @@ class Question extends Component {
 			alignItems:'center',
 			borderRadius:'10px'
 		}
-		
+
 		var style3= {
 			textAlign:'center',
 			width:'100%',
@@ -294,7 +290,7 @@ class Question extends Component {
 			MsUserSelect:'none',
 			UserSelect:'none'
 		};
-		
+
 		/*chechs to see if any of the navbuttons needs adjustment for first/last*/
 		/*Nice pale error red:#EF4E45*/
 		var nextText='Next';
@@ -302,12 +298,16 @@ class Question extends Component {
 			nextText='Finish';
 			styleNavButtonNext.backgroundColor='#5EBC43';
 		}
-		
+
 		if(this.state.firstQuestion===true) {
-			styleNavButtonPrev.backgroundColor='#e2e2e2';
+			//styleNavButtonPrev.backgroundColor='#e2e2e2';
+			//styleNavButtonPrev.visibility='hidden';
+			styleNavButtonPrev.cursor='default';
 		}
 		else {
-			styleNavButtonPrev.backgroundColor='#6c6c6c';
+			//styleNavButtonPrev.backgroundColor='#6c6c6c';
+			styleNavButtonPrev.visibility='visible';
+			styleNavButtonPrev.cursor='pointer';
 		}
 		return (
 			<div style={styleQuestion}>
@@ -317,18 +317,16 @@ class Question extends Component {
 				{/*chosen:{this.state.chosenAnswer}*/}
 				<div>
 					{
-					/*Consider whether to use text or id as key. 
-					 * Chose whichever is unique/most likely to be*/
 						this.state.data.alternatives.map((alternative)=> {
-							return(<Answer 
-									key={alternative.text}
+							return(<Answer
+									key={alternative.choice_text}
 									opNr={alternative.id}
-									text={alternative.text}
+									text={alternative.choice_text}
 									toggleCallback={this.changeToggle}
 									curOn={this.state.chosenAnswer}/>)
 						})
 					}
-					
+
 					<div className="navButtons" style={styleNavButtons}>
 						<button className="styleNavButtonPrev" style={styleNavButtonPrev} onClick={this.prevQuestion} disabled={this.state.firstQuestion}>
 							<div style={style3}>Previous</div>
@@ -355,12 +353,12 @@ class Answer extends Component {
 			};
 		this.handleChange = this.handleChange.bind(this);
 	}
-	
+
 	handleChange() {
 		this.props.toggleCallback(this.state.idNum);
 		/*console.log("Handle change");*/
 	}
-	
+
 	componentWillMount() {
 		if(this.props.curOn === this.state.idNum) {
 			this.setState({chosen:true});
@@ -369,7 +367,7 @@ class Answer extends Component {
 			this.setState({chosen:false});
 		}
 	}
-	
+
 	componentWillReceiveProps(nextProps) {
 		if(nextProps.curOn === this.state.idNum) {
 			this.setState({chosen:true});
@@ -378,7 +376,7 @@ class Answer extends Component {
 			this.setState({chosen:false});
 		}
 	}
-	
+
 	render() {
 		/*console.log("render number " +this.state.idNum+ ", chosen=" + this.state.chosen);*/
 		var background ='';
@@ -388,11 +386,11 @@ class Answer extends Component {
 		else {
 			background='#68B1FF';
 		}
-		
+
 		const style1= {
 			position:'relative',
-			cursor:'pointer', 
-			textAlign:'center', 
+			cursor:'pointer',
+			textAlign:'center',
 			backgroundColor:background,
 			color:'#ffffff',
 			minHeight:'50px',
@@ -403,7 +401,7 @@ class Answer extends Component {
 			borderRadius:'10px',
 			borderStyle:'none'
 		}
-		
+
 		const style2= {
 			textAlign:'center',
 			fontSize:'15px',
@@ -413,12 +411,12 @@ class Answer extends Component {
 			MsUserSelect:'none',
 			UserSelect:'none',
 		}
-		
+
 		const answerWrapper= {
 			position:'relative',
 			margin:'10px'
 		}
-		
+
 		return (
 			<div style={answerWrapper}>
 				<button style={style1} onClick={this.handleChange}>
