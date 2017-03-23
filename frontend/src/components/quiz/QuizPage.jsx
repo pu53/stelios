@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-//import { Container, Grid, Button, Segment} from 'semantic-ui-react';
-import { Grid } from 'semantic-ui-react';
+import React, { Component} from 'react';
+import { Container, Grid, Button, Segment} from 'semantic-ui-react';
 import { SearchBar } from '../SearchBar';
 import { Quiz } from './Quiz';
 import { getData } from '../../helpers.jsx';
@@ -10,54 +9,49 @@ export class QuizPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			render_count:0,
-			inQuiz:true,
+			inQuiz:false,
 			quiz_data:[],
 			url_suffix:"quiz/data/9/"
 		};
-		this.fetchData = this.fetchData.bind(this);
-		this.dataLoaded = this.dataLoaded.bind(this);
-		this.data_loaded = false;
+		this.fetchData = this.fetchData.bind(this)
+	}
+
+	componentWillMount() {
 		this.fetchData()
 	}
 
-	componentDidMount() {
-		//this.fetchData()
-	}
-	
-	componentDidUpdate() {
-	
-	}
-	
-	dataLoaded() {
-		console.log("Callback from the update")
-		console.log("This is the data in state: " + this.state.quiz_data)
-		if(this.state.quiz_data !== undefined) {
-			this.data_loaded = !this.data_loaded
-			console.log("Quizdata er endelig i state!!!!")
+	fetchData() {
+		var url = this.state.url_suffix
+		var link = '';
+		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+			link = 'http://localhost:8000/'+ url;
+		} else {
+			link = 'http://api.stelios.no/'+ url;
 		}
-		this.forceUpdate()
+		//generated request
+		var request = new Request(link, {
+			method: 'GET',
+			headers: {
+				'Accept': 'application/json',
+			},
+		});
+
+		fetch(request).then((res) => {
+			console.log("Status: "+ res.status)
+			return res.json();
+		})
+		.then((res) => {
+			console.log("found data: " + res);
+			this.setState({
+				quiz_data:res
+			})
+		}).catch((e) => {
+			console.log(e);
+		});
 	}
 
-	fetchData(){
-		/*const url = this.state.url_suffix;
-		
-		getData(
-			url,
-			(()=>{}),
-			((res) => {
-				console.log(res.questions[1].choices[0].choice_text)
-				console.log("In the method fetching the result, the data is:")
-				console.log(res)
-				this.setState({
-					quiz_data: res
-				}, this.dataLoaded);
-			}),
-			(()=>{})
-		);
-	}*/
 
-		
+		/*
 		const question1 = {
 		id:4,
 		text:"How and why the great badger of doom ended "+
@@ -100,15 +94,12 @@ export class QuizPage extends Component {
 			title:"This is a quiz from data passed through props"
 		};
 		this.setState({quiz_data:data});
-	}
-		
+		*/
 
 	render() {
+		console.log("in render, the data in state is: " + this.state.quiz_data)
 		if(this.state.inQuiz) {
-			console.log("data_loaded = " + this.data_loaded)
-			if(this.data_loaded) {
-				console.log("in render, the data in state is: " + this.state.quiz_data)
-				return(
+			return(
 				<Grid>
 					<Grid.Row>
 						<Grid.Column width={16}>
@@ -116,12 +107,7 @@ export class QuizPage extends Component {
 						</Grid.Column>
 					</Grid.Row>
 				</Grid>
-				);
-			}
-			
-			return(
-				<div>{this.state.quiz_data.title} is loading...</div>
-			)
+			);
 		}
 		else {
 			return(
@@ -132,9 +118,7 @@ export class QuizPage extends Component {
 
 					<Grid.Row>
 						<Grid.Column width={4}>
-							<div>
-							
-							</div>
+							<div>{this.state.quiz_data.id}</div>
 						</Grid.Column>
 					</Grid.Row>
 				</Grid>

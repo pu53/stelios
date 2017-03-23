@@ -122,7 +122,7 @@ export class Quiz extends Component {
 
 	render() {
 		/*TODO: Make the quiz generate a title if none is specified*/
-		
+		/*
 		if(this.state.finished===false) {
 			return (
 			<Container className="quizWrapper">
@@ -166,7 +166,7 @@ export class Quiz extends Component {
 					<FeedbackContainer />
 				</Container>
 			);
-		}
+		}*/
 	}
 }
 

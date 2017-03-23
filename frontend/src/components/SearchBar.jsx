@@ -36,7 +36,7 @@ export class SearchBar extends Component {
 	 *the "data" prop is defined, the component will display this data exclusivly.
 	 *Relevant props: type, data, template*/
 	fetchData() {
-		//console.log("Fetching data to search field")
+		console.log("Fetching data to search field")
 		/*Link path in 3 parts: the host + the table + the fields*/
 		var link = '';
 		
@@ -103,7 +103,7 @@ export class SearchBar extends Component {
 	}
 	
 	componentWillMount() {
-		this.resetComponent()
+	this.resetComponent()
 	}
 	
 	handleSearchChange = (e, value) => {
