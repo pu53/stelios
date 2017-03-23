@@ -104,3 +104,33 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
     handleError(e.toString());
   });
 }
+
+export function getDataSimple(url, handleData) {
+    console.log("fetching data");
+    //builds the link with respect to production/development
+    var link = '';
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+      link = 'http://localhost:8000/'+ url;
+    } else {
+      link = 'http://api.stelios.no/'+ url;
+    }
+    //generated request
+    var request = new Request(link, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    //javascripts fetch method. after fetch is executed and respone is recived,
+    //the first .then() is called, and after that the next .then()
+    fetch(request).then((res) => {
+      console.log(res.status)
+      return res.json();
+    })
+    .then((res) => {
+        handleData(res)
+    }).catch((e) => {
+      console.log(e);
+    });
+}

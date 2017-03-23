@@ -65,7 +65,7 @@ export class App extends Component {
             }
             <Grid.Row>
               <Grid.Column width={16}>
-                <SearchBar type="semantic"/>
+                {/*<SearchBar type="semantic"/>*/}
               </Grid.Column>
             </Grid.Row>
           </Grid>

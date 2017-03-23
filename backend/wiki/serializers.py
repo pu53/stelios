@@ -21,6 +21,11 @@ class SubjectSerializer(QueryFieldsMixin,serializers.ModelSerializer):
         model = Subject
         fields= ('__all__')
 
+class SubjectInfoSerializer(QueryFieldsMixin,serializers.ModelSerializer):
+    class Meta:
+        model = Subject
+        fields= ('id', 'name', 'description')
+
 
 class TopicOnlyIdAndNameSerializer(QueryFieldsMixin,serializers.ModelSerializer):
     class Meta:
