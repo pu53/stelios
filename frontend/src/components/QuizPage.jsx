@@ -21,7 +21,7 @@ export class QuizPage extends Component {
 	}
 	
 	fetchData() {
-		/*var url = this.state.url_suffix
+		var url = this.state.url_suffix
 		var link = '';
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 			link = 'http://localhost:8000/'+ url;
@@ -37,18 +37,16 @@ export class QuizPage extends Component {
 		});
 		fetch(request).then((res) => {
 			//console.log(res);
-			return res.json();
-		})
-		.then((res) => {
 			console.log("The fetched json data, right before it's put into state: " + res);
 			this.setState({
-				quiz_data:res
+				quiz_data:res.json()
 			});
-		}).catch((e) => {console.log(e)});
+		})
+		.catch((e) => {console.log(e)});
 		//console.log("data: " + data)
-		*/
 		
 		
+		/*
 		const question1 = {
 		id:4,
 		text:"How and why the great badger of doom ended "+
@@ -91,7 +89,7 @@ export class QuizPage extends Component {
 			title:"This is a quiz from data passed through props"
 		};
 		this.setState({quiz_data:data});
-		
+		*/
 	}
 	
 	render() {

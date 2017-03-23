@@ -26,7 +26,7 @@ export class Quiz extends Component {
 			finished:false,
 			number_of_questions:0,
 			currently_asking:1,
-			title:"This is a quiz about something",
+			title:"No title found",
 			questions:[],
 			answers:[]
 			};
@@ -266,7 +266,9 @@ class Question extends Component {
 			position:'relative',
 			display:'flex',
 			alignItems:'center',
-			borderRadius:'10px'
+			borderRadius:'10px',
+			visibility:'visible',
+			cursor: 'default'
 		}
 		var styleNavButtonNext= {
 			minHeight:'50px',
@@ -297,10 +299,14 @@ class Question extends Component {
 		}
 		
 		if(this.state.firstQuestion===true) {
-			styleNavButtonPrev.backgroundColor='#e2e2e2';
+			//styleNavButtonPrev.backgroundColor='#e2e2e2';
+			//styleNavButtonPrev.visibility='hidden';
+			styleNavButtonPrev.cursor='default';
 		}
 		else {
-			styleNavButtonPrev.backgroundColor='#6c6c6c';
+			//styleNavButtonPrev.backgroundColor='#6c6c6c';
+			styleNavButtonPrev.visibility='visible';
+			styleNavButtonPrev.cursor='pointer';
 		}
 		return (
 			<div style={styleQuestion}>
