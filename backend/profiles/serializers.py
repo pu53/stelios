@@ -9,10 +9,10 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     #profile = serializers.PrimaryKeyRelatedField(many=False, queryset=Profile.objects.all())
-    #profile = ProfileSerializer()
+    profile = ProfileSerializer()
     class Meta:
         model = User
-        fields = ('id', 'username')
+        fields = ('id', 'username', 'profile')
 
 
 class ProfileDataSerializer(serializers.Serializer):

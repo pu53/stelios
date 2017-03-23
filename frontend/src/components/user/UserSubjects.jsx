@@ -1,23 +1,18 @@
 import React from 'react'
-import { getDataSimple} from '../../helpers'
+import { Menu } from 'semantic-ui-react'
 
 export class UserSubjects extends React.Component {
     constructor(props) {
 		super(props);
 		this.state = ({
 			data: {},
-			value: '',
-            data2: {}
-			});
+			value: ''
+		});
 	}
-
-    componentWillUpdate() {
-
-    }
 
     fetchData(){
         var link = '';
-        var url = 'users/1/';
+        var url = 'users/data/1/?format=json';
         if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
           link = 'http://localhost:8000/'+ url;
         } else {
@@ -33,69 +28,31 @@ export class UserSubjects extends React.Component {
         });
 
         fetch(request).then((res) => {
-          console.log(res.status)
+          console.log(res.status);
           return res.json();
         })
         .then((res) => {
-          this.setState({data:res})
-          handleData = (subjects) => {
-              this.setState({
-                  data2: subjects
-              })
-              var newList = []
-              res.profile.subjects.map((subject) => {
-                  if (subjects.)
-              })
-          }
-
-          getDataSimple("subjects/?fields=id,name", handleData)
-          console.log(res)
+          this.setState({data:res});
+          console.log(res.username);
         }).catch((e) => {
           console.log(e);
         });
-
     }
 
     componentWillMount(){
         this.fetchData();
-
-
     }
-
-
-    /*
-    getSubjectNames(n) {
-        console.log("getSubjectNames")
-        try {
-          let response = fetch('localhost:8000/subjects/' + n);
-          let responseJson = response.json();
-          return responseJson.name;
-        } catch(error) {
-          console.error(error);
-        }
-
-        handleStatus = (res) => {
-            console.log("hei");
-        }
-        getData(handleStatus)
-    }
-    */
-
 
     render() {
-        console.log("data: ", this.state.data)
         if(Object.keys(this.state.data).length > 0){
             return (
-                <div class="ui vertical menu">
-                <ul>
-                   {this.state.data.profile.subjects.map(function(subject, index){
-
-                       {/*return <li key={ index }>{subject}</li>;*/}
-                       {/*return <a href="#" class="item">{ index }</a>;*/}
-                       return <a href="#" class="item">{ getDataSimple("subjects/" + subject, ) }</a>;
-                     })}
-               </ul>
-                </div>
+                <div>
+                    <Menu fluid vertical>
+                       {this.state.data.subjects.map(function(subject){
+                           return <Menu.Item href='#'>{ subject.name }</Menu.Item>;
+                         })}
+                    </Menu>
+               </div>
 
             );
         } else {
