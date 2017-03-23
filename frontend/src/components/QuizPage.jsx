@@ -10,8 +10,10 @@ export class QuizPage extends Component {
 		super(props);
 		this.state = {
 			inQuiz:true,
-			quizData:[]
+			quiz_data:[], 
+			url_suffix:"quiz/data/1"
 		};
+		this.fetchData = this.fetchData.bind(this)
 	}
 	
 	componentWillMount() {
@@ -19,6 +21,32 @@ export class QuizPage extends Component {
 	}
 	
 	fetchData() {
+		/*var url = this.state.url_suffix
+		var link = '';
+		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+			link = 'http://localhost:8000/'+ url;
+		} else {
+			link = 'http://api.stelios.no/'+ url;
+		}
+		//generated request
+		var request = new Request(link, {
+			method: 'GET',
+			headers: {
+				'Accept': 'application/json',
+			},
+		});
+		fetch(request).then((res) => {
+			//console.log(res);
+			return res.json();
+		})
+		.then((res) => {
+			console.log("The fetched json data, right before it's put into state: " + res);
+			this.setState({
+				quiz_data:res
+			});
+		}).catch((e) => {console.log(e)});
+		//console.log("data: " + data)
+		*/
 		
 		
 		const question1 = {
@@ -28,54 +56,52 @@ export class QuizPage extends Component {
 			"in south american ancient history. What, however, "+
 			"is today the most recognised theory?",
 		alternatives:[
-			{id:1, text:"It ate them"},
-			{id:2, text:"It scared them to death"},
-			{id:3, text:"The adverse effect the badger had on local fauna"}
+			{id:1, choice_text:"It ate them"},
+			{id:2, choice_text:"It scared them to death"},
+			{id:3, choice_text:"The adverse effect the badger had on local fauna"}
 			],
 		subtopic:'badgers',
-		correctID:1
 		};
 		
 		const question2 = {
 		id:7,
 		text:"What is considered the most influential paper on tea and crackers?",
 		alternatives:[
-			{id:1, text:"Objectivity in a subjective science, on the importance of peer review when doing taste tests"},
-			{id:2, text:"Air humidity and cracker elasticity"},
-			{id:3, text:"An unhealthy orthodoxy-on how black tea has been displaced by fruit tea"}
+			{id:1, choice_text:"Objectivity in a subjective science, on the importance of peer review when doing taste tests"},
+			{id:2, choice_text:"Air humidity and cracker elasticity"},
+			{id:3, choice_text:"An unhealthy orthodoxy-on how black tea has been displaced by fruit tea"}
 			],
 		subtopic:'foodstuffs',
-		correctID:1
 		};
 		
 		const question3 = {
 		id:8,
 		text:"Which data structure benefits greatly when implementations do so-called \"Robin Hooding\"?",
 		alternatives:[
-			{id:1, text:"Priority Stack"},
-			{id:2, text:"Hash Map"},
-			{id:3, text:"Priority Queue"},
-			{id:5, text:"Red-Black Tree"}
+			{id:1, choice_text:"Priority Stack"},
+			{id:2, choice_text:"Hash Map"},
+			{id:3, choice_text:"Priority Queue"},
+			{id:5, choice_text:"Red-Black Tree"}
 			],
 		subtopic:'Algorithms',
-		correctID:2
 		};
 		var all_questions = [question1, question2, question3];
 		var data = {
 			questions:all_questions,
 			title:"This is a quiz from data passed through props"
 		};
-		this.setState({quizData:data});
+		this.setState({quiz_data:data});
+		
 	}
 	
 	render() {
-		
+		console.log("in render, the data in state is: " + this.state.quiz_data)
 		if(this.state.inQuiz) {
 			return(
 				<Grid>
 					<Grid.Row>
 						<Grid.Column width={16}>
-							<Quiz data={this.state.quizData}/>
+							<Quiz data={this.state.quiz_data} refresh={this.fetchData}/>
 						</Grid.Column>
 					</Grid.Row>
 				</Grid>
@@ -90,7 +116,7 @@ export class QuizPage extends Component {
 					
 					<Grid.Row>
 						<Grid.Column width={4}>
-							<div></div>
+							<div>{this.state.quiz_data.title}</div>
 						</Grid.Column>
 					</Grid.Row>
 				</Grid>

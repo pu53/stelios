@@ -11,7 +11,7 @@ urlpatterns = [
 	url(r'^choice/$', views.ChoiceList.as_view()),
 	url(r'^choice/(?P<pk>[0-9]+)/$', views.ChoiceDetail.as_view()),
 	#quiz/full/$ should return a json with all the data a quiz needs for presentation
-	url(r'^quiz/full/$', views.QuizList.as_view()),
+	url(r'^quiz/data/(?P<pk>[0-9]+)/$', views.QuizData.as_view()),
 	#url(r'^question/full/$')
 
 ]

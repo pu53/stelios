@@ -17,5 +17,17 @@ class ChoiceSerializer(QueryFieldsMixin,serializers.ModelSerializer):
 class QuizSerializer(QueryFieldsMixin,serializers.ModelSerializer):
 	class Meta:
 		model = Quiz
-		fiels = ('__all__')
-		
+		fields = ('__all__')
+
+class ChoiceDataSerializer(serializers.Serializer):
+	id = serializers.IntegerField(read_only=True)
+	choice_text = serializers.CharField(max_length = 200)
+
+class QuestionDataSerializer(serializers.Serializer):
+	id = serializers.IntegerField(read_only=True)
+	text = serializers.CharField(max_length = 1000)
+	
+
+class QuizDataSerializer(serializers.Serializer):
+	id = serializers.IntegerField(read_only=True)
+	title = serializers.CharField(max_length=200)

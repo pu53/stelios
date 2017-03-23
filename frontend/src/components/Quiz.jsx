@@ -38,35 +38,37 @@ export class Quiz extends Component {
 		this.fetchData();
 	}
 
+	componentWillReceiveProps(nextProps) {
+		this.fetchData();
+	}
 	/*
 	 * If the quiz is a saved quiz, (explicitly saved with an id), the component
 	 * should load relevant data. Otherwise it can either take a dictionary
 	 * with data passed by props to turn into a quiz, or get a list of topics, 
 	 * subtopics and subjects and use these to generate a quiz. Pass topics etc
 	 * via id
-	 *
-	 * Quiz data format: 
-	 * 	{
-	 * 		title:String #bonus feature:if undefined, generate name based on contents
-	 * 		subjects:[] 
-	 * 		topics:[]
-	 * 		sub-topics:[] #subjects and topics gets broken down into sub-topics
+	 * 
+	 * Quiz data format:
+	 * {
+	 * 		id:int
+	 * 		title:"",
 	 * 		questions:[]
-	 *  }
+	 * }
 	 * 
 	 * Question data format:
 	 * {
 	 * 		text:""
-	 * 		alternatives:{
+	 * 		choices:{
 	 * 			id:int
-	 * 			text:""}
-	 * 		subtopic:foregin key
+	 * 			choice_text:""}
+	 * 		subtopic:""
 	 * }
 	 * NB: Question id -1 is reserved as default answer
 	 * 	Idea: Difficulty property per question?
 	 */
 	fetchData() {
 		if (this.props.data !== undefined) {
+			console.log("The quiz received this data: " + this.props.data)
 			this.setState({
 				title:this.props.data.title,
 				questions:this.props.data.questions,
@@ -74,18 +76,8 @@ export class Quiz extends Component {
 			});
 		}
 		else {
-			
-			var host = '';
-			if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-				host = 'http://localhost:8000';
-			}
-			else {
-				host ='http://api.stelios.no';
-			}
-			
-			var url = host
-			
-			var request = new Request({url});
+			console.error("Give the quiz element some data!")
+			//this.props.fetchData()
 		}
 		/*test data*/
 		
@@ -130,7 +122,6 @@ export class Quiz extends Component {
 	
 	render() {
 		/*TODO: Make the quiz generate a title if none is specified*/
-		this.state.finished=true;	
 		if(this.state.finished===false) {
 			return (
 			<Container className="quizWrapper">
@@ -161,7 +152,7 @@ export class Quiz extends Component {
 		else {
 			
 			var counter=-1;
-			console.log("questions "+this.props.data.questions)
+			//console.log("questions "+this.props.data.questions)
 			return(
 				<Container className="quizWrapper">
 					<h1>the quiz is finished!</h1>
@@ -194,7 +185,7 @@ class Question extends Component {
 		this.prevQuestion = this.prevQuestion.bind(this);
 	}
 	
-	componentWillMount() {
+	componentDidMount() {
 		this.setState({
 			data:this.props.data,
 			firstQuestion:this.props.firstQuestion,
@@ -319,13 +310,11 @@ class Question extends Component {
 				{/*chosen:{this.state.chosenAnswer}*/}
 				<div>
 					{
-					/*Consider whether to use text or id as key. 
-					 * Chose whichever is unique/most likely to be*/
 						this.state.data.alternatives.map((alternative)=> {
 							return(<Answer 
-									key={alternative.text}
+									key={alternative.choice_text}
 									opNr={alternative.id}
-									text={alternative.text}
+									text={alternative.choice_text}
 									toggleCallback={this.changeToggle}
 									curOn={this.state.chosenAnswer}/>)
 						})

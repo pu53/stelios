@@ -55,54 +55,34 @@ export class SearchBar extends Component {
 		
 		/*using templates to define a database query*/
 		else {
-			 var table  = "";
-		var fields = "";
-		var template = this.props.template;
-		
-		/*checking template and fetches data defined by template*/
-		if(this.props.template !== undefined) {
-			console.log("found template!")
-			if(template === "subjects") {
-				table  = "subjects";
-				fields = "id,name";
+			
+			
+			if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+				link = 'http://localhost:8000/subjects/?fields=id,name'
+			// dev code
+			} else {
+				link = 'http://api.stelios.no/subjects/?fields=id,name'
+			// production code
 			}
 			
-			if(template === "topic_filter") {
-				table = "topics";
-				fields = "id,name";
-			}
-		}
-		
-		link = host+"/"+table+"?fields="+fields;
-		console.log("Link = "+link);
-		
-		/*
-		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			link = 'http://localhost:8000/subjects/?fields=id,name'
-		// dev code
-		} else {
-			link = 'http://api.stelios.no/subjects/?fields=id,name'
-		// production code
-		}*/
-		
-		var request = new Request(link, {
-			method: 'GET',
-			headers: {
-				'Accept': 'application/json',
-			},
-		});
-		
-		fetch(request).then((res) => {
-			console.log(res);
-			return res.json();
-		})
-		.then((res) => {
-		console.log(res);
-		
-		this.setState({
-			data:res
+			var request = new Request(link, {
+				method: 'GET',
+				headers: {
+					'Accept': 'application/json',
+				},
 			});
-		}).catch((e) => {console.log(e)});
+			
+			fetch(request).then((res) => {
+				console.log(res);
+				return res.json();
+			})
+			.then((res) => {
+			console.log(res);
+			
+			this.setState({
+				data:res
+				});
+			}).catch((e) => {console.log(e)});
 		}
 	}
 	//taken from http://react.semantic-ui.com/modules/search#category
