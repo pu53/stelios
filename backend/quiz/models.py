@@ -27,4 +27,3 @@ class Choice(models.Model):
 	subtopic = models.CharField(max_length=200)
 	def __str__(self):
 		return(self.choice_text)
-

@@ -18,10 +18,11 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.models import User
 from rest_framework.authtoken import views
+from .views import CustomObtainAuthToken
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api-token-auth/', views.obtain_auth_token),
+    url(r'^api-token-auth/', CustomObtainAuthToken.as_view()),
     url(r'^', include('profiles.urls')),
     url(r'^', include('wiki.urls')),
     url(r'^', include('quiz.urls'))

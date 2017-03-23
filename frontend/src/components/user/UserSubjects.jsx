@@ -12,7 +12,7 @@ export class UserSubjects extends React.Component {
 
     fetchData(){
         var link = '';
-        var url = 'users/data/1/?format=json';
+        var url = 'users/data/' + localStorage.getItem('stelios_current_user') + '/?format=json';
         if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
           link = 'http://localhost:8000/'+ url;
         } else {
@@ -44,12 +44,15 @@ export class UserSubjects extends React.Component {
     }
 
     render() {
+        console.log("YAYAYAY");
         if(Object.keys(this.state.data).length > 0){
             return (
+
                 <div>
+                <br />
                     <Menu fluid vertical>
                        {this.state.data.subjects.map(function(subject){
-                           return <Menu.Item href='#'>{ subject.name }</Menu.Item>;
+                           return <Menu.Item href= {'/wiki/'+subject.id}>{ subject.name }</Menu.Item>;
                          })}
                     </Menu>
                </div>
@@ -57,7 +60,7 @@ export class UserSubjects extends React.Component {
             );
         } else {
             return(
-                <div>hei</div>
+                <div>You are not signet in.</div>
             )
         }
     }

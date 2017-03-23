@@ -10,6 +10,7 @@ import { QuizPage } from './components/QuizPage'
 import { UserPage } from './components/user/UserPage'
 import '../semantic/dist/semantic.min.css';
 
+
 ReactDOM.render((
 	<Router history={browserHistory}>
 		<Route path="/" component={App}>
