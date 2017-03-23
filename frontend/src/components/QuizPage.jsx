@@ -9,9 +9,9 @@ export class QuizPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			inQuiz:true,
+			inQuiz:false,
 			quiz_data:[], 
-			url_suffix:"quiz/data/1"
+			url_suffix:"quiz/data/9/"
 		};
 		this.fetchData = this.fetchData.bind(this)
 	}
@@ -35,15 +35,20 @@ export class QuizPage extends Component {
 				'Accept': 'application/json',
 			},
 		});
+		
 		fetch(request).then((res) => {
-			//console.log(res);
-			console.log("The fetched json data, right before it's put into state: " + res);
-			this.setState({
-				quiz_data:res.json()
-			});
+			console.log("Status: "+ res.status)
+			return res.json();
 		})
-		.catch((e) => {console.log(e)});
-		//console.log("data: " + data)
+		.then((res) => {
+			console.log("found data: " + res);
+			this.setState({
+				quiz_data:res
+			})
+		}).catch((e) => {
+			console.log(e);
+		});
+	}
 		
 		
 		/*
@@ -90,7 +95,6 @@ export class QuizPage extends Component {
 		};
 		this.setState({quiz_data:data});
 		*/
-	}
 	
 	render() {
 		console.log("in render, the data in state is: " + this.state.quiz_data)
@@ -114,7 +118,7 @@ export class QuizPage extends Component {
 					
 					<Grid.Row>
 						<Grid.Column width={4}>
-							<div>{this.state.quiz_data.title}</div>
+							<div>{this.state.quiz_data.id}</div>
 						</Grid.Column>
 					</Grid.Row>
 				</Grid>
