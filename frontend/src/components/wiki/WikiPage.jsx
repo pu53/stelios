@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dimmer, Loader, Grid, Button, Divider, Segment, List, Form, Input, Message, Dropdown, Header} from 'semantic-ui-react'
+import { Grid, Divider, Segment } from 'semantic-ui-react'
 import { browserHistory } from 'react-router'
 import { Subject } from './Subject'
 import { Edit } from './Edit'
