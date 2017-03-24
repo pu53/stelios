@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from quiz.models import Choice, Question, Quiz
+from quiz.models import Choice, Question, Quiz, Answer
 from django.contrib.auth.models import User
 from drf_queryfields import QueryFieldsMixin
 
@@ -18,6 +18,11 @@ class QuizSerializer(QueryFieldsMixin,serializers.ModelSerializer):
 
 	class Meta:
 		model = Quiz
+		fields = ('__all__')
+
+class AnswerSerializer(QueryFieldsMixin,serializers.ModelSerializer):
+	class Meta:
+		model = Answer
 		fields = ('__all__')
 
 class ChoiceDataSerializer(serializers.Serializer):

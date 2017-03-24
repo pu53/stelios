@@ -2,8 +2,10 @@ import React, { Component} from 'react';
 import { Container, Grid, Button, Segment} from 'semantic-ui-react';
 import { SearchBar } from '../SearchBar';
 import { Quiz } from './Quiz';
+import { QuizList } from './QuizList.jsx';
 import { getData } from '../../helpers.jsx';
 import '../../styles/quiz_page.css';
+import './quiz_page.css'
 import { Template } from './Template'
 import { CustomMessage } from './CustomMessage'
 
@@ -12,8 +14,8 @@ export class QuizPage extends Component {
 		super(props);
 		this.state = {
 			inQuiz:false,
-      quizState: "none", //state variable to select state of quiz. none, inQuiz and newQuiz are avalible options.
 			quizData:[],
+            quizState: "none", //state variable to select state of quiz. none, inQuiz and newQuiz are avalible options.
 			url_suffix:"quiz/data/1/",
 
 			status: -1, //things for custom message
@@ -21,18 +23,17 @@ export class QuizPage extends Component {
 			neg: false
 		};
 		this.fetchData = this.fetchData.bind(this)
+		this.done_loading = false
 	}
-
+	
 	componentWillMount() {
 		this.fetchData()
 	}
-
   newQuizData = (quiz_data) => {
     this.setState({
-      quiz_data
     })
+      quiz_data
   }
-
 	fetchData() {
 		var url = this.state.url_suffix
 		var link = '';
@@ -48,22 +49,23 @@ export class QuizPage extends Component {
 				'Accept': 'application/json',
 			},
 		});
-
+		
 		fetch(request).then((res) => {
 			console.log("Status: "+ res.status)
 			return res.json();
 		})
 		.then((res) => {
 			console.log("found data: " + res);
+			console.log(res.questions[1].text)
 			this.setState({
-				quiz_data:res
-			})
+				quizData:res
+			}, this.finishLoad())
 		}).catch((e) => {
 			console.log(e);
 		});
-	}
-
-
+	
+		
+		
 		/*
 		const question1 = {
 		id:4,
@@ -78,7 +80,7 @@ export class QuizPage extends Component {
 			],
 		subtopic:'badgers',
 		};
-
+		
 		const question2 = {
 		id:7,
 		text:"What is considered the most influential paper on tea and crackers?",
@@ -89,7 +91,7 @@ export class QuizPage extends Component {
 			],
 		subtopic:'foodstuffs',
 		};
-
+		
 		const question3 = {
 		id:8,
 		text:"Which data structure benefits greatly when implementations do so-called \"Robin Hooding\"?",
@@ -126,12 +128,18 @@ export class QuizPage extends Component {
 	changeQuizState = (quizState) => {
 		this.setState({
 			quizState
-		})
+		}
 	}
-
+	
+	finishLoad() {
+		this.done_loading = true;
+		console.log("Load done, and the data is: " + this.state.quiz_data)
+		this.forceUpdate()
+	}
+	
 	render() {
-		console.log("in render, the data in state is: " + this.state.quiz_data);
-		if(this.state.quizState === "inQuiz") {
+		console.log("in render, the data in state is: " + this.state.quizData.questions !== undefined);
+		if(this.state.quizState === "inQuiz" && this.state.quizData) {
 			return(
 				<Grid>
 					<Grid.Row>
@@ -173,11 +181,14 @@ export class QuizPage extends Component {
 					<Grid.Row>
 						<h1 className="test">This is the quiz page</h1>
 					</Grid.Row>
-
+					
 					<Grid.Row>
 						<Grid.Column width={4}>
 							<Button content="New quiz" onClick={this.onNewClick} />
 						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row>
+						<QuizList />
 					</Grid.Row>
 				</Grid>
 			);
