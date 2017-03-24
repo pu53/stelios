@@ -13,10 +13,10 @@ export class QuizPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			inQuiz:false,
+			inQuiz:true,
 			quizData:[],
-			quizState: "none", //state variable to select state of quiz. none, inQuiz and newQuiz are avalible options.
-			url_suffix:"quiz/data/1/",
+			quizState: "inQuiz", //state variable to select state of quiz. none, inQuiz and newQuiz are avalible options.
+			url_suffix:"quiz/data/",
 
 			status: -1, //things for custom message
 			message: "",
@@ -59,7 +59,6 @@ export class QuizPage extends Component {
 		})
 		.then((res) => {
 			console.log("found data: " + res);
-			console.log(res.questions[1].text)
 			this.setState({
 				quizData:res
 			}, this.finishLoad())
@@ -136,13 +135,14 @@ export class QuizPage extends Component {
 	
 	finishLoad() {
 		this.done_loading = true;
-		console.log("Load done, and the data is: " + this.state.quiz_data)
+		console.log("Load done, and the data is: " + this.state.quizData)
 		this.forceUpdate()
 	}
 	
 	render() {
-		console.log("in render, the data in state is: " + this.state.quizData.questions !== undefined);
-		if(this.state.quizState === "inQuiz" && this.state.quizData) {
+		if(this.state.quizState === "inQuiz" && this.done_loading  && this.state.quizData.questions !== undefined) {
+			console.log("in render, the data in state is: ");
+		
 			return(
 				<Grid>
 					<Grid.Row>
@@ -150,7 +150,7 @@ export class QuizPage extends Component {
 							<CustomMessage onChangeMessage={this.onChangeMessage} status={-1} message={this.state.message} neg={true} />
 						</Grid.Column>
 						<Grid.Column width={16}>
-							<Quiz data={this.state.quiz_data} refresh={this.fetchData}/>
+							<Quiz data={this.state.quizData} refresh={this.fetchData}/>
 						</Grid.Column>
 					</Grid.Row>
 				</Grid>

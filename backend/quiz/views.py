@@ -1,6 +1,6 @@
 
-from quiz.models import Choice, Quiz, Question, Answer 
-from quiz.serializers import ChoiceSerializer, QuestionSerializer, QuizSerializer, AnswerSerializer
+from quiz.models import Choice, Quiz, Question
+from quiz.serializers import ChoiceSerializer, QuestionSerializer, QuizSerializer
 from quiz.serializers import QuizDataSerializer, QuestionDataSerializer, ChoiceDataSerializer
 from profiles.serializers import UserSerializer
 from wiki.serializers import SubtopicNameSerializer
@@ -36,14 +36,6 @@ class QuizList(generics.ListCreateAPIView):
 class QuizDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Quiz.objects.all()
 	serializer_class = QuizSerializer
-
-class AnswerList(generics.ListCreateAPIView):
-	queryset = Answer.objects.all()
-	serializer_class = AnswerSerializer
-
-class AnswerDetail(generics.RetrieveUpdateDestroyAPIView):
-	queryset = Answer.objects.all()
-	serializer_class = AnswerSerializer
 
 """
 An API endpoint giving all the information needed to present a quiz
@@ -93,6 +85,7 @@ class QuizData(APIView):
 		
 		return Response({})
 		
+"""
 class QuizFeedbackData(APIView):
 	
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
@@ -106,5 +99,5 @@ class QuizFeedbackData(APIView):
 		name = user_data.name
 		
 		answers = Answer.objects.filter(userID=pk)
-		
+"""
 		
