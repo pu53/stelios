@@ -120,7 +120,7 @@ export class WikiPage extends React.Component{
 		})
 	}
 
-	//when the component mount we want to fetch data from the server
+	//when the component mounts we want to fetch data from the server
 	componentDidMount() {
 		var id = this.props.params.subjectId;
 		if (id !== undefined) {
