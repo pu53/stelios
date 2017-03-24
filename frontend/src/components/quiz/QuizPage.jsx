@@ -11,7 +11,7 @@ export class QuizPage extends Component {
 		this.state = {
 			inQuiz:true,
 			quiz_data:[], 
-			url_suffix:"quiz/data/1/"
+			url_suffix:"quiz/data/"
 		};
 		this.fetchData = this.fetchData.bind(this)
 		this.done_loading = false
@@ -29,6 +29,9 @@ export class QuizPage extends Component {
 		} else {
 			link = 'http://api.stelios.no/'+ url;
 		}
+		
+		link += this.props.params.quizId;
+		
 		//generated request
 		var request = new Request(link, {
 			method: 'GET',

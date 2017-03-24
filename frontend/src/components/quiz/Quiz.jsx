@@ -92,8 +92,23 @@ export class Quiz extends Component {
 		});
 	}
 	/*Sends the result back to the server*/
-	passData(){
+	postAnswers(){
 		
+		var quizID = this.props.data.id
+		var userID = localStorage.getItem('stelios_current_user')
+		
+		if(userID === null){
+			console.log("Not logged in, quiz will not be saved");
+			return;
+		}
+		
+		var result={
+			quizID:this.props.data.id,
+			userID:userID,
+			questions:this.state.questions,
+			answers:this.state.answers
+		}
+		console.log("Current user: " + result.userID);
 	}
 	
 	/*Updates the answer*/
@@ -117,6 +132,16 @@ export class Quiz extends Component {
 				answers:tempAnsw,
 				currently_asking:this.state.currently_asking+increment
 			});
+		}
+	}
+	
+	areEqual(a, b) {
+		console.log("A: " + a + " B: " + b)
+		if(a===b) {
+			return("True")
+		}
+		else {
+			return("False")
 		}
 	}
 	
@@ -154,13 +179,16 @@ export class Quiz extends Component {
 			
 			var counter=-1;
 			//console.log("questions "+this.props.data.questions)
+			this.postAnswers()
 			return(
 				<Container className="quizWrapper">
 					<h1>the quiz is finished!</h1>
 					{
 						this.state.answers.map((answer)=>{
 							counter++;
-							return <div key={this.state.questions[counter].id}>Question: {this.state.questions[counter].id} Answer: {answer}</div>
+							return <div key={this.state.questions[counter].id}>
+								 Question: {this.state.questions[counter].id}
+								 Answer: {answer} Correct:{this.areEqual(answer,this.state.questions[counter].correct_answer[0].id)} </div>
 						})
 					}
 					<FeedbackContainer />
@@ -300,12 +328,9 @@ class Question extends Component {
 		}
 		
 		if(this.state.firstQuestion===true) {
-			//styleNavButtonPrev.backgroundColor='#e2e2e2';
-			//styleNavButtonPrev.visibility='hidden';
 			styleNavButtonPrev.cursor='default';
 		}
 		else {
-			//styleNavButtonPrev.backgroundColor='#6c6c6c';
 			styleNavButtonPrev.visibility='visible';
 			styleNavButtonPrev.cursor='pointer';
 		}
