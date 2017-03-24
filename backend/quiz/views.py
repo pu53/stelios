@@ -1,6 +1,6 @@
-from django.contrib.auth.models import User
-from quiz.models import Choice, Quiz, Question, Answer
-from quiz.serializers import ChoiceSerializer, QuestionSerializer, QuizSerializer
+
+from quiz.models import Choice, Quiz, Question, Answer 
+from quiz.serializers import ChoiceSerializer, QuestionSerializer, QuizSerializer, AnswerSerializer
 from quiz.serializers import QuizDataSerializer, QuestionDataSerializer, ChoiceDataSerializer
 from profiles.serializers import UserSerializer
 from wiki.serializers import SubtopicNameSerializer
@@ -36,6 +36,14 @@ class QuizList(generics.ListCreateAPIView):
 class QuizDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Quiz.objects.all()
 	serializer_class = QuizSerializer
+
+class AnswerList(generics.ListCreateAPIView):
+	queryset = Answer.objects.all()
+	serializer_class = AnswerSerializer
+
+class AnswerDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Answer.objects.all()
+	serializer_class = AnswerSerializer
 
 """
 An API endpoint giving all the information needed to present a quiz

@@ -1,8 +1,7 @@
 
 import React, { Component} from 'react';
 import { Container, Grid, Button, Segment, List, Divider} from 'semantic-ui-react';
-import { Quiz } from './quiz/Quiz';
-import { getData } from '../helpers.jsx'
+import { getData } from '../../helpers.jsx'
 var Markdown = require('react-remarkable');;
 
 // Component for interpreting a Quiz-result and generate feedback
@@ -10,59 +9,63 @@ var Markdown = require('react-remarkable');;
 export class FeedbackContainer extends React.Component{
 	constructor(props){
 		super();
-		//dummy variable for state.
+		//dummy variable for state. should be passed as props
 		this.state={
-			quizID: 0,
-			quizname: "math 3.2",
-			userID: "userID",
-			user: "username",
+			quizID: 1,
 			answers: [
 				{
-					quiestionID: 0,
-					questionText: "2+2",
-					correct: true,
-					subTopic: "Iteration 1",
-					subTopicID: 1
-				},
-				{
-					quiestionID: 1,
-					questionText: "2-2",
-					correct: true,
-					subTopic: "Iteration 1",
-					subTopicID: 1
-				},
-				{
-					quiestionID: 2,
-					questionText: "(2*2)-1",
-					correct: true,
-					subTopic: "Iteration 2",
-					subTopicID: 2
-				},
-				{
-					quiestionID: 3,
-					questionText: "2+2*(3-2)",
-					correct: false,
-					subTopic: "Iteration 2",
-					subTopicID: 2
-				},
-				{
-					quiestionID: 4,
-					questionText: "2+2*(3-2)",
-					correct: false,
-					subTopic: "Iteration 3",
-					subTopicID: 3
+					quiestionID: 3, //props
+					choice: 5, //props
+					correct: false //standard value, change if wrong
 				},
 				{
 					quiestionID: 5,
-					questionText: "2+2*(3-2)",
-					correct: false,
-					subTopic: "Iteration 3",
-					subTopicID: 3
+					choice: 10
+				},
+				{
+					quiestionID: 9,
+					choice: 15 
+				},
+				{
+					quiestionID: 12,
+					choice: 24
 				}
 			]
 		};
 	} //end of constructor
 
+	/**
+	* 	should correct answers passed by props
+	*	look into database
+	*	cross-reference with questionID-correctanswerto
+	*
+	*
+	*/
+
+	correct(){
+		var answers = this.state.answers;
+
+		for (var i = 0; i < answers.length; i++) {
+			var answer=answers[i];
+			const choice = answer.choice;
+			const questionID = answer.questionID;
+
+			getData("choice/"+choice.toString()+"/",
+				(() => {}),
+				((res) => {
+					console.log(res);
+					if(res.question == questionID){
+						answers[i] = {
+							questionID: questionID,
+							choice: choice,
+							correct: true //only change
+						};
+					}
+				}),
+				(() => {})
+			);
+		}
+	}
 
 	/**
 	* generates a list of weak topics based on the answers 
@@ -149,10 +152,13 @@ export class FeedbackContainer extends React.Component{
 			</List>
 		</div>);
 	}
-
-
 }
 
+/**
+Component for the topics the user hsould look into. 
+gets data from the database her
+@props: weaktopic {ID, Correct} from weaktopics from feedbackcontainer
+*/
 
 class FeedbackSubTopic extends React.Component {
 	constructor(props){

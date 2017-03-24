@@ -2,16 +2,25 @@ import React, { Component} from 'react';
 import { Container, Grid, Button, Segment} from 'semantic-ui-react';
 import { SearchBar } from '../SearchBar';
 import { Quiz } from './Quiz';
+import { QuizList } from './QuizList.jsx';
 import { getData } from '../../helpers.jsx';
+import '../../styles/quiz_page.css';
 import './quiz_page.css'
+import { Template } from './Template'
+import { CustomMessage } from './CustomMessage'
 
 export class QuizPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			inQuiz:true,
-			quiz_data:[], 
-			url_suffix:"quiz/data/"
+			inQuiz:false,
+			quizData:[],
+			quizState: "none", //state variable to select state of quiz. none, inQuiz and newQuiz are avalible options.
+			url_suffix:"quiz/data/1/",
+
+			status: -1, //things for custom message
+			message: "",
+			neg: false
 		};
 		this.fetchData = this.fetchData.bind(this)
 		this.done_loading = false
@@ -20,7 +29,11 @@ export class QuizPage extends Component {
 	componentWillMount() {
 		this.fetchData()
 	}
-	
+  newQuizData = (quiz_data) => {
+    this.setState({
+    })
+      quiz_data
+  }
 	fetchData() {
 		var url = this.state.url_suffix
 		var link = '';
@@ -48,7 +61,7 @@ export class QuizPage extends Component {
 			console.log("found data: " + res);
 			console.log(res.questions[1].text)
 			this.setState({
-				quiz_data:res
+				quizData:res
 			}, this.finishLoad())
 		}).catch((e) => {
 			console.log(e);
@@ -98,7 +111,27 @@ export class QuizPage extends Component {
 			questions:all_questions,
 			title:"This is a quiz from data passed through props"
 		};
-		this.setState({quiz_data:data});*/
+		this.setState({quiz_data:data});
+		*/
+	}
+	onNewClick = (e) => {
+		e.preventDefault()
+		this.setState({
+		  quizState: "newQuiz"
+		})
+	}
+
+	onChangeMessage = (status,message='',neg=false) => {
+		console.log("in onChangeMessage in quiz");
+		this.setState({
+			status,message,neg
+		})
+	}
+
+	changeQuizState = (quizState) => {
+		this.setState({
+			quizState
+		})
 	}
 	
 	finishLoad() {
@@ -108,12 +141,14 @@ export class QuizPage extends Component {
 	}
 	
 	render() {
-		console.log("Is done loading? " + this.done_loading)
-		if(this.state.inQuiz && this.state.quiz_data.questions !== undefined) {
-			console.log("in render, the data in state is: " + this.state.quiz_data)
+		console.log("in render, the data in state is: " + this.state.quizData.questions !== undefined);
+		if(this.state.quizState === "inQuiz" && this.state.quizData) {
 			return(
 				<Grid>
 					<Grid.Row>
+						<Grid.Column width={16}>
+							<CustomMessage onChangeMessage={this.onChangeMessage} status={-1} message={this.state.message} neg={true} />
+						</Grid.Column>
 						<Grid.Column width={16}>
 							<Quiz data={this.state.quiz_data} refresh={this.fetchData}/>
 						</Grid.Column>
@@ -121,17 +156,42 @@ export class QuizPage extends Component {
 				</Grid>
 			);
 		}
+    else if (this.state.quizState === "newQuiz") {
+      return (
+        <Grid>
+					<Grid.Column width={16}>
+						<CustomMessage onChangeMessage={this.onChangeMessage} status={-1} message={this.state.message} neg={true} />
+					</Grid.Column>
+          <Grid.Column width={16}>
+            <Template
+              new={true}
+              newQuizData={this.newQuizData}
+              quizData={this.state.quizData}
+							onChangeMessage={this.onChangeMessage}
+							changeQuizState={this.changeQuizState}
+              />
+          </Grid.Column>
+
+        </Grid>
+      )
+    }
 		else {
 			return(
 				<Grid>
+					<Grid.Column width={16}>
+						<CustomMessage onChangeMessage={this.onChangeMessage} status={-1} message={this.state.message} neg={true} />
+					</Grid.Column>
 					<Grid.Row>
 						<h1 className="test">This is the quiz page</h1>
 					</Grid.Row>
 					
 					<Grid.Row>
 						<Grid.Column width={4}>
-							<div>{this.state.quiz_data.id}</div>
+							<Button content="New quiz" onClick={this.onNewClick} />
 						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row>
+						<QuizList />
 					</Grid.Row>
 				</Grid>
 			);

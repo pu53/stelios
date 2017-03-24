@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './quiz.css'
 import { Container, Segment } from 'semantic-ui-react';
-import { FeedbackContainer} from '../Feedback.jsx'
+import { FeedbackContainer } from './Feedback.jsx'
 
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
