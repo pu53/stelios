@@ -7,7 +7,7 @@ from drf_queryfields import QueryFieldsMixin
 class QuestionSerializer(QueryFieldsMixin,serializers.ModelSerializer):
 	class Meta:
 		model = Question
-		fields = ('__all__')	
+		fields = ('__all__')
 
 class ChoiceSerializer(QueryFieldsMixin,serializers.ModelSerializer):
 	class Meta:
@@ -15,6 +15,7 @@ class ChoiceSerializer(QueryFieldsMixin,serializers.ModelSerializer):
 		fields = ('__all__')
 
 class QuizSerializer(QueryFieldsMixin,serializers.ModelSerializer):
+
 	class Meta:
 		model = Quiz
 		fields = ('__all__')
@@ -26,7 +27,7 @@ class ChoiceDataSerializer(serializers.Serializer):
 class QuestionDataSerializer(serializers.Serializer):
 	id = serializers.IntegerField(read_only=True)
 	text = serializers.CharField(max_length = 1000)
-	
+
 
 class QuizDataSerializer(serializers.Serializer):
 	id = serializers.IntegerField(read_only=True)

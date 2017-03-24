@@ -3,15 +3,22 @@ import { Container, Grid, Button, Segment} from 'semantic-ui-react';
 import { SearchBar } from '../SearchBar';
 import { Quiz } from './Quiz';
 import { getData } from '../../helpers.jsx';
-import '../../styles/quiz_page.css'
+import '../../styles/quiz_page.css';
+import { Template } from './Template'
+import { CustomMessage } from './CustomMessage'
 
 export class QuizPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			inQuiz:false,
-			quiz_data:[],
-			url_suffix:"quiz/data/9/"
+      quizState: "none", //state variable to select state of quiz. none, inQuiz and newQuiz are avalible options.
+			quizData:[],
+			url_suffix:"quiz/data/1/",
+
+			status: -1, //things for custom message
+			message: "",
+			neg: false
 		};
 		this.fetchData = this.fetchData.bind(this)
 	}
@@ -19,6 +26,12 @@ export class QuizPage extends Component {
 	componentWillMount() {
 		this.fetchData()
 	}
+
+  newQuizData = (quiz_data) => {
+    this.setState({
+      quiz_data
+    })
+  }
 
 	fetchData() {
 		var url = this.state.url_suffix
@@ -96,12 +109,35 @@ export class QuizPage extends Component {
 		this.setState({quiz_data:data});
 		*/
 
+  onNewClick = (e) => {
+    e.preventDefault()
+    this.setState({
+      quizState: "newQuiz"
+    })
+  }
+
+	onChangeMessage = (status,message='',neg=false) => {
+		console.log("in onChangeMessage in quiz");
+		this.setState({
+			status,message,neg
+		})
+	}
+
+	changeQuizState = (quizState) => {
+		this.setState({
+			quizState
+		})
+	}
+
 	render() {
-		console.log("in render, the data in state is: " + this.state.quiz_data)
-		if(this.state.inQuiz) {
+		console.log("in render, the data in state is: " + this.state.quiz_data);
+		if(this.state.quizState === "inQuiz") {
 			return(
 				<Grid>
 					<Grid.Row>
+						<Grid.Column width={16}>
+							<CustomMessage onChangeMessage={this.onChangeMessage} status={-1} message={this.state.message} neg={true} />
+						</Grid.Column>
 						<Grid.Column width={16}>
 							<Quiz data={this.state.quiz_data} refresh={this.fetchData}/>
 						</Grid.Column>
@@ -109,16 +145,38 @@ export class QuizPage extends Component {
 				</Grid>
 			);
 		}
+    else if (this.state.quizState === "newQuiz") {
+      return (
+        <Grid>
+					<Grid.Column width={16}>
+						<CustomMessage onChangeMessage={this.onChangeMessage} status={-1} message={this.state.message} neg={true} />
+					</Grid.Column>
+          <Grid.Column width={16}>
+            <Template
+              new={true}
+              newQuizData={this.newQuizData}
+              quizData={this.state.quizData}
+							onChangeMessage={this.onChangeMessage}
+							changeQuizState={this.changeQuizState}
+              />
+          </Grid.Column>
+
+        </Grid>
+      )
+    }
 		else {
 			return(
 				<Grid>
+					<Grid.Column width={16}>
+						<CustomMessage onChangeMessage={this.onChangeMessage} status={-1} message={this.state.message} neg={true} />
+					</Grid.Column>
 					<Grid.Row>
 						<h1 className="test">This is the quiz page</h1>
 					</Grid.Row>
 
 					<Grid.Row>
 						<Grid.Column width={4}>
-							<div>{this.state.quiz_data.id}</div>
+							<Button content="New quiz" onClick={this.onNewClick} />
 						</Grid.Column>
 					</Grid.Row>
 				</Grid>
