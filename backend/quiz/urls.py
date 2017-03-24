@@ -13,6 +13,8 @@ urlpatterns = [
 	#quiz/full/$ should return a json with all the data a quiz needs for presentation
 	url(r'^quiz/data/(?P<pk>[0-9]+)/$', views.QuizData.as_view()),
 	#url(r'^question/full/$')
+	url(r'^answer/$', views.AnswerList.as_view()),
+	url(r'^answer/(?P<pk>[0-9]+)/$', views.AnswerDetail.as_view()),
 
 ]
 

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from quiz.models import Choice, Quiz, Question 
-from quiz.serializers import ChoiceSerializer, QuestionSerializer, QuizSerializer
+from quiz.models import Choice, Quiz, Question, Answer 
+from quiz.serializers import ChoiceSerializer, QuestionSerializer, QuizSerializer, AnswerSerializer
 from quiz.serializers import QuizDataSerializer, QuestionDataSerializer, ChoiceDataSerializer
 from rest_framework import generics
 from rest_framework.response import Response
@@ -35,6 +35,14 @@ class QuizDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Quiz.objects.all()
 	serializer_class = QuizSerializer
 
+class AnswerList(generics.ListCreateAPIView):
+	queryset = Answer.objects.all()
+	serializer_class = AnswerSerializer
+
+class AnswerDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Answer.objects.all()
+	serializer_class = AnswerSerializer
+
 """
 An API endpoint giving all the information needed to present a quiz
 """
@@ -42,7 +50,7 @@ class QuizData(APIView):
 	#authentication_classes = (authentication.TokenAuthentication)
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 	
-	def get(self, request, pk, format=None):
+	def get(self, request, pk, format=json):
 		
 		quiz = Quiz.objects.get(id=pk)
 		quiz_serializer = QuizDataSerializer(quiz)

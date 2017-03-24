@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import { Container, Grid, Button, Segment} from 'semantic-ui-react';
 import { SearchBar } from '../SearchBar';
 import { Quiz } from './Quiz';
+import { QuizList } from './QuizList.jsx';
 import { getData } from '../../helpers.jsx';
 import '../../styles/quiz_page.css'
 
@@ -120,6 +121,9 @@ export class QuizPage extends Component {
 						<Grid.Column width={4}>
 							<div>{this.state.quiz_data.id}</div>
 						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row>
+						<QuizList />
 					</Grid.Row>
 				</Grid>
 			);

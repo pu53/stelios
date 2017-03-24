@@ -1,7 +1,6 @@
 
 import React, { Component} from 'react';
 import { Container, Grid, Button, Segment, List, Divider} from 'semantic-ui-react';
-import { Quiz } from './Quiz';
 import { getData } from '../../helpers.jsx'
 var Markdown = require('react-remarkable');;
 
@@ -13,56 +12,52 @@ export class FeedbackContainer extends React.Component{
 		//dummy variable for state.
 		this.state={
 			quizID: 0,
-			quizname: "math 3.2",
-			userID: "userID",
-			user: "username",
 			answers: [
 				{
 					quiestionID: 0,
-					questionText: "2+2",
 					correct: true,
-					subTopic: "Iteration 1",
 					subTopicID: 1
 				},
 				{
 					quiestionID: 1,
-					questionText: "2-2",
 					correct: true,
-					subTopic: "Iteration 1",
 					subTopicID: 1
 				},
 				{
 					quiestionID: 2,
-					questionText: "(2*2)-1",
 					correct: true,
-					subTopic: "Iteration 2",
 					subTopicID: 2
 				},
 				{
 					quiestionID: 3,
-					questionText: "2+2*(3-2)",
 					correct: false,
-					subTopic: "Iteration 2",
 					subTopicID: 2
 				},
 				{
 					quiestionID: 4,
-					questionText: "2+2*(3-2)",
 					correct: false,
-					subTopic: "Iteration 3",
 					subTopicID: 3
 				},
 				{
 					quiestionID: 5,
-					questionText: "2+2*(3-2)",
 					correct: false,
-					subTopic: "Iteration 3",
 					subTopicID: 3
 				}
 			]
 		};
 	} //end of constructor
 
+	/**
+	* should correct answers passed by props
+	*
+	*
+	*
+	*
+	*/
+
+	correct(){
+		
+	}
 
 	/**
 	* generates a list of weak topics based on the answers 
@@ -151,6 +146,11 @@ export class FeedbackContainer extends React.Component{
 	}
 }
 
+/**
+Component for the topics the user hsould look into. 
+gets data from the database her
+@props: weaktopic {ID, Correct} from weaktopics from feedbackcontainer
+*/
 
 class FeedbackSubTopic extends React.Component {
 	constructor(props){
