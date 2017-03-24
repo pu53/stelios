@@ -6,8 +6,10 @@ import './index.css';
 import { Router, Route, browserHistory, IndexRoute, Redirect} from 'react-router'
 import { Home } from './components/Home'
 import { WikiPage } from './components/wiki/WikiPage'
-import { QuizPage } from './components/QuizPage'
+import { UserPage } from './components/user/UserPage'
+import { QuizPage } from './components/quiz/QuizPage'
 import '../semantic/dist/semantic.min.css';
+
 
 ReactDOM.render((
 	<Router history={browserHistory}>
@@ -22,6 +24,7 @@ ReactDOM.render((
 			<Route path="/quiz/:quizId"/>
 		</Route>
 		<Route path="/test" component={List} />
+		<Route path="/user" component={ UserPage } />
 		<Route path="*" component={Home} />
 		</Route>
 	</Router>),

@@ -13,6 +13,7 @@ export class App extends Component {
       super();
       this.state = ({
         token: localStorage.getItem('stelios_token'),
+        current_user: localStorage.getItem('stelios_current_user'),
         show_login: false
       })
     }
@@ -25,15 +26,18 @@ export class App extends Component {
       } else {
         this.setState({
           token: "null",
+          current_user: "null",
           show_login: false
         });
         localStorage.setItem('stelios_token', "null");
+        localStorage.setItem('stelios_current_user', "null")
       }
     }
 
     successLogin() {
       this.setState({
         token: localStorage.getItem('stelios_token'),
+        current_user: localStorage.getItem('stelios_current_user'),
         show_login: false
       });
     }

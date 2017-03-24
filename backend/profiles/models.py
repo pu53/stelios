@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.conf import settings
 from rest_framework.authtoken.models import Token
 import wiki
+import quiz
 # Create your models here.
 
 # kommentert ut da sudy og year ikke er viktige. kan tas ed senere if need be
@@ -14,7 +15,8 @@ class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	study = models.CharField(max_length=100, default='MTDT')
 	#year = models.IntegerField(default='0')
-	#subjects = models.ManyToManyField("wiki.Subject", blank=True, related_name='profile')
+	subjects = models.ManyToManyField("wiki.Subject", blank=True, related_name='profile')
+	quizes = models.ManyToManyField("quiz.Quiz", blank=True)
 	def __str__(self):
 		return(self.user.username)
 
