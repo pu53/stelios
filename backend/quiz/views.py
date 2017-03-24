@@ -42,7 +42,7 @@ class QuizData(APIView):
 	#authentication_classes = (authentication.TokenAuthentication)
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 	
-	def get(self, request, pk, format=None):
+	def get(self, request, pk, format=json):
 		
 		quiz = Quiz.objects.get(id=pk)
 		quiz_serializer = QuizDataSerializer(quiz)

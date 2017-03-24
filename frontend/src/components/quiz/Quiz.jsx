@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import '../styles/quiz.css'
+import './quiz.css'
 import { Container, Segment } from 'semantic-ui-react';
-import {FeedbackContainer} from './Feedback.jsx'
+import { FeedbackContainer} from '../Feedback.jsx'
 
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
@@ -122,7 +122,7 @@ export class Quiz extends Component {
 	
 	render() {
 		/*TODO: Make the quiz generate a title if none is specified*/
-		/*
+		
 		if(this.state.finished===false) {
 			return (
 			<Container className="quizWrapper">
@@ -160,13 +160,13 @@ export class Quiz extends Component {
 					{
 						this.state.answers.map((answer)=>{
 							counter++;
-							return <div key={this.props.data.questions[counter].id}>Question: {this.props.data.questions[counter].id}Answer: {answer}</div>
+							return <div key={this.state.questions[counter].id}>Question: {this.state.questions[counter].id} Answer: {answer}</div>
 						})
 					}
 					<FeedbackContainer />
 				</Container>
 			);
-		}*/
+		}
 	}
 }
 
@@ -317,11 +317,11 @@ class Question extends Component {
 				{/*chosen:{this.state.chosenAnswer}*/}
 				<div>
 					{
-						this.state.data.alternatives.map((alternative)=> {
+						this.state.data.choices.map((choice)=> {
 							return(<Answer 
-									key={alternative.choice_text}
-									opNr={alternative.id}
-									text={alternative.choice_text}
+									key={choice.choice_text}
+									opNr={choice.id}
+									text={choice.choice_text}
 									toggleCallback={this.changeToggle}
 									curOn={this.state.chosenAnswer}/>)
 						})

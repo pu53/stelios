@@ -68,6 +68,7 @@ export class Login extends React.Component{
 					loading: false
 	      })
 	      localStorage.setItem('stelios_token', res.token);
+		  localStorage.setItem('stelios_current_user', res.id);
 				this.props.success();
 			}
     }).catch((e) => {

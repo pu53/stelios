@@ -1,19 +1,20 @@
 import React, { Component} from 'react';
 import { Container, Grid, Button, Segment} from 'semantic-ui-react';
-import { SearchBar } from './SearchBar';
+import { SearchBar } from '../SearchBar';
 import { Quiz } from './Quiz';
-import { getData } from '../helpers.jsx';
-import '../styles/quiz_page.css'
+import { getData } from '../../helpers.jsx';
+import './quiz_page.css'
 
 export class QuizPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			inQuiz:false,
+			inQuiz:true,
 			quiz_data:[], 
-			url_suffix:"quiz/data/9/"
+			url_suffix:"quiz/data/1/"
 		};
 		this.fetchData = this.fetchData.bind(this)
+		this.done_loading = false
 	}
 	
 	componentWillMount() {
@@ -42,13 +43,14 @@ export class QuizPage extends Component {
 		})
 		.then((res) => {
 			console.log("found data: " + res);
+			console.log(res.questions[1].text)
 			this.setState({
 				quiz_data:res
-			})
+			}, this.finishLoad())
 		}).catch((e) => {
 			console.log(e);
 		});
-	}
+	
 		
 		
 		/*
@@ -93,12 +95,19 @@ export class QuizPage extends Component {
 			questions:all_questions,
 			title:"This is a quiz from data passed through props"
 		};
-		this.setState({quiz_data:data});
-		*/
+		this.setState({quiz_data:data});*/
+	}
+	
+	finishLoad() {
+		this.done_loading = true;
+		console.log("Load done, and the data is: " + this.state.quiz_data)
+		this.forceUpdate()
+	}
 	
 	render() {
-		console.log("in render, the data in state is: " + this.state.quiz_data)
-		if(this.state.inQuiz) {
+		console.log("Is done loading? " + this.done_loading)
+		if(this.state.inQuiz && this.state.quiz_data.questions !== undefined) {
+			console.log("in render, the data in state is: " + this.state.quiz_data)
 			return(
 				<Grid>
 					<Grid.Row>
