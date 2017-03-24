@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu } from 'semantic-ui-react'
+import { Menu, Label, Header, Icon } from 'semantic-ui-react'
 
 export class UserQuizes extends React.Component {
     constructor(props) {
@@ -50,9 +50,10 @@ export class UserQuizes extends React.Component {
 
                 <div>
                 <br />
+                <Header size='large'>Quizes</Header>
                     <Menu fluid vertical>
                        {this.state.data.quizes.map(function(quiz){
-                           return <Menu.Item href= {'/quiz/'+quiz.id}>{ quiz.title }</Menu.Item>;
+                           return <Menu.Item href= {'/quiz/'+quiz.id} ><Icon name='tasks' /> Messages<Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item>;
                          })}
                     </Menu>
                </div>
@@ -60,7 +61,7 @@ export class UserQuizes extends React.Component {
             );
         } else {
             return(
-                <div>You are not signed in.</div>
+                <div></div>
             )
         }
     }

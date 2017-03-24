@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu } from 'semantic-ui-react'
+import { Menu, Header } from 'semantic-ui-react'
 
 export class UserSubjects extends React.Component {
     constructor(props) {
@@ -49,7 +49,7 @@ export class UserSubjects extends React.Component {
             return (
 
                 <div>
-                <br />
+                <Header size='large'>Subjects</Header>
                     <Menu fluid vertical>
                        {this.state.data.subjects.map(function(subject){
                            return <Menu.Item href= {'/wiki/'+subject.id}>{ subject.name }</Menu.Item>;
