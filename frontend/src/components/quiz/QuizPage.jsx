@@ -4,23 +4,24 @@ import { SearchBar } from '../SearchBar';
 import { Quiz } from './Quiz';
 import { QuizList } from './QuizList.jsx';
 import { getData } from '../../helpers.jsx';
-import '../../styles/quiz_page.css'
+import './quiz_page.css'
 
 export class QuizPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			inQuiz:false,
-			quiz_data:[],
-			url_suffix:"quiz/data/9/"
+			inQuiz:true,
+			quiz_data:[], 
+			url_suffix:"quiz/data/1/"
 		};
 		this.fetchData = this.fetchData.bind(this)
+		this.done_loading = false
 	}
-
+	
 	componentWillMount() {
 		this.fetchData()
 	}
-
+	
 	fetchData() {
 		var url = this.state.url_suffix
 		var link = '';
@@ -36,22 +37,23 @@ export class QuizPage extends Component {
 				'Accept': 'application/json',
 			},
 		});
-
+		
 		fetch(request).then((res) => {
 			console.log("Status: "+ res.status)
 			return res.json();
 		})
 		.then((res) => {
 			console.log("found data: " + res);
+			console.log(res.questions[1].text)
 			this.setState({
 				quiz_data:res
-			})
+			}, this.finishLoad())
 		}).catch((e) => {
 			console.log(e);
 		});
-	}
-
-
+	
+		
+		
 		/*
 		const question1 = {
 		id:4,
@@ -66,7 +68,7 @@ export class QuizPage extends Component {
 			],
 		subtopic:'badgers',
 		};
-
+		
 		const question2 = {
 		id:7,
 		text:"What is considered the most influential paper on tea and crackers?",
@@ -77,7 +79,7 @@ export class QuizPage extends Component {
 			],
 		subtopic:'foodstuffs',
 		};
-
+		
 		const question3 = {
 		id:8,
 		text:"Which data structure benefits greatly when implementations do so-called \"Robin Hooding\"?",
@@ -94,12 +96,19 @@ export class QuizPage extends Component {
 			questions:all_questions,
 			title:"This is a quiz from data passed through props"
 		};
-		this.setState({quiz_data:data});
-		*/
-
+		this.setState({quiz_data:data});*/
+	}
+	
+	finishLoad() {
+		this.done_loading = true;
+		console.log("Load done, and the data is: " + this.state.quiz_data)
+		this.forceUpdate()
+	}
+	
 	render() {
-		console.log("in render, the data in state is: " + this.state.quiz_data)
-		if(this.state.inQuiz) {
+		console.log("Is done loading? " + this.done_loading)
+		if(this.state.inQuiz && this.state.quiz_data.questions !== undefined) {
+			console.log("in render, the data in state is: " + this.state.quiz_data)
 			return(
 				<Grid>
 					<Grid.Row>
@@ -116,7 +125,7 @@ export class QuizPage extends Component {
 					<Grid.Row>
 						<h1 className="test">This is the quiz page</h1>
 					</Grid.Row>
-
+					
 					<Grid.Row>
 						<Grid.Column width={4}>
 							<div>{this.state.quiz_data.id}</div>

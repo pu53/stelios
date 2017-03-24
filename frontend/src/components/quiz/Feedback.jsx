@@ -9,54 +9,62 @@ var Markdown = require('react-remarkable');;
 export class FeedbackContainer extends React.Component{
 	constructor(props){
 		super();
-		//dummy variable for state.
+		//dummy variable for state. should be passed as props
 		this.state={
-			quizID: 0,
+			quizID: 1,
 			answers: [
 				{
-					quiestionID: 0,
-					correct: true,
-					subTopicID: 1
-				},
-				{
-					quiestionID: 1,
-					correct: true,
-					subTopicID: 1
-				},
-				{
-					quiestionID: 2,
-					correct: true,
-					subTopicID: 2
-				},
-				{
-					quiestionID: 3,
-					correct: false,
-					subTopicID: 2
-				},
-				{
-					quiestionID: 4,
-					correct: false,
-					subTopicID: 3
+					quiestionID: 3, //props
+					choice: 5, //props
+					correct: false //standard value, change if wrong
 				},
 				{
 					quiestionID: 5,
-					correct: false,
-					subTopicID: 3
+					choice: 10
+				},
+				{
+					quiestionID: 9,
+					choice: 15 
+				},
+				{
+					quiestionID: 12,
+					choice: 24
 				}
 			]
 		};
 	} //end of constructor
 
 	/**
-	* should correct answers passed by props
-	*
-	*
+	* 	should correct answers passed by props
+	*	look into database
+	*	cross-reference with questionID-correctanswerto
 	*
 	*
 	*/
 
 	correct(){
-		
+		var answers = this.state.answers;
+
+		for (var i = 0; i < answers.length; i++) {
+			var answer=answers[i];
+			const choice = answer.choice;
+			const questionID = answer.questionID;
+
+			getData("choice/"+choice.toString()+"/",
+				(() => {}),
+				((res) => {
+					console.log(res);
+					if(res.question == questionID){
+						answers[i] = {
+							questionID: questionID,
+							choice: choice,
+							correct: true //only change
+						};
+					}
+				}),
+				(() => {})
+			);
+		}
 	}
 
 	/**
