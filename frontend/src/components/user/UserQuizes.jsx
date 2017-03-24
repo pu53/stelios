@@ -53,7 +53,7 @@ export class UserQuizes extends React.Component {
                 <Header size='large'>Quizes</Header>
                     <Menu fluid vertical>
                        {this.state.data.quizes.map(function(quiz){
-                           return <Menu.Item href= {'/quiz/'+quiz.id} ><Icon name='tasks' /> Messages<Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item>;
+                           return <Menu.Item href= {'/quiz/'+quiz.id} ><Icon name='tasks' /> <Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item>;
                          })}
                     </Menu>
                </div>
