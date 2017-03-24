@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './quiz.css'
 import { Container, Segment } from 'semantic-ui-react';
-import { FeedbackContainer} from '../Feedback.jsx'
+import { FeedbackContainer} from './Feedback.jsx'
 
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
@@ -122,7 +122,7 @@ export class Quiz extends Component {
 	
 	render() {
 		/*TODO: Make the quiz generate a title if none is specified*/
-		
+		this.state.finished=true;
 		if(this.state.finished===false) {
 			return (
 			<Container className="quizWrapper">

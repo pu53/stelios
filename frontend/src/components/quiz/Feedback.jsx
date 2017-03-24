@@ -14,25 +14,65 @@ export class FeedbackContainer extends React.Component{
 			quizID: 1,
 			answers: [
 				{
-					quiestionID: 3, //props
-					choice: 5, //props
-					correct: false //standard value, change if wrong
+					questionID: 1, //props
+					choice: -1, //props
+					subtopics: [1], //standard value, filled by getsubtopics
+					correct: true //same
 				},
 				{
-					quiestionID: 5,
-					choice: 10
+					questionID: 2,
+					choice: 3,
+					subtopics: [1],
+					correct: true
 				},
 				{
-					quiestionID: 9,
-					choice: 15 
+					questionID: 3,
+					choice: 6,
+					subtopics: [2],
+					correct: false
 				},
 				{
-					quiestionID: 12,
-					choice: 24
+					questionID: 4,
+					choice: 7,
+					subtopics: [3],
+					correct: true
+				},
+				{
+					questionID: 5,
+					choice: 9,
+					subtopics: [2,3],
+					correct: true
 				}
 			]
 		};
 	} //end of constructor
+
+
+	componentDidMount(){
+		//this.correct();
+		//this.getSubTopics();
+	}
+
+	/**
+	should get sutopics related to questions 
+	*/
+	getSubTopics(){
+		var answers = this.state.answers;
+
+		for (var i = 0; i < answers.length; i++) {
+			const id = answers[i].questionID;
+
+			getData("question/"+id.toString()+"/",
+				(()=>{}),
+				((res)=>{
+					const subtopics = res.subtopic;
+
+				}),
+				(()=>{}));
+		}
+		console.log(answers);
+		this.setState(answers);
+	}
 
 	/**
 	* 	should correct answers passed by props
@@ -65,6 +105,9 @@ export class FeedbackContainer extends React.Component{
 				(() => {})
 			);
 		}
+
+		console.log(answers);
+		this.setState(answers);		
 	}
 
 	/**
@@ -81,8 +124,10 @@ export class FeedbackContainer extends React.Component{
 		var subtopics = {};
 		// add all subtopics to the object
 		for(var i=0;i<answers.length;i++){
-			const subtopicID = answers[i].subTopicID;
-			subtopics[subtopicID]=[0,0];
+			for (var j = 0; j < answers[i].subtopics.length; j++) {
+				const subtopicID = answers[i].subtopics[j];
+				subtopics[subtopicID]=[0,0];
+			}
 		}
 
 		// iterate over every answer, finding falsely answered questions
@@ -136,7 +181,7 @@ export class FeedbackContainer extends React.Component{
 		return weaktopicsID;
 
 	}	
-
+	
 	render(){
 		const weaktopics = this.weakTopics();
 		return (<div>
