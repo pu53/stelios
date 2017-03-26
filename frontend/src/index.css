@@ -7,21 +7,20 @@ html, body {
 }
 
 body {
-  background-color:#F5F5F5;
+  background-color:#EEEEEE;
   display: flex;
   min-height: 100vh;
   flex-direction: column;
 }
 
 #root {
-  background-color:#F5F5F5;
+  background-color:#EEEEEE;
   flex:1;
 }
 
 footer {
-  min-height: 70px;
   background-color: #424242;
-  color: #F5F5F5;
+  color: #EEEEEE;
   text-align: center;
   padding-top: 10px;
   padding-bottom: 10px;

@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { NavLink } from './components/NavLink.jsx';
 import { IndexLink } from 'react-router'
-import { Menu, Item, Grid } from 'semantic-ui-react'
+import { Button, Menu, Item, Grid, Segment } from 'semantic-ui-react'
 import { SearchBar } from './components/SearchBar'
 import { Login } from './components/Login'
 
@@ -14,7 +14,8 @@ export class App extends Component {
       this.state = ({
         token: localStorage.getItem('stelios_token'),
         current_user: localStorage.getItem('stelios_current_user'),
-        show_login: false
+        show_login: false,
+        activeItem: 'home'
       })
     }
 
@@ -42,22 +43,26 @@ export class App extends Component {
       });
     }
 
+    handleItemClick = (e, {name}) => {
+      this.setState({
+        activeItem: name
+      })
+    }
+
   render() {
     var login_text = this.state.token === "null" ? "login" : "logout"
     return (
       <div className="App" style={{width:'100%'}}>
-        <div>
-          <Menu>
-            <Menu.Item><IndexLink to="/" activeStyle={{color:"red"}}>Home</IndexLink></Menu.Item>
-            <Menu.Item><NavLink to="/wiki" activeStyle={{color:"red"}}>Wiki</NavLink></Menu.Item>
-            <Menu.Item><NavLink to="/quiz" activeStyle={{color:"red"}}>Quiz</NavLink></Menu.Item>
+        <Segment raised style={{"color":"#212121"}}>
+          <Menu pointing secondary>
+            <Menu.Item name="home" active={this.state.activeItem === 'home'} onClick={this.handleItemClick}><IndexLink to="/">Home</IndexLink></Menu.Item>
+            <Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick}><NavLink to="/wiki">Wiki</NavLink></Menu.Item>
+            <Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick}><NavLink to="/quiz">Quiz</NavLink></Menu.Item>
             <Menu.Menu position='right'>
-              <Menu.Item>
-                <div onClick={() => this.handleLogin(login_text)}>{login_text}</div>
-              </Menu.Item>
+              <Menu.Item onClick={() => this.handleLogin(login_text)}>{login_text}</Menu.Item>
             </Menu.Menu>
           </Menu>
-        </div>
+        </Segment>
         <div id="main_content">
           <Grid>
             {this.state.show_login ?
