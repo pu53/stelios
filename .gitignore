@@ -1,2 +1,4 @@
 gunicorn-access.log
 gunicorn-error.log
+
+backend/backend/__pycache__/
