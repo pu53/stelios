@@ -60,9 +60,9 @@ export class App extends Component {
           </div>
           <div style={{"width":"100%", "background-color": "#303F9F"}}>
             <Menu pointing secondary style={{"padding":"10px 0px 10px 30px"}}>
-              <Menu.Item name="home" active={this.state.activeItem === 'home'} onClick={this.handleItemClick}><IndexLink to="/" style={{"color":"#FFFFFF"}}>Home</IndexLink></Menu.Item>
-              <Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick}><NavLink to="/wiki" style={{"color":"#FFFFFF"}}>Wiki</NavLink></Menu.Item>
-              <Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick}><NavLink to="/quiz" style={{"color":"#FFFFFF"}}>Quiz</NavLink></Menu.Item>
+              <IndexLink to="/"><Menu.Item name="home" active={this.state.activeItem === 'home'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Home</Menu.Item></IndexLink>
+              <NavLink to="/wiki" ><Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Wiki</Menu.Item></NavLink>
+              <NavLink to="/quiz" ><Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Quiz</Menu.Item></NavLink>
               <Menu.Menu position='right'>
                 <Menu.Item onClick={() => this.handleLogin(login_text)} style={{"color":"#FFFFFF"}}>{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item>
               </Menu.Menu>
