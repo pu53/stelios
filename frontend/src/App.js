@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { NavLink } from './components/NavLink.jsx';
 import { IndexLink } from 'react-router'
-import { Button, Menu, Item, Grid, Segment } from 'semantic-ui-react'
+import { Button, Menu, Item, Grid, Segment, Image } from 'semantic-ui-react'
 import { SearchBar } from './components/SearchBar'
 import { Login } from './components/Login'
 
@@ -53,15 +53,21 @@ export class App extends Component {
     var login_text = this.state.token === "null" ? "login" : "logout"
     return (
       <div className="App" style={{width:'100%'}}>
-        <Segment raised style={{"color":"#212121"}}>
-          <Menu pointing secondary>
-            <Menu.Item name="home" active={this.state.activeItem === 'home'} onClick={this.handleItemClick}><IndexLink to="/">Home</IndexLink></Menu.Item>
-            <Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick}><NavLink to="/wiki">Wiki</NavLink></Menu.Item>
-            <Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick}><NavLink to="/quiz">Quiz</NavLink></Menu.Item>
-            <Menu.Menu position='right'>
-              <Menu.Item onClick={() => this.handleLogin(login_text)}>{login_text}</Menu.Item>
-            </Menu.Menu>
-          </Menu>
+        <Segment raised style={{"color":"#FFFFFF","background-color":"#3F51B5","padding":"0 0 0 0"}}>
+          <div style={{"display":"flex", "align-items":"center","margin-top":"px", "margin-bottom":"25px"}}>
+            <Image inverted style={{"margin-left":"20px", "margin-top":"23px", "margin-right":"20px"}} src={process.env.PUBLIC_URL + "logo.png"} width="50px" height="50px" shape="circular"/>
+            <h1>Stelios</h1>
+          </div>
+          <div style={{"width":"100%", "background-color": "#303F9F"}}>
+            <Menu pointing secondary style={{"padding":"10px 0px 10px 30px"}}>
+              <Menu.Item name="home" active={this.state.activeItem === 'home'} onClick={this.handleItemClick}><IndexLink to="/" style={{"color":"#FFFFFF"}}>Home</IndexLink></Menu.Item>
+              <Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick}><NavLink to="/wiki" style={{"color":"#FFFFFF"}}>Wiki</NavLink></Menu.Item>
+              <Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick}><NavLink to="/quiz" style={{"color":"#FFFFFF"}}>Quiz</NavLink></Menu.Item>
+              <Menu.Menu position='right'>
+                <Menu.Item onClick={() => this.handleLogin(login_text)} style={{"color":"#FFFFFF"}}>{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item>
+              </Menu.Menu>
+            </Menu>
+          </div>
         </Segment>
         <div id="main_content">
           <Grid>
