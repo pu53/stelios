@@ -2,7 +2,6 @@ import React, { Component} from 'react';
 import { Grid, Button } from 'semantic-ui-react';
 import { Quiz } from './Quiz';
 import { QuizList } from './QuizList.jsx';
-import '../../styles/quiz_page.css';
 import './quiz_page.css'
 import { Template } from './Template'
 import { CustomMessage } from './CustomMessage'

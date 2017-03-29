@@ -23,5 +23,11 @@ class Choice(models.Model):
 	correct_answer_to = models.ForeignKey(Question, related_name='correct_answer_to', null=True, blank=True)
 	def __str__(self):
 		return(self.choice_text)
+		
+class Answer(models.Model):
+	questionID = models.ForeignKey(Question, related_name='Answer_Question', default=None)
+	choiceID = models.ForeignKey(Choice, related_name='Answer_Choice', default=None)
+	quizID = models.ForeignKey(Quiz, related_name='Answer_Quiz', default=None)
+	userID = models.ForeignKey("profiles.Profile", related_name='Answer_User', default=None)
 
 
