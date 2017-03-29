@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { NavLink } from './components/NavLink.jsx';
 import { IndexLink } from 'react-router'
-import { Menu, Item, Grid } from 'semantic-ui-react'
+import { Button, Menu, Item, Grid, Segment, Image } from 'semantic-ui-react'
 import { SearchBar } from './components/SearchBar'
 import { Login } from './components/Login'
 
@@ -14,7 +14,8 @@ export class App extends Component {
       this.state = ({
         token: localStorage.getItem('stelios_token'),
         current_user: localStorage.getItem('stelios_current_user'),
-        show_login: false
+        show_login: false,
+        activeItem: 'home'
       })
     }
 
@@ -42,22 +43,32 @@ export class App extends Component {
       });
     }
 
+    handleItemClick = (e, {name}) => {
+      this.setState({
+        activeItem: name
+      })
+    }
+
   render() {
     var login_text = this.state.token === "null" ? "login" : "logout"
     return (
       <div className="App" style={{width:'100%'}}>
-        <div>
-          <Menu>
-            <Menu.Item><IndexLink to="/" activeStyle={{color:"red"}}>Home</IndexLink></Menu.Item>
-            <Menu.Item><NavLink to="/wiki" activeStyle={{color:"red"}}>Wiki</NavLink></Menu.Item>
-            <Menu.Item><NavLink to="/quiz" activeStyle={{color:"red"}}>Quiz</NavLink></Menu.Item>
-            <Menu.Menu position='right'>
-              <Menu.Item>
-                <div onClick={() => this.handleLogin(login_text)}>{login_text}</div>
-              </Menu.Item>
-            </Menu.Menu>
-          </Menu>
-        </div>
+        <Segment raised style={{"color":"#FFFFFF","background-color":"#3F51B5","padding":"0 0 0 0"}}>
+          <div style={{"display":"flex", "align-items":"center","margin-top":"px", "margin-bottom":"25px"}}>
+            <Image inverted style={{"margin-left":"20px", "margin-top":"23px", "margin-right":"20px"}} src={process.env.PUBLIC_URL + "logo.png"} width="50px" height="50px" shape="circular"/>
+            <h1>Stelios</h1>
+          </div>
+          <div style={{"width":"100%", "background-color": "#303F9F"}}>
+            <Menu pointing secondary style={{"padding":"10px 0px 10px 30px"}}>
+              <IndexLink to="/"><Menu.Item name="home" active={this.state.activeItem === 'home'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Home</Menu.Item></IndexLink>
+              <NavLink to="/wiki" ><Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Wiki</Menu.Item></NavLink>
+              <NavLink to="/quiz" ><Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Quiz</Menu.Item></NavLink>
+              <Menu.Menu position='right'>
+                <Menu.Item onClick={() => this.handleLogin(login_text)} style={{"color":"#FFFFFF"}}>{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item>
+              </Menu.Menu>
+            </Menu>
+          </div>
+        </Segment>
         <div id="main_content">
           <Grid>
             {this.state.show_login ?

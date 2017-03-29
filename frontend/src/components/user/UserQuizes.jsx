@@ -1,7 +1,7 @@
 import React from 'react'
-import { Menu, Header } from 'semantic-ui-react'
+import { Menu, Label, Header, Icon } from 'semantic-ui-react'
 
-export class UserSubjects extends React.Component {
+export class UserQuizes extends React.Component {
     constructor(props) {
 		super(props);
 		this.state = ({
@@ -49,10 +49,11 @@ export class UserSubjects extends React.Component {
             return (
 
                 <div>
-                <Header size='large'>Subjects</Header>
+                <br />
+                <Header size='large'>Quizes</Header>
                     <Menu fluid vertical>
-                       {this.state.data.subjects.map(function(subject){
-                           return <Menu.Item href= {'/wiki/'+subject.id}>{ subject.name }</Menu.Item>;
+                       {this.state.data.quizes.map(function(quiz){
+                           return <Menu.Item href= {'/quiz/'+quiz.id} ><Icon name='tasks' /> <Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item>;
                          })}
                     </Menu>
                </div>
@@ -60,7 +61,7 @@ export class UserSubjects extends React.Component {
             );
         } else {
             return(
-                <div>You are not signed in.</div>
+                <div></div>
             )
         }
     }
