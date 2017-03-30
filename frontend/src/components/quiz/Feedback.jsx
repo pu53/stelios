@@ -233,7 +233,7 @@ class FeedbackSubTopic extends React.Component {
 			<Segment>
 				<Grid>
 					<Grid.Column width={12}>
-						<h2>{this.state.name}</h2>
+						<h2>{this.state.name} - {this.props.weaktopic.Correct * 100}% correct</h2>
 					</Grid.Column>
 					<Grid.Column width={12}>
 						<p><b>{this.state.description}</b></p>
