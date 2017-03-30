@@ -1,6 +1,6 @@
 
-import React, { Component} from 'react';
-import { Container, Grid, Button, Segment, List, Divider} from 'semantic-ui-react';
+import React from 'react';
+import { Container, Grid, Segment, List} from 'semantic-ui-react';
 import { getData } from '../../helpers.jsx'
 var Markdown = require('react-remarkable');;
 
@@ -11,104 +11,103 @@ export class FeedbackContainer extends React.Component{
 		super();
 		//dummy variable for state. should be passed as props
 		this.state={
-			quizID: 1,
-			answers: [
-				{
-					questionID: 1, //props
-					choice: -1, //props
-					subtopics: [1], //standard value, filled by getsubtopics
-					correct: true //same
-				},
-				{
-					questionID: 2,
-					choice: 3,
-					subtopics: [1],
-					correct: true
-				},
-				{
-					questionID: 3,
-					choice: 6,
-					subtopics: [2],
-					correct: false
-				},
-				{
-					questionID: 4,
-					choice: 7,
-					subtopics: [3],
-					correct: true
-				},
-				{
-					questionID: 5,
-					choice: 9,
-					subtopics: [2,3],
-					correct: true
-				}
-			]
+			answers: props.answers,
+			subtopics: props.subtopics,
+			subtopicTrueTotal: {},
+			isTrue: [],
+			weaktopicsID: [],
+			render: false,
 		};
+		console.log(this.state);
 	} //end of constructor
 
 
 	componentDidMount(){
-		//this.correct();
-		//this.getSubTopics();
+		this.getIsTrue();
 	}
 
-	/**
-	should get sutopics related to questions 
-	*/
-	getSubTopics(){
-		var answers = this.state.answers;
-
-		for (var i = 0; i < answers.length; i++) {
-			const id = answers[i].questionID;
-
-			getData("question/"+id.toString()+"/",
-				(()=>{}),
-				((res)=>{
-					const subtopics = res.subtopic;
-
-				}),
-				(()=>{}));
+	componentDidUpdate(){
+		if(this.state.isTrue.length === this.state.answers.length &&
+			Object.keys(this.state.subtopicTrueTotal).length === 0){
+			console.log("time to calculate");
+			this.CalcTrueTotal();
 		}
-		console.log(answers);
-		this.setState(answers);
+		if(Object.keys(this.state.subtopicTrueTotal).length > 0 &&
+			this.state.render === false){
+			console.log("time to judge");
+			this.weakTopics();
+		}
 	}
 
-	/**
-	* 	should correct answers passed by props
-	*	look into database
-	*	cross-reference with questionID-correctanswerto
-	*
-	*
-	*/
+	getIsTrue(){
+		const answers = this.state.answers;
+ 		const subtopics = this.state.subtopics;
 
-	correct(){
-		var answers = this.state.answers;
 
+		// iterate over every answer, finding falsely answered questions
 		for (var i = 0; i < answers.length; i++) {
-			var answer=answers[i];
-			const choice = answer.choice;
-			const questionID = answer.questionID;
 
-			getData("choice/"+choice.toString()+"/",
-				(() => {}),
-				((res) => {
-					console.log(res);
-					if(res.question == questionID){
-						answers[i] = {
-							questionID: questionID,
-							choice: choice,
-							correct: true //only change
-						};
-					}
-				}),
-				(() => {})
-			);
+			// gets from DB if the answer is marked as true
+			if(answers[i] !== -1 && answers[i] !== undefined){
+				// isTrue = this.getIsTrue(answers[i]);
+				getData("choice/istrue/"+answers[i].toString(),
+					(()=>{}),
+					((res) => {
+						// this.state.isTrue.push(res.is_correct);
+						var isTrue = this.state.isTrue;
+						isTrue.push(res.is_correct);
+						this.setState({
+							isTrue: isTrue,
+						})
+						console.log(this.state.isTrue);
+					}),
+					(()=>{}));
+			}
+		}
+	}
+
+	CalcTrueTotal(){
+ 		const subtopics = this.state.subtopics;
+ 		const isTrue = this.state.isTrue;
+
+ 		var subtopicObject = {}
+ 		for (var i = 0; i < isTrue.length; i++) {
+			for (var j = 0; j < subtopics[i].length; j++) {
+				subtopicObject[subtopics[i][j]]=[0,0];
+			}
 		}
 
-		console.log(answers);
-		this.setState(answers);		
+
+		for (var i = 0; i < isTrue.length; i++) {
+			for (var j = 0; j < subtopics[i].length; j++) {
+				const oldvalue=subtopicObject[subtopics[i][j]];
+
+				var newvalue = oldvalue;
+				console.log(isTrue[i]);
+				if(isTrue[i]){
+					newvalue[0]+=1;
+				}
+				newvalue[1]+=1;
+
+				subtopicObject[subtopics[i][j]]=newvalue;
+
+			}
+		}
+		console.log(subtopicObject);  // this is fine ^^
+		// now, thesubtopics be like
+		// {
+		// 	subtopicID: [x,y]
+		// 	subtopicID: [x,y]
+		// 	....
+		// }
+		// x is correctm Y is total questions about subtopicID.
+
+		this.setState({
+			subtopicTrueTotal: subtopicObject,
+		});
+		console.log("subtopicTrueTotal set");
 	}
+
 
 	/**
 	* generates a list of weak topics based on the answers 
@@ -118,37 +117,11 @@ export class FeedbackContainer extends React.Component{
 	* ]
 	*
 	*/
-
 	weakTopics(){
  		const answers = this.state.answers;
-		var subtopics = {};
-		// add all subtopics to the object
-		for(var i=0;i<answers.length;i++){
-			for (var j = 0; j < answers[i].subtopics.length; j++) {
-				const subtopicID = answers[i].subtopics[j];
-				subtopics[subtopicID]=[0,0];
-			}
-		}
+ 		const subtopics = this.state.subtopics;
+ 		const subtopicObject = this.state.subtopicTrueTotal;
 
-		// iterate over every answer, finding falsely answered questions
-		for(var i=0;i<answers.length;i++){
-			const subtopicID = answers[i].subTopicID
-			const oldValue = subtopics[subtopicID];
-			if ( answers[i].correct ){
-				oldValue[0] += 1;
-			}
-			oldValue[1] += 1;
-			subtopics[subtopicID] = oldValue;
-		}
-
-		// console.log(subtopics);  // this is fine ^^
-		// now, thesubtopics be like
-		// {
-		// 	subtopicID: [x,y]
-		// 	subtopicID: [x,y]
-		// 	....
-		// }
-		// x is correctm Y is total questions about subtopicID.
 
 		// weakTopics = [];
 
@@ -159,14 +132,14 @@ export class FeedbackContainer extends React.Component{
 
 		var weaktopicsID=[];
 
-		for(var subtopicID in subtopics){
+		for(var subtopicID in subtopicObject){
 		    // skip loop if the property is from prototype
-		    if (!subtopics.hasOwnProperty(subtopicID)) {
+		    if (!subtopicObject.hasOwnProperty(subtopicID)) {
 		    	continue;
 		    }
 
-			const correct=subtopics[subtopicID][0];
-			const total=subtopics[subtopicID][1];
+			const correct=subtopicObject[subtopicID][0];
+			const total=subtopicObject[subtopicID][1];
 
 			if (correct/total < limit){
 				weaktopicsID.push({
@@ -178,24 +151,33 @@ export class FeedbackContainer extends React.Component{
 
 		// console.log(weaktopicsID);
 		// returns array sorted by correctness
-		return weaktopicsID;
+		this.setState({
+			weaktopicsID: weaktopicsID,
+			render: true,
+		})
+		// return weaktopicsID;
 
 	}	
 	
 	render(){
-		const weaktopics = this.weakTopics();
-		return (<div>
-			<h1>Topics you may want to read a bit about: <br /></h1>
-			<List >
-			{
-				weaktopics.map((subtopic) => {
-					return (
-						<FeedbackSubTopic weaktopic={subtopic} />
-					)
-				}
-			)}
-			</List>
-		</div>);
+		// console.log(this.state.weaktopicsID);
+		if(this.state.render){
+			const weaktopics = this.state.weaktopicsID;
+			return (<div>
+				<h1>Topics you may want to read a bit about: <br /></h1>
+				<List >
+				{
+					weaktopics.map((subtopic) => {
+						return (
+								<FeedbackSubTopic weaktopic={subtopic} key={subtopic.ID}/>
+						)
+					}
+				)}
+				</List>
+			</div>);
+		}else{
+			return <h1>loading ... .. . </h1>;
+		}
 	}
 }
 
@@ -250,13 +232,13 @@ class FeedbackSubTopic extends React.Component {
 		return <Container style={{overflow: "hidden"}}>
 			<Segment>
 				<Grid>
-					<Grid.Column width ={12}>
+					<Grid.Column width={12}>
 						<h2>{this.state.name}</h2>
 					</Grid.Column>
-					<Grid.Column width ={12}>
+					<Grid.Column width={12}>
 						<p><b>{this.state.description}</b></p>
 					</Grid.Column>
-					<Grid.Column width ={12}>
+					<Grid.Column width={12}>
               			<Markdown source={this.state.content} />
 					</Grid.Column>
 				</Grid>
