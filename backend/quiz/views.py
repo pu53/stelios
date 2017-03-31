@@ -1,5 +1,5 @@
 
-from quiz.models import Choice, Quiz, Question
+from quiz.models import Choice, Quiz, Question, Answer
 from quiz.serializers import ChoiceSerializer, QuestionSerializer, QuizSerializer
 from quiz.serializers import QuizDataSerializer, QuestionDataSerializer, ChoiceDataSerializer, ChoiceIsTrueSerializer
 from profiles.serializers import UserSerializer
@@ -62,7 +62,7 @@ class QuizData(APIView):
 			choice_serializer = ChoiceDataSerializer(choices, many=True)
 			choice_data = choice_serializer.data
 			
-			subtopic = question.subtopic.all()
+			subtopic = question.subtopic.get()
 			subtopic_serializer = SubtopicNameSerializer(subtopic)
 			subtopic_data = subtopic_serializer.data
 			
@@ -73,33 +73,22 @@ class QuizData(APIView):
 			answers = {'choices': choice_data}
 			answers.update(question_info)
 			# answers.update({'correct_answer':correct_data})
-			# answers.update({'subtopic':subtopic_data})
+			answers.update({'subtopic':subtopic_data})
 			question_data.append(answers)
 			
 		content = {'questions':question_data}
 		content.update(quiz_data)
 		
 		return Response(content)
-		
-	def post(self, request, format=json):
-		
-		return Response({})
-		
-"""
-class QuizFeedbackData(APIView):
+
+class SingleQuizResults(APIView):
 	
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 	
 	def get(self, request, pk, format=json):
 		
-		user = User.objects.get(id=pk)
-		user_serializer = UserSerializer(user)
-		user_data = user_serializer.data
-		
-		name = user_data.name
-		
-		answers = Answer.objects.filter(userID=pk)
-"""
+		results = Answer.objects.filter(quizID=pk)
+		result_serializer
 		
 class ChoiceIsTrue(APIView):
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )

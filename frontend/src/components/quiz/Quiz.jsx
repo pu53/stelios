@@ -136,7 +136,7 @@ export class Quiz extends Component {
 							Question: {this.state.currently_asking}/{this.state.number_of_questions}
 						</div>
 						<div className="topInfoSubTopic">
-							About: {this.state.questions[this.state.currently_asking-1].subtopic}
+							About: {this.state.questions[this.state.currently_asking-1].subtopic.name}
 						</div>
 					</div>
 					<div>
