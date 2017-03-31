@@ -48,3 +48,18 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+
+
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media
+# migrations
+profiles/migrations/
+quiz/migrations/
+wiki/migrations/
+

@@ -17,7 +17,7 @@ urlpatterns = [
 	#url(r'^question/full/$')
 	#url(r'^answer/$', views.AnswerList.as_view()),
 	#url(r'^answer/(?P<pk>[0-9]+)/$', views.AnswerDetail.as_view()),
-
+	url(r'^choice/istrue/(?P<pk>[0-9]+)$', views.ChoiceIsTrue.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

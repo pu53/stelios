@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import './quiz.css'
 import { Container, Segment } from 'semantic-ui-react';
-import { FeedbackContainer } from './Feedback.jsx'
-
+import { FeedbackContainer } from './Feedback.jsx';
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
  * TODO: Scramble order of alternatives
@@ -44,7 +43,8 @@ export class Quiz extends Component {
 
 	fetchData() {
 		if (this.props.data !== undefined) {
-			console.log("The quiz received this data: " + this.props.data)
+			console.log("The quiz received this data");
+			console.log(this.props.data)
 			this.setState({
 				title:this.props.data.title,
 				questions:this.props.data.questions,
@@ -95,6 +95,7 @@ export class Quiz extends Component {
 		else if(this.state.currently_asking + increment > this.state.number_of_questions){
 			var tempAnswers=this.state.answers;
 			tempAnswers[this.state.currently_asking-1] = chosenAlternative;
+			console.log("finished");
 			this.setState({
 				finished:true,
 				answers:tempAnswers
@@ -122,6 +123,7 @@ export class Quiz extends Component {
 	}
 	
 	render() {
+		/*TODO: Make the quiz generate a title if none is specified*/
 		if(this.state.finished===false) {
 			return (
 			<Container className="quizWrapper">
@@ -153,6 +155,8 @@ export class Quiz extends Component {
 			this.postAnswers()
 			
 			var counter=-1;
+			// Correct:{this.areEqual(answer,this.state.questions[counter].correct_answer[0].id)}
+								
 			return(
 				<Container className="quizWrapper">
 					<h1>the quiz is finished!</h1>
@@ -161,10 +165,10 @@ export class Quiz extends Component {
 							counter++;
 							return <div key={this.state.questions[counter].id}>
 								 Question: {this.state.questions[counter].id}
-								 Answer: {answer} Correct:{this.areEqual(answer,this.state.questions[counter].correct_answer[0].id)} </div>
+								 Answer: {answer} </div>
 						})
 					}
-					<FeedbackContainer />
+					<FeedbackContainer answers={this.state.answers} subtopics={this.state.questions.map((question) => question.subtopic)}/>
 				</Container>
 			);
 		}
