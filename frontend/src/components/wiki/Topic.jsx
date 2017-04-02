@@ -36,6 +36,11 @@ export class Topic extends React.Component {
       })
       this.getSubTopics(id)
     }
+    if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
+      this.setState({
+        new: false, edit: false
+      });
+    }
   }
 
   onSubTopicsChange = (subtopics) => {

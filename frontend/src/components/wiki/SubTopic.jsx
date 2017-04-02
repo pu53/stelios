@@ -35,6 +35,11 @@ export class SubTopic extends React.Component {
         markdownContent: nextProps.subtopic.content
       })
     }
+    if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
+      this.setState({
+        new: false, edit: false
+      });
+    }
   }
 
   onChangeMessage = (status, message='', neg=false) => {

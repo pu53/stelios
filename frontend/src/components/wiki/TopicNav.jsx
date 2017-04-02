@@ -14,6 +14,14 @@ export class TopicNav extends React.Component {
       }
     }
 
+    componentWillReceiveProps(nextProps) {
+      if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
+        this.setState({
+          edit: false
+        });
+      }
+    }
+
     onClickEdit = () => {
       this.setState({
         edit: true
