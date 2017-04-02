@@ -55,7 +55,7 @@ export class App extends Component {
       <div className="App" style={{width:'100%'}}>
         <Segment raised style={{"color":"#FFFFFF","background-color":"#3F51B5","padding":"0 0 0 0"}}>
           <div style={{"display":"flex", "align-items":"center","margin-top":"px", "margin-bottom":"25px"}}>
-            <Image inverted style={{"margin-left":"20px", "margin-top":"23px", "margin-right":"20px"}} src="stelios.no/logo.png" width="50px" height="50px" shape="circular"/>
+            <Image inverted style={{"margin-left":"20px", "margin-top":"23px", "margin-right":"20px"}} src="www.stelios.no/logo.png" width="50px" height="50px" shape="circular"/>
             <h1>Stelios</h1>
           </div>
           <div style={{"width":"100%", "background-color": "#303F9F"}}>
@@ -84,7 +84,7 @@ export class App extends Component {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          {this.props.children}
+          {React.cloneElement(this.props.children, { steliosToken: this.state.token, steliosUser: this.state.current_user })}
         </div>
       </div>
     );

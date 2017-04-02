@@ -151,6 +151,7 @@ export class WikiPage extends React.Component{
 						</Grid.Column>
 						<Grid.Column width={3}>
 							<TopicNav
+								{...this.props}
 								subjectId={this.state.subjectId}
 								topics={!this.state.new ? this.state.topics : undefined}
 								clickTopic={this.clickTopic}
@@ -161,6 +162,7 @@ export class WikiPage extends React.Component{
 						<Grid.Column width={13}>
 							<Segment raised>
 								<Subject
+									{...this.props}
 									updateTopics = {this.updateTopics}
 									onSubjectNew={this.onSubjectNew}
 									onSubjectNotNew={this.onSubjectNotNew}
@@ -175,6 +177,7 @@ export class WikiPage extends React.Component{
 								<br />
 								{!this.state.new ?
 									<Topic
+										{...this.props}
 										activeTopicId={this.state.activeTopicId}
 										topics={this.state.topics}
 										subjectId={this.state.subjectId}

@@ -168,7 +168,7 @@ export class Edit extends React.Component {
      						<h2>{this.props.header}</h2>
      					</Grid.Column>
      					<Grid.Column width={4}>
-     						<ButtonGroup {...this.props.buttonGroup} />
+     						<ButtonGroup {...this.props} {...this.props.buttonGroup} />
      					</Grid.Column>
      				</Grid>
      				<Form.Field>

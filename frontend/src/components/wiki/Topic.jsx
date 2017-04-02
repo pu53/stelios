@@ -159,7 +159,7 @@ export class Topic extends React.Component {
             onSubTopicsChange={this.onSubTopicsChange}
             />
           {this.state.subtopics.map((subtopic) => {
-            return <SubTopic subtopic={subtopic} activeTopicId={this.state.activeTopicId} />
+            return <SubTopic {...this.props} subtopic={subtopic} activeTopicId={this.state.activeTopicId} />
           })}
         </div>
       )
@@ -192,7 +192,7 @@ export class Topic extends React.Component {
             description={this.state.description}
             />
             {this.state.subtopics.map((subtopic) => {
-              return <SubTopic subtopic={subtopic} activeTopicId={this.state.activeTopicId} />
+              return <SubTopic {...this.props} subtopic={subtopic} activeTopicId={this.state.activeTopicId} />
             })}
         </div>
       )
