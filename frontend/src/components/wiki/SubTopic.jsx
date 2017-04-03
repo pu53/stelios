@@ -1,10 +1,9 @@
-
 import React from 'react'
 import {Grid, Divider} from 'semantic-ui-react'
 import { Show } from './Show'
 import { Edit } from './Edit'
 import { CustomMessage } from './CustomMessage'
-import { getData, sendData } from '../../helpers'
+import { sendData } from '../../helpers'
 
 export class SubTopic extends React.Component {
   constructor(props) {

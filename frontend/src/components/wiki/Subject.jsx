@@ -1,6 +1,4 @@
-
 import React from 'react'
-import {Grid} from 'semantic-ui-react'
 import { Show } from './Show'
 import { Edit } from './Edit'
 import { CustomMessage } from './CustomMessage'

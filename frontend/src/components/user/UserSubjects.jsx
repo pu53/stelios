@@ -19,7 +19,6 @@ export class UserSubjects extends React.Component {
           link = 'http://api.stelios.no/'+ url;
         }
         //generated request
-        console.log(link)
         var request = new Request(link, {
           method: 'GET',
           headers: {
@@ -28,12 +27,12 @@ export class UserSubjects extends React.Component {
         });
 
         fetch(request).then((res) => {
-          console.log(res.status);
+          /*console.log(res.status);*/
           return res.json();
         })
         .then((res) => {
           this.setState({data:res});
-          console.log(res.username);
+          /*console.log(res.username);*/
         }).catch((e) => {
           console.log(e);
         });
@@ -44,15 +43,14 @@ export class UserSubjects extends React.Component {
     }
 
     render() {
-        console.log("YAYAYAY");
         if(Object.keys(this.state.data).length > 0){
             return (
 
                 <div>
                 <Header size='large'>Subjects</Header>
                     <Menu fluid vertical>
-                       {this.state.data.subjects.map(function(subject){
-                           return <Menu.Item href= {'/wiki/'+subject.id}>{ subject.name }</Menu.Item>;
+                       {this.state.data.subjects.map(function(subject, index){
+                           return <Menu.Item key={index} href={'/wiki/'+subject.id}>{ subject.name }</Menu.Item>;
                          })}
                     </Menu>
                </div>
