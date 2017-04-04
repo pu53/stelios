@@ -6,8 +6,11 @@ install:
   - pip install -r backend/requirements.txt
   - pip install coveralls
 before_script:
+    -u postgres psql
+    CREATE DATABASE stelios_backend;
+    CREATE USER postgres WITH PASSWORD 'postgres';
     - python backend/manage.py makemigrations
     - python backend/manage.py migrate
 script:
   cd backend
-  coverage run --branch --source=quiz,wiki,profiles ./manage.py test
+  coverage run --branch --source=quiz,wiki,profiles ./backend/manage.py test
