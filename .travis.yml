@@ -1,12 +1,11 @@
 language: python
 python:
   - "3.6"
-sudo: false
 install:
   - pip install -r backend/requirements.txt
   - pip install coveralls
 before_script:
-    - -u postgres psql
+    - sudo -u postgres psql
     - CREATE DATABASE stelios_backend;
     - CREATE USER postgres WITH PASSWORD 'postgres';
     - python backend/manage.py makemigrations
