@@ -8,6 +8,7 @@ before_script:
     - sudo -u postgres psql
     - CREATE DATABASE stelios_backend;
     - CREATE USER postgres WITH PASSWORD 'postgres';
+    - \q
     - python backend/manage.py makemigrations
     - python backend/manage.py migrate
 script:
