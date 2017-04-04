@@ -1,6 +1,5 @@
 import React from 'react'
-import { SubTopic } from './SubTopic'
-import { Message, Loader, Button, Header, Modal, Form, Grid, Input} from 'semantic-ui-react'
+import { Message, Button, Form, Grid } from 'semantic-ui-react'
 
 export class Login extends React.Component{
 	constructor(props){

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import './quiz.css'
-import { Container, Segment } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import { FeedbackContainer } from './Feedback.jsx'
 
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
  * TODO: Scramble order of alternatives
  * TODO: Show earlier answers
- */ 
+ */
 
 /*The head element of a quiz. Fetches all the data for all the quiestions included
  * in the quiz and passes them on to the subcomponents when needed*/
@@ -19,7 +19,7 @@ export class Quiz extends Component {
 	 */
 	constructor(props) {
 		super(props);
-		
+
 		/*The quiz state contains info on the quiz, and what answers have been
 		 * selected*/
 		this.state = {
@@ -30,7 +30,7 @@ export class Quiz extends Component {
 			questions:[],
 			answers:[]
 			};
-		
+
 		this.changeQuestion=this.changeQuestion.bind(this);
 	}
 
@@ -54,29 +54,29 @@ export class Quiz extends Component {
 		else {
 			console.error("Give the quiz element some data!")
 		}
-		
+
 		var all_answers = [];
-		
+
 		for(var i=0; i<this.props.data.questions.length;i++) {
 			all_answers[i]=-1;
 		}
-		
+
 		this.setState({
 			answers:all_answers
 		});
 	}
-	
+
 	/*Sends the result back to the server*/
 	postAnswers(){
-		
-		var quizID = this.props.data.id
+
+		/*var quizID = this.props.data.id*/
 		var userID = localStorage.getItem('stelios_current_user')
-		
+
 		if(userID === null){
 			console.log("Not logged in, quiz will not be saved");
 			return;
 		}
-		
+
 		var result={
 			quizID:this.props.data.id,
 			userID:userID,
@@ -85,12 +85,12 @@ export class Quiz extends Component {
 		}
 		console.log("Current user: " + result.userID);
 	}
-	
+
 	/*Updates the answer*/
 	changeQuestion(increment, chosenAlternative) {
 		if(chosenAlternative===undefined){chosenAlternative=-1}
 		if(this.state.currently_asking + increment < 1){
-		   
+
 		}
 		else if(this.state.currently_asking + increment > this.state.number_of_questions){
 			var tempAnswers=this.state.answers;
@@ -109,7 +109,7 @@ export class Quiz extends Component {
 			});
 		}
 	}
-	
+
 	//Helper method for rudementary feedback
 	areEqual(a, b) {
 		console.log("A: " + a + " B: " + b)
@@ -120,7 +120,7 @@ export class Quiz extends Component {
 			return("False")
 		}
 	}
-	
+
 	render() {
 		if(this.state.finished===false) {
 			return (
@@ -151,7 +151,7 @@ export class Quiz extends Component {
 		}
 		else {
 			this.postAnswers()
-			
+
 			var counter=-1;
 			return(
 				<Container className="quizWrapper">
@@ -186,21 +186,21 @@ class Question extends Component {
 		this.nextQuestion = this.nextQuestion.bind(this);
 		this.prevQuestion = this.prevQuestion.bind(this);
 	}
-	
+
 	componentDidMount() {
 		this.setState({
 			data:this.props.data,
 			firstQuestion:this.props.firstQuestion,
 			lastQuestion:this.props.lastQuestion,
 		});
-		
+
 		if(this.props.chosen !== undefined) {
 			this.setState({
 				chosenAnswer:this.props.chosen
 			});
 		}
 	}
-	
+
 	changeToggle(id) {
 		/*console.log("Callback from" + id);*/
 		if(id === this.state.chosenAnswer) {
@@ -210,17 +210,17 @@ class Question extends Component {
 			this.setState({chosenAnswer:id});
 		}
 	}
-	
+
 	nextQuestion() {
 		//console.log("internaly chosen: " + this.state.chosenAnswer);
 		this.props.onChange(1,this.state.chosenAnswer);
 	}
-	
+
 	prevQuestion() {
 		//console.log("internaly chosen: " + this.state.chosenAnswer);
 		this.props.onChange(-1, this.state.chosenAnswer);
 	}
-	
+
 	componentWillReceiveProps(nextProps) {
 		this.setState({
 			data:nextProps.data,
@@ -229,11 +229,11 @@ class Question extends Component {
 			chosenAnswer:nextProps.chosen
 		});
 	}
-	
+
 	render() {
 		/*defining styles within render like this is probably not great
 		 * but for the first draft it's ok*/
-		
+
 		var styleNavButtonPrev= {
 			minHeight:'50px',
 			backgroundColor:'#6c6c6c',
@@ -256,7 +256,8 @@ class Question extends Component {
 			alignItems:'center',
 			borderRadius:'10px'
 		}
-		
+
+		/*
 		var style3= {
 			textAlign:'center',
 			width:'100%',
@@ -265,19 +266,20 @@ class Question extends Component {
 			MsUserSelect:'none',
 			UserSelect:'none'
 		};
-		
+		*/
+
 		/*chechs to see if any of the navbuttons needs adjustment for first/last*/
 		/*Nice pale error red:#EF4E45*/
 		var nextText='Next';
-		var backgroundColor = '#6c6c6c'
-		var cursor = ''
-		
-		
+		/*var backgroundColor = '#6c6c6c'*/
+		/*var cursor = ''*/
+
+
 		if(this.state.lastQuestion===true) {
 			nextText='Finish';
 			styleNavButtonNext.backgroundColor='#5EBC43';
 		}
-		
+
 		if(this.state.firstQuestion===true) {
 			styleNavButtonPrev.cursor='default';
 		}
@@ -285,7 +287,7 @@ class Question extends Component {
 			styleNavButtonPrev.visibility='visible';
 			styleNavButtonPrev.cursor='pointer';
 		}
-		
+
 		return (
 			<div className="styleQuestion" >
 				<div className="styleText" >
@@ -296,7 +298,7 @@ class Question extends Component {
 					{
 						this.state.data.choices.map((choice)=> {
 							return(
-								<Answer 
+								<Answer
 								key={choice.choice_text}
 								opNr={choice.id}
 								text={choice.choice_text}
@@ -304,7 +306,7 @@ class Question extends Component {
 								curOn={this.state.chosenAnswer}/>)
 						})
 					}
-					
+
 					<div className="styleNavButtons" >
 						<button className="styleNavButtonPrev" style={styleNavButtonPrev} onClick={this.prevQuestion} disabled={this.state.firstQuestion}>
 							<div className="navText">Previous</div>
@@ -331,12 +333,11 @@ class Answer extends Component {
 			};
 		this.handleChange = this.handleChange.bind(this);
 	}
-	
+
 	handleChange() {
 		this.props.toggleCallback(this.state.idNum);
-		/*console.log("Handle change");*/
 	}
-	
+
 	componentWillMount() {
 		if(this.props.curOn === this.state.idNum) {
 			this.setState({chosen:true});
@@ -345,7 +346,7 @@ class Answer extends Component {
 			this.setState({chosen:false});
 		}
 	}
-	
+
 	componentWillReceiveProps(nextProps) {
 		if(nextProps.curOn === this.state.idNum) {
 			this.setState({chosen:true});
@@ -354,7 +355,7 @@ class Answer extends Component {
 			this.setState({chosen:false});
 		}
 	}
-	
+
 	render() {
 		/*console.log("render number " +this.state.idNum+ ", chosen=" + this.state.chosen);*/
 		var background ='';
@@ -364,7 +365,7 @@ class Answer extends Component {
 		else {
 			background='#68B1FF';
 		}
-		
+
 		return (
 			<div className="answerWrapper">
 				<button className="answerStyle1" style={{backgroundColor:background}} onClick={this.handleChange}>

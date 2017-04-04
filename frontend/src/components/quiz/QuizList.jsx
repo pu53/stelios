@@ -1,10 +1,10 @@
-import React, { Component} from 'react';
+import React from 'react';
 // import { Container, Grid, Button, Segment, List, Divider} from 'semantic-ui-react';
 import { getData } from '../../helpers.jsx';
 import { Accordion, Icon} from 'semantic-ui-react';
 
 
-/** Class for 
+/** Class for
 * 	listing quizes
 *
 *
@@ -23,10 +23,10 @@ export class QuizList extends React.Component {
 	}
 
 	/** method for getting the quizes from DB
-	* return an object with 
+	* return an object with
 	* 	keys <- subjects
 	* 	content <- quizes to subject
-	*/ 
+	*/
 	getQuizList(){
 
 		var quizes = [];
@@ -47,7 +47,7 @@ export class QuizList extends React.Component {
 
 			const oldValue = quizBySubject[quizes[i].subject];
 			console.log(oldValue);
-			// quizBySubject[quiz.subject] 
+			// quizBySubject[quiz.subject]
 		}
 		this.setState({
 			quizobject: quizes,
@@ -65,7 +65,7 @@ export class QuizList extends React.Component {
 	    		<p>
 	    			{
 	    				this.state.quizobject //atm empty
-	    			} 
+	    			}
 	    		</p>
 	    	</Accordion.Content>
 	    </Accordion>;
