@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.6"
+sudo: false
+install:
+  - pip install -r backend/requirements.txt
+  - pip install coveralls
+before_script:
+    - python backend/manage.py makemigrations
+    - python backend/manage.py migrate
+script:
+  cd backend
+  coverage run --branch --source=quiz,wiki,profiles ./manage.py test
