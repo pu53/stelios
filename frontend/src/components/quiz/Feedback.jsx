@@ -1,6 +1,5 @@
-
-import React, { Component} from 'react';
-import { Container, Grid, Button, Segment, List, Divider} from 'semantic-ui-react';
+import React from 'react';
+import { Container, Grid, Segment, List } from 'semantic-ui-react';
 import { getData } from '../../helpers.jsx'
 var Markdown = require('react-remarkable');;
 
@@ -24,7 +23,7 @@ export class FeedbackContainer extends React.Component{
 				},
 				{
 					quiestionID: 9,
-					choice: 15 
+					choice: 15
 				},
 				{
 					quiestionID: 12,
@@ -68,9 +67,9 @@ export class FeedbackContainer extends React.Component{
 	}
 
 	/**
-	* generates a list of weak topics based on the answers 
+	* generates a list of weak topics based on the answers
 	* on the form [
-	* 	{ID:id, Correct: %correct}, 
+	* 	{ID:id, Correct: %correct},
  	*	...
 	* ]
 	*
@@ -135,7 +134,7 @@ export class FeedbackContainer extends React.Component{
 		// returns array sorted by correctness
 		return weaktopicsID;
 
-	}	
+	}
 
 	render(){
 		const weaktopics = this.weakTopics();
@@ -155,7 +154,7 @@ export class FeedbackContainer extends React.Component{
 }
 
 /**
-Component for the topics the user hsould look into. 
+Component for the topics the user hsould look into.
 gets data from the database her
 @props: weaktopic {ID, Correct} from weaktopics from feedbackcontainer
 */
@@ -205,13 +204,13 @@ class FeedbackSubTopic extends React.Component {
 		return <Container style={{overflow: "hidden"}}>
 			<Segment>
 				<Grid>
-					<Grid.Column width ={12}>
+					<Grid.Column width={12}>
 						<h2>{this.state.name}</h2>
 					</Grid.Column>
-					<Grid.Column width ={12}>
+					<Grid.Column width={12}>
 						<p><b>{this.state.description}</b></p>
 					</Grid.Column>
-					<Grid.Column width ={12}>
+					<Grid.Column width={12}>
               			<Markdown source={this.state.content} />
 					</Grid.Column>
 				</Grid>
