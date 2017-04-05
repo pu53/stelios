@@ -8,9 +8,9 @@ services:
   - postgresql
 before_script:
     - psql -c 'CREATE DATABASE stelios_backend;' -U postgres
-    - python backend/manage.py syncdb --all
     - python backend/manage.py makemigrations
-    - python backend/manage.py migrate
+    - python backend/manage.py syncdb --all
+    - python backend/manage.py migrate --fake
 script:
   cd backend
   coverage run --branch --source=quiz,wiki,profiles ./backend/manage.py test
