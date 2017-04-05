@@ -22,6 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Application definition
 
 INSTALLED_APPS = [
+    'wiki.apps.WikiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -33,7 +34,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'profiles.apps.ProfilesConfig',
-    'wiki.apps.WikiConfig',
     'quiz.apps.QuizConfig',
 ]
 
