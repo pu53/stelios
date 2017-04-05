@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/pu53/stelios/badge.svg?branch=master)](https://coveralls.io/github/pu53/stelios?branch=master)
+
 Stelios - a web app that will revolutionize education software!
 
 This project is our main assigment for the course TDT4140.
