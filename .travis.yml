@@ -10,8 +10,8 @@ before_script:
     - psql -c 'CREATE DATABASE stelios_backend;' -U postgres
     - python backend/manage.py makemigrations
     - python backend/manage.py migrate auth
-    - python backend7manage.py migrate contentypes
-    - python backend7manage.py migrate sites
+    - python backend/manage.py migrate contentypes
+    - python backend/manage.py migrate sites
     - python backend/manage.py migrate
 script:
   cd backend
