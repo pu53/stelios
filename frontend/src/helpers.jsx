@@ -75,7 +75,6 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
       link = 'http://api.stelios.no/' + url;
       // production code
   }
-
   var request = new Request(link, {
     method: method_,
     headers: {
@@ -84,6 +83,7 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
     },
     body: JSON.stringify(body)
   });
+  console.log("this is the request body: " + body)
   fetch(request).then((res) => {
     console.log("statusFunc: ", res);
     handleStatus(res);

@@ -28,6 +28,3 @@ class Answer(models.Model):
 	questionID = models.ForeignKey(Question, related_name='Answer_Question', default=None)
 	choiceID = models.ForeignKey(Choice, related_name='Answer_Choice', default=None)
 	quizID = models.ForeignKey(Quiz, related_name='Answer_Quiz', default=None)
-	# userID = models.ForeignKey("profiles.Profile", related_name='Answer_User', default=None)
-
-

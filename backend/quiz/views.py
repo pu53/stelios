@@ -1,15 +1,23 @@
 
 from quiz.models import Choice, Quiz, Question, Answer
+from profiles.models import Profile
+
 from quiz.serializers import ChoiceSerializer, QuestionSerializer, QuizSerializer
-from quiz.serializers import QuizDataSerializer, QuestionDataSerializer, ChoiceDataSerializer, ChoiceIsTrueSerializer
-from profiles.serializers import UserSerializer
+from quiz.serializers import QuizDataSerializer, QuestionDataSerializer, ChoiceDataSerializer
+from quiz.serializers import ChoiceIsTrueSerializer, AnswerSerializer
+
+from profiles.serializers import UserSerializer, UserIDNameSerializer, ProfileSerializer
+
 from wiki.serializers import SubtopicNameSerializer
+
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import permissions
+from rest_framework import permissions, status
+from rest_framework.parsers import JSONParser
 
 import json
+from django.utils.six import BytesIO
 
 # creating a list and detail view for all models using generics
 
@@ -66,13 +74,8 @@ class QuizData(APIView):
 			subtopic_serializer = SubtopicNameSerializer(subtopic)
 			subtopic_data = subtopic_serializer.data
 			
-			# correct = question.correct_answer_to.all()
-			# correct_serializer = ChoiceDataSerializer(correct, many=True)
-			# correct_data = correct_serializer.data
-			
 			answers = {'choices': choice_data}
 			answers.update(question_info)
-			# answers.update({'correct_answer':correct_data})
 			answers.update({'subtopic':subtopic_data})
 			question_data.append(answers)
 			
@@ -82,25 +85,100 @@ class QuizData(APIView):
 		return Response(content)
 
 class SingleQuizResults(APIView):
-	
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 	
 	def get(self, request, pk, format=json):
-		
 		results = Answer.objects.filter(quizID=pk)
-		result_serializer
 		
-class ChoiceIsTrue(APIView):
+		return_data = []
+		
+		for result in results: 
+			list_element = {}
+			user_id = -1
+			username = ""
+			
+			#Finds the related user to the current answer
+			result_query = result.answer_history.all()
+			
+			#If there is a corresponding user, find name and id
+			if(len(result_query) > 0):
+				cur_user = result_query[0]
+				print("Relatert profil: " + repr(cur_user.user.id))
+				user_id = cur_user.user.id
+				username = cur_user.user.username
+			
+			#Add the fields to the current list element
+			list_element.update({
+				'user_id':user_id,
+				'username':username
+			})
+			
+			#Serialize the answer, and add it to the current list element
+			result_serializer = AnswerSerializer(result)
+			result_data = result_serializer.data
+			list_element.update(result_data)
+			
+			#Find out whether the answer is true or false, adds it to list element
+			related_choice = Choice.objects.get(id=result_data['choiceID'])
+			related_choice_serializer = ChoiceSerializer(related_choice)
+			list_element.update({
+				'correct':related_choice_serializer.data['is_correct']
+			})
+			
+			#Add the list element to the return data
+			return_data.append(list_element)
+			
+		
+		return Response(return_data)
+		
+	
+class SaveQuizResult(APIView):
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 	
+	def post(self, request, format=json):
+		
+		answer_data_rows = []
+		questions=request.data["questions"]
+		answers=request.data["choices"]
+		quizID = request.data["quizID"]
+		userID = request.data["userID"]
+		
+		for i in range(len(questions)):
+			print("Dette er spørsmål nr " + str(i) + " og det har data " + str(questions[i]))
+			answer_data = {
+				'quizID':quizID,
+				'questionID':questions[i]['id'],
+				'choiceID':answers[i]
+			}
+			#answer_serializer = AnswerSerializer(data=answer_data)
+			answer_data_rows.append(answer_data)
+			print("Dette er dataen: " + str(answer_data))
+			#related_profile = Profiles.
+
+		answer_serializer = AnswerSerializer(data=answer_data_rows, many=True)
+		#print("Funker serialiseringen?" + str(answer_serializer.is_valid()))
+		#print("Dette er feltene som valideres: " + str(answer_serializer))
+		
+		if(answer_serializer.is_valid()):
+			answer_serializer.save()
+			return Response(answer_serializer.data, status = status.HTTP_201_CREATED)
+		
+		return Response(answer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+	def put(self, request, format=json):
+		answer_serializer = AnswerSerializer(data=request.data, many=True)
+		
+		if(answer_serializer.is_valid()):
+			answer_serializer.save()
+		
+		return Response(answer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ChoiceIsTrue(APIView):
+	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 
 	def get(self, request, pk, format=json):
 		choice = Choice.objects.get(id=pk)
 		isTrue = ChoiceIsTrueSerializer(choice)
 
 		return Response(isTrue.data)
-
-
-	def post(self, request, format=json):
-		
-		return Response({})

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import './quiz.css'
 import { Container, Segment } from 'semantic-ui-react';
 import { FeedbackContainer } from './Feedback.jsx';
+import { sendData } from '../../helpers.jsx' 
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
  * TODO: Scramble order of alternatives
- * TODO: Show earlier answers
  */ 
 
 /*The head element of a quiz. Fetches all the data for all the quiestions included
@@ -71,6 +71,7 @@ export class Quiz extends Component {
 		
 		var quizID = this.props.data.id
 		var userID = localStorage.getItem('stelios_current_user')
+		//console.log("Current user on quiz result save: " + userID)
 		
 		if(userID === null){
 			console.log("Not logged in, quiz will not be saved");
@@ -81,8 +82,11 @@ export class Quiz extends Component {
 			quizID:this.props.data.id,
 			userID:userID,
 			questions:this.state.questions,
-			answers:this.state.answers
-		}
+			choices:this.state.answers,
+		};
+		//sendData(url, method_, body, handleStatus, handleData, handleError)
+		sendData("result/quiz/save/","post",result,(()=>{}),(()=>{}),(()=>{}))
+		
 		console.log("Current user: " + result.userID);
 	}
 	
@@ -111,19 +115,7 @@ export class Quiz extends Component {
 		}
 	}
 	
-	//Helper method for rudementary feedback
-	areEqual(a, b) {
-		console.log("A: " + a + " B: " + b)
-		if(a===b) {
-			return("True")
-		}
-		else {
-			return("False")
-		}
-	}
-	
 	render() {
-		/*TODO: Make the quiz generate a title if none is specified*/
 		if(this.state.finished===false) {
 			return (
 			<Container className="quizWrapper">
@@ -153,22 +145,12 @@ export class Quiz extends Component {
 		}
 		else {
 			this.postAnswers()
-			
-			var counter=-1;
-			// Correct:{this.areEqual(answer,this.state.questions[counter].correct_answer[0].id)}
-								
 			return(
 				<Container className="quizWrapper">
-					<h1>the quiz is finished!</h1>
-					{
-						this.state.answers.map((answer)=>{
-							counter++;
-							return <div key={this.state.questions[counter].id}>
-								 Question: {this.state.questions[counter].id}
-								 Answer: {answer} </div>
-						})
-					}
+					<h1>The quiz is finished!</h1>
+					{/*
 					<FeedbackContainer answers={this.state.answers} subtopics={this.state.questions.map((question) => question.subtopic)}/>
+					*/}
 				</Container>
 			);
 		}
@@ -176,6 +158,7 @@ export class Quiz extends Component {
 }
 
 /*Representing a single question in a quiz. Manages the answer selection*/
+/*-1 is the default value for the chosen answer, and is equivalent to no answer chosen*/
 class Question extends Component {
 	constructor(props) {
 		super(props);
@@ -235,59 +218,25 @@ class Question extends Component {
 	}
 	
 	render() {
-		/*defining styles within render like this is probably not great
-		 * but for the first draft it's ok*/
-		
-		var styleNavButtonPrev= {
-			minHeight:'50px',
-			backgroundColor:'#6c6c6c',
-			color:'#ffffff',
-			minWidth:'50%',
-			position:'relative',
-			display:'flex',
-			alignItems:'center',
-			borderRadius:'10px',
-			visibility:'visible',
-			cursor: 'default'
-		}
-		var styleNavButtonNext= {
-			minHeight:'50px',
-			backgroundColor:'#6c6c6c',
-			color:'#ffffff',
-			minWidth:'50%',
-			position:'relative',
-			display:'flex',
-			alignItems:'center',
-			borderRadius:'10px'
-		}
-		
-		var style3= {
-			textAlign:'center',
-			width:'100%',
-			MozUserSelect:'none',
-			WebkitUserSelect:'none',
-			MsUserSelect:'none',
-			UserSelect:'none'
-		};
-		
 		/*chechs to see if any of the navbuttons needs adjustment for first/last*/
 		/*Nice pale error red:#EF4E45*/
 		var nextText='Next';
-		var backgroundColor = '#6c6c6c'
-		var cursor = ''
-		
+		var backgroundColor = ''
+		var nextCursor = 'default'
+		var prevCursor = 'default'
+		var visibility = 'visible'
 		
 		if(this.state.lastQuestion===true) {
 			nextText='Finish';
-			styleNavButtonNext.backgroundColor='#5EBC43';
+			backgroundColor='#5EBC43';
 		}
 		
 		if(this.state.firstQuestion===true) {
-			styleNavButtonPrev.cursor='default';
+			prevCursor='default';
 		}
 		else {
-			styleNavButtonPrev.visibility='visible';
-			styleNavButtonPrev.cursor='pointer';
+			visibility='visible';
+			prevCursor='pointer';
 		}
 		
 		return (
@@ -310,10 +259,10 @@ class Question extends Component {
 					}
 					
 					<div className="styleNavButtons" >
-						<button className="styleNavButtonPrev" style={styleNavButtonPrev} onClick={this.prevQuestion} disabled={this.state.firstQuestion}>
+						<button className="styleNavButtonPrev" style={{visibility:visibility, cursor:prevCursor}} onClick={this.prevQuestion} disabled={this.state.firstQuestion}>
 							<div className="navText">Previous</div>
 						</button>
-						<button className="styleNavButtonNext" style={styleNavButtonNext} onClick={this.nextQuestion}>
+						<button className="styleNavButtonNext" style={{backgroundColor: backgroundColor}} onClick={this.nextQuestion}>
 							<div className="navText">{nextText}</div>
 						</button>
 					</div>
@@ -360,7 +309,6 @@ class Answer extends Component {
 	}
 	
 	render() {
-		/*console.log("render number " +this.state.idNum+ ", chosen=" + this.state.chosen);*/
 		var background ='';
 		if(this.state.chosen) {
 			background='#4C7CFF';
@@ -373,7 +321,7 @@ class Answer extends Component {
 			<div className="answerWrapper">
 				<button className="answerStyle1" style={{backgroundColor:background}} onClick={this.handleChange}>
 					<div className="answerStyle2">
-						Option {this.state.idNum}: {this.state.text}
+						{this.state.text}
 					</div>
 				</button>
 			</div>

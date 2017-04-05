@@ -17,6 +17,7 @@ class Profile(models.Model):
 	#year = models.IntegerField(default='0')
 	subjects = models.ManyToManyField("wiki.Subject", blank=True, related_name='profile')
 	quizes = models.ManyToManyField("quiz.Quiz", blank=True)
+	answers = models.ManyToManyField("quiz.Answer", blank=True, related_name="answer_history")
 	def __str__(self):
 		return(self.user.username)
 
