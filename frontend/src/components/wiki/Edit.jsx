@@ -197,7 +197,8 @@ export class Edit extends React.Component {
             {this.props.header === "topics" ?
               <SubTopicListEdit
                 topicId={this.state.id}
-                subTopics={this.props.subTopics}
+                activeSubTopics={this.state.activeSubTopics}
+                allSubTopics={this.state.allSubTopics}
                 onChangeMessage={this.onChangeMessage}
                 onSubTopicListChange={this.onSubTopicListChange}
                 />

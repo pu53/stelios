@@ -9,7 +9,7 @@ import { Login } from './components/Login'
 
 
 export class App extends Component {
-    constructor(props) {
+  		constructor(props) {
       super();
       this.state = ({
         token: localStorage.getItem('stelios_token'),
