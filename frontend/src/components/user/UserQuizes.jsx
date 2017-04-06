@@ -19,7 +19,6 @@ export class UserQuizes extends React.Component {
           link = 'http://api.stelios.no/'+ url;
         }
         //generated request
-        console.log(link)
         var request = new Request(link, {
           method: 'GET',
           headers: {
@@ -28,12 +27,12 @@ export class UserQuizes extends React.Component {
         });
 
         fetch(request).then((res) => {
-          console.log(res.status);
+          /*console.log(res.status);*/
           return res.json();
         })
         .then((res) => {
           this.setState({data:res});
-          console.log(res.username);
+          /*console.log(res.username);*/
         }).catch((e) => {
           console.log(e);
         });
@@ -44,7 +43,6 @@ export class UserQuizes extends React.Component {
     }
 
     render() {
-        console.log("YAYAYAY");
         if(Object.keys(this.state.data).length > 0){
             return (
 
@@ -52,8 +50,8 @@ export class UserQuizes extends React.Component {
                 <br />
                 <Header size='large'>Quizes</Header>
                     <Menu fluid vertical>
-                       {this.state.data.quizes.map(function(quiz){
-                           return <Menu.Item href= {'/quiz/'+quiz.id} ><Icon name='tasks' /> <Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item>;
+                       {this.state.data.quizes.map(function(quiz, index){
+                           return <Menu.Item key={index} href={'/quiz/'+quiz.id} ><Icon name='tasks' /> <Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item>;
                          })}
                     </Menu>
                </div>

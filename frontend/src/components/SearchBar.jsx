@@ -1,7 +1,6 @@
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { Component } from 'react';
 import { browserHistory } from 'react-router'
-import { Search, Grid, Header, Label } from 'semantic-ui-react'
+import { Search, Grid, Label } from 'semantic-ui-react'
 import _ from 'lodash'
 
 export class SearchBar extends Component {
@@ -14,11 +13,11 @@ export class SearchBar extends Component {
 			value: '',
 			customRenderer: false
 			});
-			
+
 		this.fetchData = this.fetchData.bind(this);
 		this.enterText = this.enterText.bind(this);
 	}
-	
+
 	/*Runs on component load*/
 	componentDidMount() {
 		this.fetchData();
@@ -28,9 +27,9 @@ export class SearchBar extends Component {
 			this.setState({customRenderer: true});
 		}
 	}
-	
+
 	/*TODO: Implement several fetchmodes to allow for more flexible search fields.
-	 *Let users specify what data they are looking for in the props, through 
+	 *Let users specify what data they are looking for in the props, through
 	 *sending data directly/using built in templates to have the component query for
 	 *data on it's own. Direct data takes priority over templates, that is, if
 	 *the "data" prop is defined, the component will display this data exclusivly.
@@ -39,7 +38,7 @@ export class SearchBar extends Component {
 		//console.log("Fetching data to search field")
 		/*Link path in 3 parts: the host + the table + the fields*/
 		var link = '';
-		
+
 		/*Setting host*/
 		var host = '';
 		if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -52,11 +51,11 @@ export class SearchBar extends Component {
 		if(this.props.data !== undefined) {
 			this.setState({data:this.props.data});
 		}
-		
+
 		/*using templates to define a database query*/
 		else {
-			
-			
+
+
 			if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 				link = 'http://localhost:8000/subjects/?fields=id,name'
 			// dev code
@@ -64,21 +63,21 @@ export class SearchBar extends Component {
 				link = 'http://api.stelios.no/subjects/?fields=id,name'
 			// production code
 			}
-			
+
 			var request = new Request(link, {
 				method: 'GET',
 				headers: {
 					'Accept': 'application/json',
 				},
 			});
-			
+
 			fetch(request).then((res) => {
 				console.log(res);
 				return res.json();
 			})
 			.then((res) => {
 			console.log(res);
-			
+
 			this.setState({
 				data:res
 				});
@@ -87,28 +86,28 @@ export class SearchBar extends Component {
 	}
 	//taken from http://react.semantic-ui.com/modules/search#category
 	resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
-	
+
 	handleResultSelect = (e, result) => {
 		browserHistory.push("/wiki/" + result.id);
 		window.location.reload();
 	}
-	
+
 	enterText(event) {
 		this.setState({value:event.target.value})
 	}
-	
+
 	handleClick(id) {
 		browserHistory.push("/wiki/" + id);
 		window.location.reload();
 	}
-	
+
 	componentWillMount() {
 	this.resetComponent()
 	}
-	
+
 	handleSearchChange = (e, value) => {
 		this.setState({ isLoading: true, value: value})
-		
+
 		setTimeout(() => {
 		if (this.state.value.length < 1) return this.resetComponent()
 		const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
@@ -120,11 +119,11 @@ export class SearchBar extends Component {
 			 console.log(this.state.results);
 		}, 10)
 	}
-	
+
 	render() {
 		if(this.props.type === "semantic") {
 			this.resultRenderer = ({ name, id }) => ( <Label content={name} /> );
-			return ( 
+			return (
 			  <Grid>
 				<Grid.Column width={16}>
 					<Search
@@ -141,14 +140,14 @@ export class SearchBar extends Component {
 					</Grid>
 				);
 		}
-		
+
 		else if(this.props.type === "filter") {
 			return(
 				<div>
 					<form>
 						<input type="text" onChange={this.enterText}></input>
 					</form>
-					
+
 					<ul> {
 						this.state.data.map((data) => {
 						var link = "/wiki/".concat(data['id']);
@@ -164,4 +163,3 @@ export class SearchBar extends Component {
 		}
 	}
 }
-

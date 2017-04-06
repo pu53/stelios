@@ -74,8 +74,17 @@ export class FeedbackContainer extends React.Component{
 	}
 
 	/**
+<<<<<<< HEAD
 	*	Method for creating the object with [correct, total] array 
 	*	per question in a dict with 
+=======
+	* generates a list of weak topics based on the answers
+	* on the form [
+	* 	{ID:id, Correct: %correct},
+ 	*	...
+	* ]
+	*
+>>>>>>> 207438c8f467911536f5eaf7c6dbedf22ae9da27
 	*/
 
 
@@ -172,6 +181,7 @@ export class FeedbackContainer extends React.Component{
 
 	}	
 	
+
 	render(){
 		// console.log(this.state.weaktopicsID);
 		if(this.state.render){
@@ -195,7 +205,7 @@ export class FeedbackContainer extends React.Component{
 }
 
 /**
-Component for the topics the user hsould look into. 
+Component for the topics the user hsould look into.
 gets data from the database her
 @props: weaktopic {ID, Correct} from weaktopics from feedbackcontainer
 */
@@ -244,6 +254,7 @@ class FeedbackSubTopic extends React.Component {
 	render(){
 		return <Container style={{overflow: "hidden"}}>
 			<Segment>
+<<<<<<< HEAD
 				<Accordion>
 					<Accordion.Title>
 						<h2>{this.state.name} - {this.props.weaktopic.Correct * 100}% correct</h2>
@@ -253,6 +264,19 @@ class FeedbackSubTopic extends React.Component {
 						<Markdown source={this.state.content} />
 					</Accordion.Content>
 				</Accordion>
+=======
+				<Grid>
+					<Grid.Column width={12}>
+						<h2>{this.state.name}</h2>
+					</Grid.Column>
+					<Grid.Column width={12}>
+						<p><b>{this.state.description}</b></p>
+					</Grid.Column>
+					<Grid.Column width={12}>
+              			<Markdown source={this.state.content} />
+					</Grid.Column>
+				</Grid>
+>>>>>>> 207438c8f467911536f5eaf7c6dbedf22ae9da27
 			</Segment>
 			<br />
 		</Container>;

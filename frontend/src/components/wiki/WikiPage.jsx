@@ -1,11 +1,9 @@
 import React from 'react'
-import { Dimmer, Loader, Grid, Button, Divider, Segment, List, Form, Input, Message, Dropdown, Header} from 'semantic-ui-react'
-import { browserHistory } from 'react-router'
+import { Grid, Divider, Segment } from 'semantic-ui-react'
 import { Subject } from './Subject'
-import { Edit } from './Edit'
 import { Topic } from './Topic'
 import { TopicNav } from './TopicNav'
-import { getData, sendData, editWrapper } from '../../helpers'
+import { getData } from '../../helpers'
 import { CustomMessage } from './CustomMessage'
 
 //supposed to render a single subject w/topics, preferably with jabbe
@@ -124,7 +122,7 @@ export class WikiPage extends React.Component{
 	componentDidMount() {
 		var id = this.props.params.subjectId;
 		if (id !== undefined) {
-			id = parseInt(id)
+			id = parseInt(id, 10)
 		}
 		this.getAllSubjects(id);
 	}
@@ -154,14 +152,14 @@ export class WikiPage extends React.Component{
 								subjectId={this.state.subjectId}
 								topics={!this.state.new ? this.state.topics : undefined}
 								clickTopic={this.clickTopic}
-								onChangeMessage = {this.onChangeMessage}
-								updateTopics = {this.updateTopics}
+								onChangeMessage={this.onChangeMessage}
+								updateTopics={this.updateTopics}
 								/>
 						</Grid.Column>
 						<Grid.Column width={13}>
 							<Segment raised>
 								<Subject
-									updateTopics = {this.updateTopics}
+									updateTopics={this.updateTopics}
 									onSubjectNew={this.onSubjectNew}
 									onSubjectNotNew={this.onSubjectNotNew}
 									subjectId={this.state.subjectId}
