@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Container, Grid, Segment, List} from 'semantic-ui-react';
+import { Container, Grid, Segment, List, Accordion, Icon} from 'semantic-ui-react';
 import { getData } from '../../helpers.jsx'
 var Markdown = require('react-remarkable');;
 
@@ -18,7 +18,6 @@ export class FeedbackContainer extends React.Component{
 			weaktopicsID: [],
 			render: false,
 		};
-		console.log(this.state);
 	} //end of constructor
 
 
@@ -26,18 +25,26 @@ export class FeedbackContainer extends React.Component{
 		this.getIsTrue();
 	}
 
+	// decides when to call different methods since the depent on state
+	// and setState is everything else than instant.
 	componentDidUpdate(){
 		if(this.state.isTrue.length === this.state.answers.length &&
 			Object.keys(this.state.subtopicTrueTotal).length === 0){
-			console.log("time to calculate");
+			// console.log("time to calculate");
 			this.CalcTrueTotal();
 		}
 		if(Object.keys(this.state.subtopicTrueTotal).length > 0 &&
 			this.state.render === false){
-			console.log("time to judge");
+			// console.log("time to judge");
 			this.weakTopics();
 		}
 	}
+
+	/**
+	*	updates state.isTrue with an array with true/false
+	*	dependant on wheter the answer was true or not
+	*	the index in this array will be same index for question
+	*/
 
 	getIsTrue(){
 		const answers = this.state.answers;
@@ -66,10 +73,18 @@ export class FeedbackContainer extends React.Component{
 		}
 	}
 
+	/**
+	*	Method for creating the object with [correct, total] array 
+	*	per question in a dict with 
+	*/
+
+
 	CalcTrueTotal(){
  		const subtopics = this.state.subtopics;
  		const isTrue = this.state.isTrue;
 
+
+ 		// creates empty dict
  		var subtopicObject = {}
  		for (var i = 0; i < isTrue.length; i++) {
 			for (var j = 0; j < subtopics[i].length; j++) {
@@ -77,13 +92,12 @@ export class FeedbackContainer extends React.Component{
 			}
 		}
 
-
+		// updates the dict with the datas from state.isTrue
 		for (var i = 0; i < isTrue.length; i++) {
 			for (var j = 0; j < subtopics[i].length; j++) {
 				const oldvalue=subtopicObject[subtopics[i][j]];
 
 				var newvalue = oldvalue;
-				console.log(isTrue[i]);
 				if(isTrue[i]){
 					newvalue[0]+=1;
 				}
@@ -93,7 +107,7 @@ export class FeedbackContainer extends React.Component{
 
 			}
 		}
-		console.log(subtopicObject);  // this is fine ^^
+		// console.log(subtopicObject);  // this is fine ^^
 		// now, thesubtopics be like
 		// {
 		// 	subtopicID: [x,y]
@@ -105,7 +119,6 @@ export class FeedbackContainer extends React.Component{
 		this.setState({
 			subtopicTrueTotal: subtopicObject,
 		});
-		console.log("subtopicTrueTotal set");
 	}
 
 
@@ -231,17 +244,15 @@ class FeedbackSubTopic extends React.Component {
 	render(){
 		return <Container style={{overflow: "hidden"}}>
 			<Segment>
-				<Grid>
-					<Grid.Column width={12}>
+				<Accordion>
+					<Accordion.Title>
 						<h2>{this.state.name} - {this.props.weaktopic.Correct * 100}% correct</h2>
-					</Grid.Column>
-					<Grid.Column width={12}>
-						<p><b>{this.state.description}</b></p>
-					</Grid.Column>
-					<Grid.Column width={12}>
-              			<Markdown source={this.state.content} />
-					</Grid.Column>
-				</Grid>
+						<p><b>{this.state.description}</b></p><Icon name="dropdown" />
+					</Accordion.Title>
+					<Accordion.Content>
+						<Markdown source={this.state.content} />
+					</Accordion.Content>
+				</Accordion>
 			</Segment>
 			<br />
 		</Container>;

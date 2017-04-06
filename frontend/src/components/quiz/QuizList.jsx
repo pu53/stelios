@@ -1,8 +1,8 @@
 import React, { Component} from 'react';
 // import { Container, Grid, Button, Segment, List, Divider} from 'semantic-ui-react';
 import { getData } from '../../helpers.jsx';
-import { Accordion, Icon} from 'semantic-ui-react';
-
+import { Accordion, Icon, Button, List} from 'semantic-ui-react';
+import { Link } from 'react-router'
 
 /** Class for 
 * 	listing quizes
@@ -15,11 +15,16 @@ export class QuizList extends React.Component {
 		super(props);
 
 		this.state = {
+			quizobject: {},
 		};
 	}
 
 	componentWillMount(){
-		this.getQuizList();
+		this.getQuizList(); //starts the chain
+	}
+
+	componentDidUpdate(){
+		// console.log(this.state.quizobject);
 	}
 
 	/** method for getting the quizes from DB
@@ -28,46 +33,80 @@ export class QuizList extends React.Component {
 	* 	content <- quizes to subject
 	*/ 
 	getQuizList(){
-
-		var quizes = [];
-
 		getData("quiz/",
 			(() => {}),
 			((res) => {
-				quizes = res;
+				const quizes = res;
 				console.log(res);
+				this.makeQuizObject(quizes);
 			}),
 			(() => {})
 		);
-
-		var quizBySubject = {};
-
-		console.log(quizes);
-		for (var i = 0; i < quizes.length; i++) {
-
-			const oldValue = quizBySubject[quizes[i].subject];
-			console.log(oldValue);
-			// quizBySubject[quiz.subject] 
-		}
-		this.setState({
-			quizobject: quizes,
-		});
-
 	}
 
+	makeQuizObject(quizes){
+		var object = {};
+
+		for (var i = 0; i < quizes.length; i++) {
+			const quiz = quizes[i];
+
+			var temp;
+			if (!object.hasOwnProperty(quiz.subject)) {
+				temp = [];
+		    	// console.log("new subject " + quiz.subject);
+		    	temp.push(quiz);
+		    	object[quiz.subject] = temp;
+		    }else{
+		    	// console.log("old subject " + quiz.subject);
+		    	temp = object[quiz.subject];
+		    	temp.push(quiz);
+				
+		    }
+		}
+
+
+		this.setState({
+			quizobject: object,
+		});
+	}
+
+	handleQuizClick(){
+		window.location.reload();
+	}
+
+
 	render(){
-		return <Accordion>
-			<Accordion.Title>
-	      		<Icon name='dropdown' />
-	      		Quizes!
-	    	</Accordion.Title>
-	    	<Accordion.Content>
-	    		<p>
-	    			{
-	    				this.state.quizobject //atm empty
-	    			} 
-	    		</p>
-	    	</Accordion.Content>
-	    </Accordion>;
+		if(Object.keys(this.state.quizobject).length === 0){
+			return <div>loading ... .. .
+			or empty </div>;
+		}else{
+			const keys = Object.keys(this.state.quizobject);
+			return <List>
+				{
+					// make an accordion from the quizobject
+					// one identity
+					keys.map((subjectID) => {
+						const quizArray = this.state.quizobject[subjectID];
+						return <Accordion key={subjectID}>
+							<Accordion.Title>
+								<Icon name='dropdown' /> <b>{subjectID} getData w/this</b>
+							</Accordion.Title>
+							<Accordion.Content>
+								<List >
+									{
+										quizArray.map((quiz) => {
+											return <List.Item key={quiz.id}>
+												<Link to={"/quiz/"+quiz.id.toString()} onClick={this.handleQuizClick}>
+												</Link>
+											</List.Item>;
+										})
+									}
+								</List>
+							</Accordion.Content>
+						</Accordion>
+					})
+				}
+			</List>;	
+		}
 	}
 }
