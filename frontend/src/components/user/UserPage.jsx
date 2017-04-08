@@ -1,6 +1,7 @@
 import React from 'react'
 import { UserSubjects } from './UserSubjects'
 import { UserQuizes } from './UserQuizes'
+import { WelcomeMessage } from './WelcomeMessage'
 
 export class UserPage extends React.Component {
     render() {
@@ -8,7 +9,7 @@ export class UserPage extends React.Component {
 
         return (
           <div style={{width:'100%'}}>
-            <h1>Welcome to STELIOS!</h1>
+            <WelcomeMessage/>
             <UserSubjects/>
             <UserQuizes/>
           </div>
