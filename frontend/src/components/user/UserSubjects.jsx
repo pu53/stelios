@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from '../NavLink.jsx';
 import { Menu, Header } from 'semantic-ui-react'
 
 export class UserSubjects extends React.Component {
@@ -50,7 +51,7 @@ export class UserSubjects extends React.Component {
                 <Header size='large'>Subjects</Header>
                     <Menu fluid vertical>
                        {this.state.data.subjects.map(function(subject, index){
-                           return <Menu.Item key={index} href={'/wiki/'+subject.id}>{ subject.name }</Menu.Item>;
+                           return <NavLink to={'/wiki/'+subject.id} ><Menu.Item key={index} >{ subject.name }</Menu.Item></NavLink>;
                          })}
                     </Menu>
                </div>

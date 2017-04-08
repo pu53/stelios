@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from '../NavLink.jsx';
 import { Menu, Label, Header, Icon } from 'semantic-ui-react'
 
 export class UserQuizes extends React.Component {
@@ -51,7 +52,7 @@ export class UserQuizes extends React.Component {
                 <Header size='large'>Quizes</Header>
                     <Menu fluid vertical>
                        {this.state.data.quizes.map(function(quiz, index){
-                           return <Menu.Item key={index} href={'/quiz/'+quiz.id} ><Icon name='tasks' /> <Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item>;
+                           return <NavLink to={'/quiz/'+quiz.id} ><Menu.Item key={index} ><Icon name='tasks' /> <Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item></NavLink>;
                          })}
                     </Menu>
                </div>
