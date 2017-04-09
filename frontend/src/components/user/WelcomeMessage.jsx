@@ -27,12 +27,10 @@ export class WelcomeMessage extends React.Component {
         });
 
         fetch(request).then((res) => {
-          /*console.log(res.status);*/
           return res.json();
         })
         .then((res) => {
           this.setState({data:res});
-          /*console.log(res.username);*/
         }).catch((e) => {
           console.log(e);
         });

@@ -28,12 +28,10 @@ export class UserSubjects extends React.Component {
         });
 
         fetch(request).then((res) => {
-          /*console.log(res.status);*/
           return res.json();
         })
         .then((res) => {
           this.setState({data:res});
-          /*console.log(res.username);*/
         }).catch((e) => {
           console.log(e);
         });
@@ -43,6 +41,7 @@ export class UserSubjects extends React.Component {
         this.fetchData();
     }
 
+    /* Creates a list of links to a users subjects */
     render() {
         if(Object.keys(this.state.data).length > 0){
             return (
@@ -51,7 +50,7 @@ export class UserSubjects extends React.Component {
                 <Header size='large'>Subjects</Header>
                     <Menu fluid vertical>
                        {this.state.data.subjects.map(function(subject, index){
-                           return <NavLink to={'/wiki/'+subject.id} ><Menu.Item key={index} >{ subject.name }</Menu.Item></NavLink>;
+                           return <NavLink to={'/wiki/'+subject.id} key={index}><Menu.Item >{ subject.name }</Menu.Item></NavLink>;
                          })}
                     </Menu>
                </div>

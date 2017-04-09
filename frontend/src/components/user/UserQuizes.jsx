@@ -43,16 +43,16 @@ export class UserQuizes extends React.Component {
         this.fetchData();
     }
 
+    /* Creates a list of links to a users quizes */
     render() {
         if(Object.keys(this.state.data).length > 0){
             return (
-
                 <div>
                 <br />
                 <Header size='large'>Quizes</Header>
                     <Menu fluid vertical>
                        {this.state.data.quizes.map(function(quiz, index){
-                           return <NavLink to={'/quiz/'+quiz.id} ><Menu.Item key={index} ><Icon name='tasks' /> <Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item></NavLink>;
+                           return <NavLink to={'/quiz/'+quiz.id} key={index}><Menu.Item ><Icon name='tasks' /> <Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item></NavLink>;
                          })}
                     </Menu>
                </div>
