@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from '../NavLink.jsx';
 import { Menu, Header } from 'semantic-ui-react'
 
 export class UserSubjects extends React.Component {
@@ -27,12 +28,10 @@ export class UserSubjects extends React.Component {
         });
 
         fetch(request).then((res) => {
-          /*console.log(res.status);*/
           return res.json();
         })
         .then((res) => {
           this.setState({data:res});
-          /*console.log(res.username);*/
         }).catch((e) => {
           console.log(e);
         });
@@ -42,6 +41,7 @@ export class UserSubjects extends React.Component {
         this.fetchData();
     }
 
+    /* Creates a list of links to a users subjects */
     render() {
         if(Object.keys(this.state.data).length > 0){
             return (
@@ -50,7 +50,7 @@ export class UserSubjects extends React.Component {
                 <Header size='large'>Subjects</Header>
                     <Menu fluid vertical>
                        {this.state.data.subjects.map(function(subject, index){
-                           return <Menu.Item key={index} href={'/wiki/'+subject.id}>{ subject.name }</Menu.Item>;
+                           return <NavLink to={'/wiki/'+subject.id} key={index}><Menu.Item >{ subject.name }</Menu.Item></NavLink>;
                          })}
                     </Menu>
                </div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { NavLink } from './components/NavLink.jsx';
 import { IndexLink } from 'react-router'
-import { Menu, Grid, Segment, Image } from 'semantic-ui-react'
+import { Menu, Dropdown, Icon, Grid, Segment, Image } from 'semantic-ui-react'
 import { SearchBar } from './components/SearchBar'
 import { Login } from './components/Login'
 
@@ -49,7 +49,6 @@ export class App extends Component {
     }
 
   render() {
-    /*var login_text = this.state.token === "null" ? "login" : "logout"*/
     var login_text = this.state.token === "null" ? "login" : "logout"
     return (
       <div className="App" style={{width:'100%'}}>
@@ -64,7 +63,16 @@ export class App extends Component {
               <NavLink to="/wiki" ><Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Wiki</Menu.Item></NavLink>
               <NavLink to="/quiz" ><Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Quiz</Menu.Item></NavLink>
               <Menu.Menu position='right'>
+                {this.state.token === "null" ?
                 <Menu.Item onClick={() => this.handleLogin(login_text)} style={{"color":"#FFFFFF"}}>{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item>
+                :
+                <Dropdown item text="User" style={{"color":"#FFFFFF"}}>
+                    <Dropdown.Menu>
+                        <Dropdown.Item><NavLink to="/user" ><Menu.Item name="user" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick}  ><Icon name='user' />Profile</Menu.Item></NavLink></Dropdown.Item>
+                        <NavLink to="/" ><Dropdown.Item><Menu.Item onClick={() => this.handleLogin(login_text)}><Icon name='log out' />{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item></Dropdown.Item></NavLink>
+                    </Dropdown.Menu>
+                </Dropdown>
+                }
               </Menu.Menu>
             </Menu>
           </div>

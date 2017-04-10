@@ -1,8 +1,7 @@
 import React from 'react'
-import { NavLink } from '../NavLink.jsx';
-import { Menu, Label, Header, Icon } from 'semantic-ui-react'
+import { Container, Header } from 'semantic-ui-react'
 
-export class UserQuizes extends React.Component {
+export class WelcomeMessage extends React.Component {
     constructor(props) {
 		super(props);
 		this.state = ({
@@ -28,12 +27,10 @@ export class UserQuizes extends React.Component {
         });
 
         fetch(request).then((res) => {
-          /*console.log(res.status);*/
           return res.json();
         })
         .then((res) => {
           this.setState({data:res});
-          /*console.log(res.username);*/
         }).catch((e) => {
           console.log(e);
         });
@@ -43,24 +40,25 @@ export class UserQuizes extends React.Component {
         this.fetchData();
     }
 
-    /* Creates a list of links to a users quizes */
     render() {
         if(Object.keys(this.state.data).length > 0){
             return (
                 <div>
-                <br />
-                <Header size='large'>Quizes</Header>
-                    <Menu fluid vertical>
-                       {this.state.data.quizes.map(function(quiz, index){
-                           return <NavLink to={'/quiz/'+quiz.id} key={index}><Menu.Item ><Icon name='tasks' /> <Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item></NavLink>;
-                         })}
-                    </Menu>
+                    <Container fluid>
+                       <Header as='h1'>{'Welcome '+this.state.data.username+'!'}</Header>
+                       <br/>
+                    </Container>
                </div>
 
             );
         } else {
             return(
-                <div></div>
+                <div>
+                    <Container fluid>
+                        <Header as='h1'>Welcome to the STELIOS User Page!</Header>
+                        <br/>
+                    </Container>
+                </div>
             )
         }
     }
