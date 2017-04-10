@@ -1,3 +1,6 @@
+[![Build Status](https://www.travis-ci.org/pu53/stelios.svg?branch=master)](https://www.travis-ci.org/pu53/stelios)
+[![Coverage Status](https://coveralls.io/repos/github/pu53/stelios/badge.svg?branch=master)](https://coveralls.io/github/pu53/stelios?branch=master) 
+
 # Stelios
 A web app that will **revolutionize learning experience**!
 
