@@ -45,7 +45,7 @@ React components can be imported and displayed like shown above with the compone
 **TODO:** write more examples
 
 ## Installation
-
+#TODO you must also make a user, stelios_user in prodcution, postgres in development.
 ### Backend
 ```bash
 psql -c 'CREATE DATABASE stelios_backend;' -U <username>
@@ -66,7 +66,7 @@ npm install
 ```
 
 ## Usage
-
+Our project is divided into to parts, the backend and the frontend.
 ### Backend
 ```bash
 cd backend
@@ -84,11 +84,11 @@ npm start
 
 ## Built With
 
-* [React](https://facebook.github.io/react/) - The interface framework used
-* [Django](https://www.djangoproject.com/) - The core web framework
-* [Django REST framework](http://www.django-rest-framework.org/) - Used to Create the JSON api
-* [PostgreSQL](https://www.postgresql.org/) - The SQL sever used
-* [Semantic-UI](https://semantic-ui.com/) - The css framework used
+* [React](https://facebook.github.io/react/) - Frontend javascript library, our whole frontend app is written in react.
+* [Django](https://www.djangoproject.com/) - Backend python web-framework
+* [Django REST framework](http://www.django-rest-framework.org/) - Backend api framework built on top of django, creates the JSON api interface
+* [PostgreSQL](https://www.postgresql.org/) - A fast, reliable and production ready SQL database
+* [Semantic-UI](https://semantic-ui.com/) - CSS framework thats easy, comfortable and fast to use
 
 ## API
 
