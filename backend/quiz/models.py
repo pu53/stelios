@@ -26,5 +26,5 @@ class Choice(models.Model):
 		
 class Answer(models.Model):
 	questionID = models.ForeignKey(Question, related_name='Answer_Question', default=None)
-	choiceID = models.ForeignKey(Choice, related_name='Answer_Choice', default=None)
+	choiceID = models.ForeignKey(Choice, related_name='Answer_Choice', default=None, null=True)
 	quizID = models.ForeignKey(Quiz, related_name='Answer_Quiz', default=None)

@@ -41,9 +41,9 @@ class ChoiceIsTrueSerializer(QueryFieldsMixin,serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
 	
-	questionID = serializers.PrimaryKeyRelatedField(
+	choiceID = serializers.PrimaryKeyRelatedField(
 		#many=True, 
-		queryset=Question.objects.all(),
+		queryset=Choice.objects.all(),
 		#read_only=True
 	)
 	

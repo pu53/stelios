@@ -148,12 +148,12 @@ class SaveQuizResult(APIView):
 			answer_data = {
 				'quizID':quizID,
 				'questionID':questions[i]['id'],
-				'choiceID':answers[i]
+				'choiceID':(None if answers[i]==-1 else answers[i])
 			}
 			#answer_serializer = AnswerSerializer(data=answer_data)
 			answer_data_rows.append(answer_data)
 			print("Dette er dataen: " + str(answer_data))
-			#related_profile = Profiles.
+			#profile_updater = 
 
 		answer_serializer = AnswerSerializer(data=answer_data_rows, many=True)
 		#print("Funker serialiseringen?" + str(answer_serializer.is_valid()))
@@ -162,7 +162,7 @@ class SaveQuizResult(APIView):
 		if(answer_serializer.is_valid()):
 			answer_serializer.save()
 			return Response(answer_serializer.data, status = status.HTTP_201_CREATED)
-		
+		print("Dette gikk galt: " + str(answer_serializer.errors))
 		return Response(answer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 	def put(self, request, format=json):
