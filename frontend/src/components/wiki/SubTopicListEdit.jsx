@@ -1,6 +1,6 @@
 import React from 'react'
-import {List, Grid, Button} from 'semantic-ui-react'
-import { getData, sendData } from '../../helpers'
+import {List, Grid } from 'semantic-ui-react'
+import { getData } from '../../helpers'
 
 export class SubTopicListEdit extends React.Component {
 

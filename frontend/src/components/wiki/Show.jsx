@@ -3,7 +3,7 @@ import React from 'react'
 import { Grid } from 'semantic-ui-react'
 import { ButtonGroup } from './ButtonGroup'
 var Markdown = require('react-remarkable');
-var SimpleMDE = require('react-simplemde-editor');
+/*var SimpleMDE = require('react-simplemde-editor');*/
 
 
 /* Show is a dumb component that displays name, description, (content), and buttongroup*/

@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from '../NavLink.jsx';
 import { Menu, Header } from 'semantic-ui-react'
 
 export class UserSubjects extends React.Component {
@@ -19,7 +20,6 @@ export class UserSubjects extends React.Component {
           link = 'http://api.stelios.no/'+ url;
         }
         //generated request
-        console.log(link)
         var request = new Request(link, {
           method: 'GET',
           headers: {
@@ -28,12 +28,10 @@ export class UserSubjects extends React.Component {
         });
 
         fetch(request).then((res) => {
-          console.log(res.status);
           return res.json();
         })
         .then((res) => {
           this.setState({data:res});
-          console.log(res.username);
         }).catch((e) => {
           console.log(e);
         });
@@ -43,16 +41,16 @@ export class UserSubjects extends React.Component {
         this.fetchData();
     }
 
+    /* Creates a list of links to a users subjects */
     render() {
-        console.log("YAYAYAY");
         if(Object.keys(this.state.data).length > 0){
             return (
 
                 <div>
                 <Header size='large'>Subjects</Header>
                     <Menu fluid vertical>
-                       {this.state.data.subjects.map(function(subject){
-                           return <Menu.Item href= {'/wiki/'+subject.id}>{ subject.name }</Menu.Item>;
+                       {this.state.data.subjects.map(function(subject, index){
+                           return <NavLink to={'/wiki/'+subject.id} key={index}><Menu.Item >{ subject.name }</Menu.Item></NavLink>;
                          })}
                     </Menu>
                </div>

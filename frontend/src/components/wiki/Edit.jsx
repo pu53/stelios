@@ -209,7 +209,7 @@ export class Edit extends React.Component {
        				<Grid>
        					<Grid.Row>
        						<Grid.Column width={8}>
-       							<Button loading={this.state.loading} positive fluid content="Save" onClick = {this.onClickSave} />
+       							<Button loading={this.state.loading} positive fluid content="Save" onClick={this.onClickSave} />
        						</Grid.Column>
        						<br />
        						<Grid.Column width={8}>
