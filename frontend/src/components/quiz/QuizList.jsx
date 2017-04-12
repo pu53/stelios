@@ -71,7 +71,10 @@ export class QuizList extends React.Component {
 	}
 
 	handleQuizClick(){
-		window.location.reload();
+		// window.location.reload();
+		this.setState({
+			reRender: true,
+		})
 	}
 
 
@@ -92,11 +95,12 @@ export class QuizList extends React.Component {
 								<Icon name='dropdown' /> <b>{subjectID} getData w/this</b>
 							</Accordion.Title>
 							<Accordion.Content>
-								<List >
+								<List bulleted>
 									{
 										quizArray.map((quiz) => {
 											return <List.Item key={quiz.id}>
 												<Link to={"/quiz/"+quiz.id.toString()} onClick={this.handleQuizClick}>
+													{quiz.title}
 												</Link>
 											</List.Item>;
 										})
