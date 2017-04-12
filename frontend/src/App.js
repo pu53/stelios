@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { NavLink } from './components/NavLink.jsx';
 import { IndexLink } from 'react-router'
-import { Button, Menu, Item, Grid, Segment, Image } from 'semantic-ui-react'
+import { Menu, Grid, Segment, Image } from 'semantic-ui-react'
 import { SearchBar } from './components/SearchBar'
 import { Login } from './components/Login'
 
@@ -50,15 +49,16 @@ export class App extends Component {
     }
 
   render() {
+    /*var login_text = this.state.token === "null" ? "login" : "logout"*/
     var login_text = this.state.token === "null" ? "login" : "logout"
     return (
       <div className="App" style={{width:'100%'}}>
-        <Segment raised style={{"color":"#FFFFFF","background-color":"#3F51B5","padding":"0 0 0 0"}}>
-          <div style={{"display":"flex", "align-items":"center","margin-top":"px", "margin-bottom":"25px"}}>
-            <Image inverted style={{"margin-left":"20px", "margin-top":"23px", "margin-right":"20px"}} src={process.env.PUBLIC_URL + "logo.png"} width="50px" height="50px" shape="circular"/>
+        <Segment raised style={{"color":"#FFFFFF","backgroundColor":"#3F51B5","padding":"0 0 0 0"}}>
+          <div style={{"display":"flex", "alignItems":"center","marginTop":"px", "marginBottom":"25px"}}>
+            <Image style={{"marginLeft":"20px", "marginTop":"23px", "marginRight":"20px"}} src={process.env.PUBLIC_URL + "logo.png"} width="50px" height="50px" shape="circular"/>
             <h1>Stelios</h1>
           </div>
-          <div style={{"width":"100%", "background-color": "#303F9F"}}>
+          <div style={{"width":"100%", "backgroundColor": "#303F9F"}}>
             <Menu pointing secondary style={{"padding":"10px 0px 10px 30px"}}>
               <IndexLink to="/"><Menu.Item name="home" active={this.state.activeItem === 'home'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Home</Menu.Item></IndexLink>
               <NavLink to="/wiki" ><Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Wiki</Menu.Item></NavLink>

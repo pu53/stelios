@@ -1,8 +1,6 @@
-
 import React from 'react'
 import {Segment, List, Grid, Button} from 'semantic-ui-react'
-import { ButtonGroup } from './ButtonGroup'
-var Markdown = require('react-remarkable');
+/*var Markdown = require('react-remarkable');*/
 import { TopicEdit } from './TopicEdit'
 
 /* Show is a dumb component that displays name, description, (content), and buttongroup*/
