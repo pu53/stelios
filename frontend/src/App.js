@@ -81,8 +81,13 @@ export class App extends Component {
           <Grid>
             {this.state.show_login ?
               <Grid.Row centered>
-                <Login show={this.state.show_login} success={() => this.successLogin()} />
+                <Grid.Column width={16}>
+                    <Segment raised style={{"justify-content":"center","marginTop":"-20px", "marginLeft":"-70px", "marginRight":"-70px"}}>
+                        <Login show={this.state.show_login} success={() => this.successLogin()} />
+                    </Segment>
+                </Grid.Column>
               </Grid.Row>
+
               :
               null
             }
