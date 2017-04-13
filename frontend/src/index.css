@@ -3,7 +3,7 @@ html, body {
   height: 100%;
   margin:0;
   padding:0;
-
+  font-family:'Raleway', sans-serif !important;
 }
 
 body {
@@ -11,14 +11,17 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  font-family:'Raleway', sans-serif !important;
 }
 
 #root {
   background-color:#EEEEEE;
   flex:1;
+  font-family:'Raleway', sans-serif !important;
 }
 
 footer {
+  font-family:'Raleway', sans-serif !important;
   background-color: #424242;
   color: #EEEEEE;
   text-align: center;

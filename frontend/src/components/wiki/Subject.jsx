@@ -36,6 +36,11 @@ export class Subject extends React.Component {
 
       this.getSubject(nextProps.subjectId)
     }
+    if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
+      this.setState({
+        new: false, edit: false
+      });
+    }
   }
 
   getSubject = (id) => {
@@ -67,6 +72,7 @@ export class Subject extends React.Component {
       status, message, neg
     })
   }
+
 
   onClickEdit = (e) => {
     e.preventDefault()
@@ -144,7 +150,8 @@ export class Subject extends React.Component {
             status={this.state.status}
             message={this.state.message}
             neg={this.state.neg} />
-          <Edit {...this.props}
+          <Edit
+            {...this.props}
             edit
             id={this.state.subjectId}
             name={this.state.name}
@@ -162,7 +169,8 @@ export class Subject extends React.Component {
       return(
         <div>
           <CustomMessage onChangeMessage={this.onChangeMessage} header="Subject" status={this.state.status} message={this.state.message} neg={this.state.neg} />
-          <Edit {...this.props}
+          <Edit
+            {...this.props}
             new
             id={this.state.subjectId}
             name={this.state.name}

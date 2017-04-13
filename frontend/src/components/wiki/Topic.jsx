@@ -24,15 +24,31 @@ export class Topic extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.topics !== undefined && nextProps.activeTopicId !== this.state.activeTopicId) {
+			console.log("in topics will recive" , nextProps);
       var id = nextProps.activeTopicId
       var topic = nextProps.topics.map((topic) => {if (topic.id === id) {return topic}}).filter(Boolean)[0];
-      console.log("willReciveProps: ", id, '    ', topic, topic.name, topic.description);
+			if (topic === undefined) {
+				this.setState({
+					activeTopicId: -1,
+					new: false,
+					edit: false,
+					name: '',
+					description: '',
+					subtopics: []
+				})
+			} else {
+	      this.setState({
+	        activeTopicId: id,
+	        name: topic.name,
+	        description: topic.description,
+	      })
+	      this.getSubTopics(id)
+			}
+    }
+    if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
       this.setState({
-        activeTopicId: id,
-        name: topic.name,
-        description: topic.description,
-      })
-      this.getSubTopics(id)
+        new: false, edit: false
+      });
     }
   }
 
@@ -129,7 +145,7 @@ export class Topic extends React.Component {
   render() {
     console.log("in topic render: ", this.state.subtopics);
     const buttonGroup = {
-      edit: this.state.edit || this.state.new ?  undefined : this.onClickEdit,
+      edit: this.state.edit || this.state.new || this.state.name === '' ?  undefined : this.onClickEdit,
       new: this.state.edit || this.state.new ?  undefined : this.onClickNew,
       delete: this.state.edit ? this.onClickDelete : undefined
     }
@@ -157,7 +173,7 @@ export class Topic extends React.Component {
             onSubTopicsChange={this.onSubTopicsChange}
             />
           {this.state.subtopics.map((subtopic) => {
-            return <SubTopic subtopic={subtopic} activeTopicId={this.state.activeTopicId} />
+            return <SubTopic {...this.props} subtopic={subtopic} activeTopicId={this.state.activeTopicId} />
           })}
         </div>
       )
@@ -167,6 +183,7 @@ export class Topic extends React.Component {
           <CustomMessage onChangeMessage={this.onChangeMessage} header="Topic" status={this.state.status} message={this.state.message} neg={this.state.neg} />
           <Edit {...this.props}
             new
+            onSubTopicsChange={this.onSubTopicsChange}
             id={this.state.activeTopicId}
             name={this.state.name}
             description={this.state.description}
@@ -190,7 +207,7 @@ export class Topic extends React.Component {
             description={this.state.description}
             />
             {this.state.subtopics.map((subtopic) => {
-              return <SubTopic subtopic={subtopic} activeTopicId={this.state.activeTopicId} />
+              return <SubTopic {...this.props} subtopic={subtopic} activeTopicId={this.state.activeTopicId} />
             })}
         </div>
       )

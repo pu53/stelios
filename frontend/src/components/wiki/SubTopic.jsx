@@ -34,6 +34,11 @@ export class SubTopic extends React.Component {
         markdownContent: nextProps.subtopic.content
       })
     }
+    if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
+      this.setState({
+        new: false, edit: false
+      });
+    }
   }
 
   onChangeMessage = (status, message='', neg=false) => {
@@ -157,9 +162,7 @@ export class SubTopic extends React.Component {
     } else {
       return(
         <div>
-          <Grid.Column width={16}>
-            <Divider />
-          </Grid.Column>
+
           <CustomMessage onChangeMessage={this.onChangeMessage} header="Subtopic" status={this.state.status} message={this.state.message} neg={this.state.neg} />
           <Show {...this.props}
             buttonGroup={buttonGroup}
@@ -168,6 +171,9 @@ export class SubTopic extends React.Component {
             description={this.state.description}
             markdownContent={this.state.markdownContent}
             />
+          <Grid.Column width={16}>
+            <Divider />
+          </Grid.Column>
         </div>
       )
     }

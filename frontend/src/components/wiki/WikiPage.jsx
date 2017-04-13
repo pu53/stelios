@@ -147,8 +147,24 @@ export class WikiPage extends React.Component{
 						<Grid.Column width={16}>
 							<CustomMessage onChangeMessage={this.onChangeMessage} status={-1} message={this.state.message} neg={true} />
 						</Grid.Column>
+						<Grid.Column width={16}>
+							<Segment>
+								<Subject raised
+									{...this.props}
+									updateTopics = {this.updateTopics}
+									onSubjectNew={this.onSubjectNew}
+									onSubjectNotNew={this.onSubjectNotNew}
+									subjectId={this.state.subjectId}
+									onParentSubmit={this.onSubjectSubmit}
+									triggerRefresh={this.triggerRefresh}
+									blockMessage={this.blockMessage}
+									/>
+							</Segment>
+							<br />
+						</Grid.Column>
 						<Grid.Column width={3}>
 							<TopicNav
+								{...this.props}
 								subjectId={this.state.subjectId}
 								topics={!this.state.new ? this.state.topics : undefined}
 								clickTopic={this.clickTopic}
@@ -158,21 +174,10 @@ export class WikiPage extends React.Component{
 						</Grid.Column>
 						<Grid.Column width={13}>
 							<Segment raised>
-								<Subject
-									updateTopics={this.updateTopics}
-									onSubjectNew={this.onSubjectNew}
-									onSubjectNotNew={this.onSubjectNotNew}
-									subjectId={this.state.subjectId}
-									onParentSubmit={this.onSubjectSubmit}
-									triggerRefresh={this.triggerRefresh}
-									blockMessage={this.blockMessage}
-									/>
-								<Grid.Column width={16}>
-									<Divider />
-								</Grid.Column>
-								<br />
+
 								{!this.state.new ?
 									<Topic
+										{...this.props}
 										activeTopicId={this.state.activeTopicId}
 										topics={this.state.topics}
 										subjectId={this.state.subjectId}

@@ -12,6 +12,14 @@ export class TopicNav extends React.Component {
       }
     }
 
+    componentWillReceiveProps(nextProps) {
+      if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
+        this.setState({
+          edit: false
+        });
+      }
+    }
+
     onClickEdit = () => {
       this.setState({
         edit: true
@@ -41,9 +49,11 @@ export class TopicNav extends React.Component {
                 <Grid.Column width={16}>
                   <h4>Topics: </h4>
                 </Grid.Column>
-                <Grid.Column width={16}>
-                  <Button basic fluid content="edit" onClick={(e) => {e.preventDefault(); this.onClickEdit()}} />
-                </Grid.Column>
+                { this.props.steliosToken === "null" || this.props.steliosToken === null ? null :
+                  <Grid.Column width={16}>
+                    <Button basic fluid content="edit" onClick={(e) => {e.preventDefault(); this.onClickEdit()}} />
+                  </Grid.Column>
+                }
                 <Grid.Row>
                   <Grid.Column width={16}>
                     <List selection>

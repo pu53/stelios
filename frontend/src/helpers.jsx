@@ -53,9 +53,8 @@ export function getData(url, handleStatus, handleData, handleError) {
 }
 
 export function sendData(url, method_, body, handleStatus, handleData, handleError) {
-  console.log(url, method_, body);
   var token = localStorage.getItem('stelios_token');
-  if (token === "null") {
+  if (token === "null" && url !== "signup/") {
     this.setState({
       message: "You need to login first",
       neg: true,
@@ -75,15 +74,24 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
       link = 'http://api.stelios.no/' + url;
       // production code
   }
-
-  var request = new Request(link, {
-    method: method_,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Token ' + token
-    },
-    body: JSON.stringify(body)
-  });
+  if(url !== "signup/") {
+    var request = new Request(link, {
+      method: method_,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + token
+      },
+      body: JSON.stringify(body)
+    });
+  } else {
+    var request = new Request(link, {
+      method: method_,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+  }
   fetch(request).then((res) => {
     console.log("statusFunc: ", res);
     handleStatus(res);
