@@ -53,8 +53,6 @@ export function getData(url, handleStatus, handleData, handleError) {
 }
 
 export function sendData(url, method_, body, handleStatus, handleData, handleError) {
-  console.log(url, method_, body);
-  console.log(this);
   var token = localStorage.getItem('stelios_token');
   if (token === "null" && url !== "signup/") {
     this.setState({
