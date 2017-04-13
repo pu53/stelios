@@ -171,6 +171,7 @@ export class Login extends React.Component{
 		var handleData = (res) => {
 			localStorage.setItem('stelios_token', res.token);
 			localStorage.setItem('stelios_current_user', res.id);
+			this.props.success();
 		}
 		var handleError = (err) => {
 			this.setState({
@@ -187,7 +188,8 @@ export class Login extends React.Component{
 			lastName: '',
 			email: '',
 			signup: false,
-			passwordMatch: true
+			passwordMatch: true,
+			retypePassword:'',
 		})
 	}
 
