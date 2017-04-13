@@ -2,6 +2,7 @@ import React from 'react'
 import { Message, Button, Form, Grid, Segment, Input } from 'semantic-ui-react'
 import { sendData } from '../helpers'
 
+// Login is a component that contains both login and signup. Login lives in app.js
 export class Login extends React.Component{
 	constructor(props){
 		super(props);
@@ -178,6 +179,7 @@ export class Login extends React.Component{
 				message: e
 			})
 		}
+		// .call was used because "this" was not sent to function
 		sendData.call(this,url, method, body, handleStatus, handleData, handleError)
 	}
 
@@ -195,6 +197,7 @@ export class Login extends React.Component{
 
 	render(){
     var disable_button = false;
+		// check if login/signup button should be disabled
     if(this.state.username === "" || this.state.password === "" || (this.state.password !== "" && this.state.signup && this.state.password !== this.state.retypePassword)) {
       disable_button = true
     }
