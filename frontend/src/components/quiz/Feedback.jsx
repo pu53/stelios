@@ -28,16 +28,16 @@ export class FeedbackContainer extends React.Component{
 	// decides when to call different methods since the depent on state
 	// and setState is everything else than instant.
 	componentDidUpdate(){
-		if(this.state.isTrue.length === this.state.answers.length &&
-			Object.keys(this.state.subtopicTrueTotal).length === 0){
-			// console.log("time to calculate");
-			this.CalcTrueTotal();
-		}
-		if(Object.keys(this.state.subtopicTrueTotal).length > 0 &&
-			this.state.render === false){
-			// console.log("time to judge");
-			this.weakTopics();
-		}
+		// if(this.state.isTrue.length === this.state.answers.length &&
+		// 	Object.keys(this.state.subtopicTrueTotal).length === 0){
+		// 	// console.log("time to calculate");
+		// 	this.CalcTrueTotal();
+		// }
+		// if(Object.keys(this.state.subtopicTrueTotal).length > 0 &&
+		// 	this.state.render === false){
+		// 	// console.log("time to judge");
+		// 	this.weakTopics();
+		// }
 	}
 
 	/**
@@ -65,9 +65,10 @@ export class FeedbackContainer extends React.Component{
 						// this.state.isTrue.push(res.is_correct);
 						var isTrue = this.state.isTrue;
 						isTrue.push(res.is_correct);
-						this.setState({
-							isTrue: isTrue,
-						})
+						// this.setState({
+						// 	isTrue: isTrue,
+						// })
+							this.CalcTrueTotal(isTrue);
 						console.log(this.state.isTrue);
 					}),
 					(()=>{}));
@@ -90,9 +91,9 @@ export class FeedbackContainer extends React.Component{
 	*/
 
 
-	CalcTrueTotal(){
+	CalcTrueTotal(isTrue){
  		const subtopics = this.state.subtopics;
- 		const isTrue = this.state.isTrue;
+ 		// const isTrue = this.state.isTrue;
 
 
  		// creates empty dict
@@ -108,7 +109,7 @@ export class FeedbackContainer extends React.Component{
 			for (var j = 0; j < subtopics[i].length; j++) {
 				const oldvalue=subtopicObject[subtopics[i][j]];
 
-				var newvalue = oldvalue;
+				let newvalue = oldvalue;
 				if(isTrue[i]){
 					newvalue[0]+=1;
 				}
@@ -127,9 +128,10 @@ export class FeedbackContainer extends React.Component{
 		// }
 		// x is correctm Y is total questions about subtopicID.
 
-		this.setState({
-			subtopicTrueTotal: subtopicObject,
-		});
+		// this.setState({
+		// 	subtopicTrueTotal: subtopicObject,
+		// });
+		this.weakTopics(subtopicObject);
 	}
 
 
@@ -141,10 +143,10 @@ export class FeedbackContainer extends React.Component{
 	* ]
 	*
 	*/
-	weakTopics(){
+	weakTopics(subtopicObject){
  		const answers = this.state.answers;
  		const subtopics = this.state.subtopics;
- 		const subtopicObject = this.state.subtopicTrueTotal;
+ 		// const subtopicObject = this.state.subtopicTrueTotal;
 
 
 		// weakTopics = [];
@@ -188,18 +190,24 @@ export class FeedbackContainer extends React.Component{
 		// console.log(this.state.weaktopicsID);
 		if(this.state.render){
 			const weaktopics = this.state.weaktopicsID;
-			return (<div>
-				<h1>Topics you may want to read a bit about: <br /></h1>
-				<List >
-				{
-					weaktopics.map((subtopic) => {
-						return (
-								<FeedbackSubTopic weaktopic={subtopic} key={subtopic.ID}/>
-						)
-					}
-				)}
-				</List>
-			</div>);
+			if(Object.keys(weaktopics).length > 0){
+				return (<div>
+					<h1>Topics you may want to read a bit about: <br /></h1>
+					<List >
+					{
+						weaktopics.map((subtopic) => {
+							return (
+									<FeedbackSubTopic weaktopic={subtopic} key={subtopic.ID}/>
+							)
+						}
+					)}
+					</List>
+				</div>);
+			}else{
+				return <h1>
+					Well Done! You have a good understanding of all topics covered by the quiz.
+				</h1>;
+			}
 		}else{
 			return <h1>loading ... .. . </h1>;
 		}
