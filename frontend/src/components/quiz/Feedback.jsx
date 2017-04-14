@@ -182,7 +182,7 @@ export class FeedbackContainer extends React.Component{
 }
 
 /**
-Component for the topics the user hsould look into. 
+Component for the topics the user hsould look into.
 gets data from the database her
 @props: weaktopic {ID, Correct} from weaktopics from feedbackcontainer
 */

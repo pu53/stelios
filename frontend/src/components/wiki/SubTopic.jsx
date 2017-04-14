@@ -1,10 +1,9 @@
-
 import React from 'react'
 import {Grid, Divider} from 'semantic-ui-react'
 import { Show } from './Show'
 import { Edit } from './Edit'
 import { CustomMessage } from './CustomMessage'
-import { getData, sendData } from '../../helpers'
+import { sendData } from '../../helpers'
 
 export class SubTopic extends React.Component {
   constructor(props) {
@@ -163,9 +162,7 @@ export class SubTopic extends React.Component {
     } else {
       return(
         <div>
-          <Grid.Column width={16}>
-            <Divider />
-          </Grid.Column>
+
           <CustomMessage onChangeMessage={this.onChangeMessage} header="Subtopic" status={this.state.status} message={this.state.message} neg={this.state.neg} />
           <Show {...this.props}
             buttonGroup={buttonGroup}
@@ -174,6 +171,9 @@ export class SubTopic extends React.Component {
             description={this.state.description}
             markdownContent={this.state.markdownContent}
             />
+          <Grid.Column width={16}>
+            <Divider />
+          </Grid.Column>
         </div>
       )
     }

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { NavLink } from './components/NavLink.jsx';
 import { IndexLink } from 'react-router'
-import { Button, Menu, Item, Grid, Segment, Image } from 'semantic-ui-react'
+import { Menu, Dropdown, Icon, Grid, Segment, Image } from 'semantic-ui-react'
 import { SearchBar } from './components/SearchBar'
 import { Login } from './components/Login'
 
@@ -55,16 +54,25 @@ export class App extends Component {
       <div className="App" style={{width:'100%'}}>
         <Segment raised style={{"color":"#FFFFFF","background-color":"#3F51B5","padding":"0 0 0 0"}}>
           <div style={{"display":"flex", "align-items":"center","margin-top":"px", "margin-bottom":"25px"}}>
-            <Image inverted style={{"margin-left":"20px", "margin-top":"23px", "margin-right":"20px"}} src="www.stelios.no/logo.png" width="50px" height="50px" shape="circular"/>
+            <Image inverted style={{"margin-left":"20px", "margin-top":"23px", "margin-right":"20px"}} src={process.env.PUBLIC_URL + "logo.png"} width="50px" height="50px" shape="circular" />
             <h1>Stelios</h1>
           </div>
-          <div style={{"width":"100%", "background-color": "#303F9F"}}>
+          <div style={{"width":"100%", "backgroundColor": "#303F9F"}}>
             <Menu pointing secondary style={{"padding":"10px 0px 10px 30px"}}>
               <IndexLink to="/"><Menu.Item name="home" active={this.state.activeItem === 'home'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Home</Menu.Item></IndexLink>
               <NavLink to="/wiki" ><Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Wiki</Menu.Item></NavLink>
               <NavLink to="/quiz" ><Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Quiz</Menu.Item></NavLink>
               <Menu.Menu position='right'>
+                {this.state.token === "null" ?
                 <Menu.Item onClick={() => this.handleLogin(login_text)} style={{"color":"#FFFFFF"}}>{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item>
+                :
+                <Dropdown item text="User" style={{"color":"#FFFFFF"}}>
+                    <Dropdown.Menu>
+                        <Dropdown.Item><NavLink to="/user" ><Menu.Item name="user" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick}  ><Icon name='user' />Profile</Menu.Item></NavLink></Dropdown.Item>
+                        <NavLink to="/" ><Dropdown.Item><Menu.Item onClick={() => this.handleLogin(login_text)}><Icon name='log out' />{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item></Dropdown.Item></NavLink>
+                    </Dropdown.Menu>
+                </Dropdown>
+                }
               </Menu.Menu>
             </Menu>
           </div>
@@ -73,8 +81,13 @@ export class App extends Component {
           <Grid>
             {this.state.show_login ?
               <Grid.Row centered>
-                <Login show={this.state.show_login} success={() => this.successLogin()} />
+                <Grid.Column width={16}>
+                    <Segment raised style={{"justify-content":"center","marginTop":"-20px", "marginLeft":"-70px", "marginRight":"-70px"}}>
+                        <Login show={this.state.show_login} success={() => this.successLogin()} />
+                    </Segment>
+                </Grid.Column>
               </Grid.Row>
+
               :
               null
             }
