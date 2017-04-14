@@ -22,7 +22,6 @@ export class Subject extends React.Component {
 
   componentDidMount() {
     if(this.state.subjectId !== undefined) {
-      console.log(this.getSubject);
       this.getSubject(this.state.subjectId)
     }
   }
@@ -32,8 +31,6 @@ export class Subject extends React.Component {
       this.setState({
         subjectId: nextProps.subjectId
       })
-      console.log(this.getSubject);
-
       this.getSubject(nextProps.subjectId)
     }
     if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
@@ -44,7 +41,6 @@ export class Subject extends React.Component {
   }
 
   getSubject = (id) => {
-    console.log("in getSubject with id ", id);
 		var url = "subjectswithoutsubtopics/" + id + "/";
 		var handleStatus = (res) => {}
 		var handleData = (res) => {
@@ -135,7 +131,6 @@ export class Subject extends React.Component {
   }
 
   render() {
-    console.log("subjectId is in subject: ", this.state.subjectId);
     const buttonGroup = {
       edit: this.state.edit || this.state.new ?  undefined : this.onClickEdit,
       new: this.state.edit || this.state.new ?  undefined : this.onClickNew,

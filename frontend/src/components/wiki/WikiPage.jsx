@@ -52,7 +52,6 @@ export class WikiPage extends React.Component{
 	}
 
 	onChangeMessage = (status,message='',neg=false) => {
-		console.log("in onChangeMessage in wiki");
 		this.setState({
 			status,message,neg
 		})
@@ -111,7 +110,6 @@ export class WikiPage extends React.Component{
 	}
 
 	updateTopics = (res) => {
-		console.log("in updateTopics");
 		this.setState({
 			topics: res.topics,
 			activeTopicId: res.topics[0] !== undefined ? res.topics[0].id : -1
@@ -132,14 +130,12 @@ export class WikiPage extends React.Component{
 	}
 
 	clickTopic = (id) => {
-		console.log("in clickTopic ", id);
 		this.setState({
 			activeTopicId: id
 		})
 	}
 
 	render() {
-		console.log("wiki state: ", this.state);
 		if(this.state.result !== []) {
 			return(
 				<Grid>
