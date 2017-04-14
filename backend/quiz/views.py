@@ -8,7 +8,7 @@ from quiz.serializers import ChoiceIsTrueSerializer, AnswerSerializer
 
 from profiles.serializers import UserSerializer, UserIDNameSerializer, ProfileSerializer
 
-from wiki.serializers import SubtopicNameSerializer
+from wiki.serializers import SubtopicNameIDSerializer
 
 from rest_framework import generics
 from rest_framework.response import Response
@@ -70,8 +70,8 @@ class QuizData(APIView):
 			choice_serializer = ChoiceDataSerializer(choices, many=True)
 			choice_data = choice_serializer.data
 			
-			subtopic = question.subtopic.get()
-			subtopic_serializer = SubtopicNameSerializer(subtopic)
+			subtopic = question.subtopic.all()
+			subtopic_serializer = SubtopicNameIDSerializer(subtopic, many=True)
 			subtopic_data = subtopic_serializer.data
 			
 			answers = {'choices': choice_data}
@@ -89,9 +89,8 @@ class SingleQuizResults(APIView):
 	
 	def get(self, request, pk, format=json):
 		results = Answer.objects.filter(quizID=pk)
-		
+
 		return_data = []
-		
 		for result in results: 
 			list_element = {}
 			user_id = -1
@@ -99,36 +98,41 @@ class SingleQuizResults(APIView):
 			
 			#Finds the related user to the current answer
 			result_query = result.answer_history.all()
-			
+
 			#If there is a corresponding user, find name and id
 			if(len(result_query) > 0):
 				cur_user = result_query[0]
 				print("Relatert profil: " + repr(cur_user.user.id))
 				user_id = cur_user.user.id
 				username = cur_user.user.username
-			
+
 			#Add the fields to the current list element
 			list_element.update({
 				'user_id':user_id,
 				'username':username
 			})
-			
+
 			#Serialize the answer, and add it to the current list element
 			result_serializer = AnswerSerializer(result)
 			result_data = result_serializer.data
 			list_element.update(result_data)
 			
 			#Find out whether the answer is true or false, adds it to list element
-			related_choice = Choice.objects.get(id=result_data['choiceID'])
-			related_choice_serializer = ChoiceSerializer(related_choice)
-			list_element.update({
-				'correct':related_choice_serializer.data['is_correct']
-			})
+			try:
+				related_choice = Choice.objects.get(id=result_data['choiceID'])
+				related_choice_serializer = ChoiceSerializer(related_choice)
+				list_element.update({
+					'correct':related_choice_serializer.data['is_correct']
+				})
+			except(Exception):
+				#print("Finner ikke elementet med pk=null, setter false")
+				list_element.update({
+					'correct':False
+				})
 			
 			#Add the list element to the return data
 			return_data.append(list_element)
 			
-		
 		return Response(return_data)
 		
 	

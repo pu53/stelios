@@ -124,16 +124,6 @@ export class Quiz extends Component {
 		}
 	}
 
-	//Helper method for rudementary feedback
-	areEqual(a, b) {
-		console.log("A: " + a + " B: " + b)
-		if(a===b) {
-			return("True")
-		}
-		else {
-			return("False")
-		}
-	}
 	render() {
 		if(this.state.finished===false) {
 			return (
@@ -170,9 +160,7 @@ export class Quiz extends Component {
 			return(
 				<Container className="quizWrapper">
 					<h1>The quiz is finished!</h1>
-					{
 					<FeedbackContainer answers={this.state.answers} subtopics={this.state.questions.map((question) => question.subtopic)}/>
-					}
 				</Container>
 			);
 		}

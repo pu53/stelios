@@ -11,11 +11,11 @@ class Quiz(models.Model):
 		return(self.title)
 
 class Question(models.Model):
-    text = models.TextField(default="")
-    subtopic = models.ManyToManyField("wiki.Subtopic", default=None, related_name="subtopic_question")
-    quiz = models.ForeignKey(Quiz, related_name='quiz_question', default=None)
-    def __str__(self):
-        return(self.text)
+	text = models.TextField(default="")
+	subtopic = models.ManyToManyField("wiki.Subtopic", default=None, related_name="subtopic_question")
+	quiz = models.ForeignKey(Quiz, related_name='quiz_question', default=None)
+	def __str__(self):
+		return(self.text)
 
 class Choice(models.Model):
 	question = models.ForeignKey(Question, related_name='question_choice', default=None)
