@@ -121,7 +121,7 @@ export class SubTopicListEdit extends React.Component {
     }
 
     render() {
-      console.log("subtopiclistedit props: ", this.props);
+      console.log("subtopiclistedit state: ", this.state.activeSubTopics, this.state.allSubTopics);
       return (
         <Grid>
           <Grid.Column width={16}>

@@ -53,6 +53,7 @@ export class Edit extends React.Component {
       this.setState({
         activeSubTopics, allSubTopics
       })
+      console.log("subtopiclistedit edit state: ", activeSubTopics, allSubTopics);
     }
 
     onNameChange = (e) => {
@@ -85,10 +86,12 @@ export class Edit extends React.Component {
     }
 
     onClickSave = (e) => {
-      console.log("in onClickSave ", this.state.markdownContent);
       this.setState({
         loading: true
       })
+      //because of some wierd bug that causes state to change somewhere in this method, save all state variables to local vars at the start
+      var activeSubTopics = this.state.activeSubTopics
+      var allSubTopics = this.state.allSubTopics
       var _id = this.state.id
       var _name = this.state.name
       var _description = this.state.description
@@ -109,6 +112,48 @@ export class Edit extends React.Component {
       }
       var handleData = (res) => {
         this.props.onClickSave(res.id, _name, _description, _markdown_content)
+        if (this.props.header === "topics") {
+          activeSubTopics.map((subtopic) => {
+            if(!subtopic.topics.some((topicId) => {return topicId === res.id})) {
+              var url = "subtopics/" + subtopic.id + "/"
+              var method = "PUT"
+              subtopic.topics.push(res.id)
+              var body = {
+                id: subtopic.id,
+                topics: subtopic.topics
+              }
+              var handleStatus = (res) => {
+                this.props.onChangeMessage(res.status)
+              }
+              var handleData = (res) => {}
+              var handleError = (e) => {
+                this.props.onChangeMessage(-1, e, true)
+              }
+              sendData(url, method, body, handleStatus, handleData, handleError)
+            }
+          })
+          allSubTopics.map((subtopic) => {
+            var index = subtopic.topics.indexOf(res.id);
+            if (index !== -1) {
+              subtopic.topics.splice(index, 1);
+              var url = "subtopics/" + subtopic.id + "/"
+              var method = "PUT"
+              var body = {
+                id: subtopic.id,
+                topics: subtopic.topics
+              }
+              var handleStatus = (res) => {
+                this.props.onChangeMessage(res.status)
+              }
+              var handleData = (res) => {}
+              var handleError = (e) => {
+                this.props.onChangeMessage(-1, e, true)
+              }
+              sendData(url, method, body, handleStatus, handleData, handleError)
+            }
+          })
+          this.props.onSubTopicsChange(activeSubTopics)
+        }
         this.setState({loading:false})
       }
       var handleError = (e) => {
@@ -116,51 +161,6 @@ export class Edit extends React.Component {
         this.setState({loading:false})
       }
       sendData(url,method,body,handleStatus,handleData,handleError)
-      if (this.props.header === "topics") {
-        console.log("in edit topiclist ", this.state.activeSubTopics, this.state.allSubTopics);
-        this.state.activeSubTopics.map((subtopic) => {
-          if(!subtopic.topics.some((topicId) => {return topicId === this.state.id})) {
-            var url = "subtopics/" + subtopic.id + "/"
-            var method = "PUT"
-            subtopic.topics.push(this.state.id)
-            var body = {
-              id: subtopic.id,
-              topics: subtopic.topics
-            }
-            var handleStatus = (res) => {
-              this.props.onChangeMessage(res.status)
-            }
-            var handleData = (res) => {}
-            var handleError = (e) => {
-              this.props.onChangeMessage(-1, e, true)
-            }
-
-            sendData(url, method, body, handleStatus, handleData, handleError)
-          }
-        })
-        this.state.allSubTopics.map((subtopic) => {
-          var index = subtopic.topics.indexOf(this.state.id);
-          console.log("in edit sub", index);
-          if (index !== -1) {
-            subtopic.topics.splice(index, 1);
-            var url = "subtopics/" + subtopic.id + "/"
-            var method = "PUT"
-            var body = {
-              id: subtopic.id,
-              topics: subtopic.topics
-            }
-            var handleStatus = (res) => {
-              this.props.onChangeMessage(res.status)
-            }
-            var handleData = (res) => {}
-            var handleError = (e) => {
-              this.props.onChangeMessage(-1, e, true)
-            }
-            sendData(url, method, body, handleStatus, handleData, handleError)
-          }
-        })
-        this.props.onSubTopicsChange(this.state.activeSubTopics)
-      }
     }
 
 
