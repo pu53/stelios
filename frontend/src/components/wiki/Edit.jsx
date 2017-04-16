@@ -101,6 +101,9 @@ export class Edit extends React.Component {
       if (_markdown_content) {
         body['markdown_content'] = _markdown_content
       }
+      if (this.props.header === "topics" && method === "POST") {
+        body['subjects'] = [this.props.subjectId]
+      }
       var handleStatus = (res) => {
         this.props.onChangeMessage(res.status);
       }
@@ -162,7 +165,7 @@ export class Edit extends React.Component {
 
 
     render() {
-      console.log("in edit renderer, ", this.state.id);
+      console.log("in edit renderer, ", this.props);
         return (
           <Form>
      				<Grid>

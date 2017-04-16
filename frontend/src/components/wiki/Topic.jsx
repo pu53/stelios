@@ -170,6 +170,7 @@ export class Topic extends React.Component {
   render() {
     console.log("inTopic", this.state);
     console.log("in topic render: ", this.state.subtopics);
+    console.log("props in topic: ", this.props);
     const buttonGroup = {
       edit: this.state.edit || this.state.new || this.state.name === '' ?  undefined : this.onClickEdit,
       new: this.state.edit || this.state.new ?  undefined : this.onClickNew,
