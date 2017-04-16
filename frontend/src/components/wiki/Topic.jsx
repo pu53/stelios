@@ -20,11 +20,36 @@ export class Topic extends React.Component {
       subtopics: []
     }
   }
-
+  //because componentWillReceiveProps doesnt always fire we need this method to populate state. nextProps is just an alias for props because copypasta
+  componentWillMount() {
+    var nextProps = this.props
+    if (nextProps.topics !== undefined && nextProps.activeTopicId !== this.state.activeTopicId) {
+      var id = nextProps.activeTopicId
+      var topic = nextProps.topics.map((topic) => {if (topic.id === id) {return topic}}).filter(Boolean)[0];
+      if (topic === undefined) {
+        this.setState({
+          activeTopicId: -1,
+          new: false,
+          edit: false,
+          name: '',
+          description: '',
+          subtopics: []
+        })
+      } else {
+        this.setState({
+          activeTopicId: id,
+          name: topic.name,
+          description: topic.description,
+        })
+        this.getSubTopics(id)
+      }
+    }
+  }
 
   componentWillReceiveProps(nextProps) {
+    console.log("inTopic willrecivepropsstart");
     if (nextProps.topics !== undefined && nextProps.activeTopicId !== this.state.activeTopicId) {
-			console.log("in topics will recive" , nextProps);
+			console.log("inTopic will recive" , nextProps);
       var id = nextProps.activeTopicId
       var topic = nextProps.topics.map((topic) => {if (topic.id === id) {return topic}}).filter(Boolean)[0];
 			if (topic === undefined) {
@@ -143,6 +168,7 @@ export class Topic extends React.Component {
 
 
   render() {
+    console.log("inTopic", this.state);
     console.log("in topic render: ", this.state.subtopics);
     const buttonGroup = {
       edit: this.state.edit || this.state.new || this.state.name === '' ?  undefined : this.onClickEdit,

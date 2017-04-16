@@ -18,19 +18,20 @@ export class Edit extends React.Component {
         markdownContent: this.props.markdownContent,
         loading: false,
 
-        activeSubTopics: [],
+        activeSubTopics: props.subTopics ? props.subTopics : [],
         allSubTopics: []
       }
     }
 
     componentWillReceiveProps(nextProps){
       if (!this.props.new) {
-        if (this.state.id !== nextProps.id || this.state.name !== nextProps.name || this.state.description !== nextProps.description || this.state.markdownContent !== this.state.markdownContent) {
+        if (this.state.id !== nextProps.id || this.state.name !== nextProps.name || this.state.description !== nextProps.description || this.state.markdownContent !== nextProps.markdownContent || this.state.activeSubTopics !== nextProps.subTopics ) {
           this.setState({
             id: nextProps.id,
             name: nextProps.name,
             description: nextProps.description,
-            markdownContent: nextProps.markdownContent
+            markdownContent: nextProps.markdownContent,
+            activeSubTopics: nextProps.subTopics
           })
         }
       }
@@ -42,7 +43,8 @@ export class Edit extends React.Component {
           id: -1,
           name: '',
           description: '',
-          markdownContent: ''
+          markdownContent: '',
+          activeSubTopics: []
         })
       }
     }
@@ -197,10 +199,10 @@ export class Edit extends React.Component {
             {this.props.header === "topics" ?
               <SubTopicListEdit
                 topicId={this.state.id}
-                activeSubTopics={this.state.activeSubTopics}
-                allSubTopics={this.state.allSubTopics}
                 onChangeMessage={this.onChangeMessage}
                 onSubTopicListChange={this.onSubTopicListChange}
+                activeSubTopics={this.state.activeSubTopics}
+                allSubTopics={this.state.allSubTopics}
                 />
               :
               null

@@ -8,7 +8,7 @@ export class SubTopicListEdit extends React.Component {
       super(props);
       this.state = {
         activeSubTopics: props.activeSubTopics ? props.activeSubTopics : [],
-        allSubTopics: []
+        allSubTopics: props.allSubTopics ? props.allSubTopics : [],
       }
       this.getallSubTopics()
     }
@@ -19,12 +19,14 @@ export class SubTopicListEdit extends React.Component {
 		}
 
     componentWillReceiveProps(nextProps) {
+
       console.log("SubTopicListEdit nextprops", nextProps);
       if (this.state.activeSubTopics !== nextProps.activeSubTopics && nextProps.activeSubTopics !== undefined) {
         this.setState({
           activeSubTopics: nextProps.activeSubTopics
         })
       }
+
       if (nextProps.allSubTopics !== undefined && this.state.allSubTopics !== nextProps.allSubTopics) {
         this.setState({
           allSubTopics: nextProps.allSubTopics
@@ -51,6 +53,7 @@ export class SubTopicListEdit extends React.Component {
         this.setState({
           allSubTopics: all_subtopics_without_active
         })
+        this.props.onSubTopicListChange(this.state.activeSubTopics, all_subtopics_without_active)
       }
       var handleError = (res) => {}
       getData(url,handleStatus, handleData,handleError)
@@ -118,7 +121,7 @@ export class SubTopicListEdit extends React.Component {
     }
 
     render() {
-      console.log("subtopiclistedit state: ", this.state);
+      console.log("subtopiclistedit props: ", this.props);
       return (
         <Grid>
           <Grid.Column width={16}>
