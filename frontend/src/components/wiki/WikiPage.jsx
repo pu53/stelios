@@ -76,6 +76,7 @@ export class WikiPage extends React.Component{
 		this.setState({
 			activeTopicId
 		})
+		this.props.router.push('/wiki/'+this.state.subjectId + '/' + activeTopicId + '/');
 	}
 
 	getAllSubjects = (id) => {
