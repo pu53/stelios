@@ -68,6 +68,8 @@ export class WikiPage extends React.Component{
 				active_topic_id: -1
 			})
 		}
+		this.props.router.push('/wiki/'+id);
+		window.location.reload();
 	}
 
 	onTopicSubmit = (activeTopicId,newTop=false) => {
@@ -136,6 +138,7 @@ export class WikiPage extends React.Component{
 	}
 
 	render() {
+		console.log(this.state);
 		if(this.state.result !== []) {
 			return(
 				<Grid>
