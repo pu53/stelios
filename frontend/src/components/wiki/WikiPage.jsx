@@ -29,6 +29,7 @@ export class WikiPage extends React.Component{
 			topics: [],
 			activeTopicId: -1,
 			block_message: false,
+			updateSubject: false
 		});
 	}
 
@@ -72,11 +73,16 @@ export class WikiPage extends React.Component{
 		window.location.reload();
 	}
 
-	onTopicSubmit = (activeTopicId,newTop=false) => {
+	onTopicSubmit = (activeTopicId, newTop=false) => {
 		this.setState({
 			activeTopicId
 		})
 		this.props.router.push('/wiki/'+this.state.subjectId + '/' + activeTopicId + '/');
+		if (newTop){
+			this.setState({
+				updateSubject: true
+			})
+		}
 	}
 
 	getAllSubjects = (id) => {
@@ -127,7 +133,8 @@ export class WikiPage extends React.Component{
 		console.log("in updateTopics", id, activeTopicId);
 		this.setState({
 			topics: res.topics,
-			activeTopicId
+			activeTopicId,
+			updateSubject: false,
 		})
 		this.props.router.push('/wiki/'+this.state.subjectId + '/' + activeTopicId + '/');
 	}
@@ -172,6 +179,7 @@ export class WikiPage extends React.Component{
 									onParentSubmit={this.onSubjectSubmit}
 									triggerRefresh={this.triggerRefresh}
 									blockMessage={this.blockMessage}
+									update={this.state.updateSubject}
 									/>
 							</Segment>
 							<br />

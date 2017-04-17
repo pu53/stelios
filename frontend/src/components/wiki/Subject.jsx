@@ -38,6 +38,9 @@ export class Subject extends React.Component {
         new: false, edit: false
       });
     }
+    if (nextProps.update) {
+      this.getSubject(nextProps.subjectId ? nextProps.subjectId : this.state.subjectId)
+    }
   }
 
   getSubject = (id) => {
