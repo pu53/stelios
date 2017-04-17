@@ -3,7 +3,7 @@ import {Segment, List, Grid, Button} from 'semantic-ui-react'
 /*var Markdown = require('react-remarkable');*/
 import { TopicEdit } from './TopicEdit'
 
-/* Show is a dumb component that displays name, description, (content), and buttongroup*/
+//topicnav holds all topics, and the user can select between them, aswell as edit topics in the subject.
 export class TopicNav extends React.Component {
     constructor(props) {
       super(props)

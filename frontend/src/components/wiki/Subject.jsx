@@ -4,6 +4,7 @@ import { Edit } from './Edit'
 import { CustomMessage } from './CustomMessage'
 import { getData, sendData } from '../../helpers'
 
+//Subject holds the subject name and description, it also handles dataload
 export class Subject extends React.Component {
   displayName="Subject"
   constructor(props) {
@@ -43,6 +44,7 @@ export class Subject extends React.Component {
     }
   }
 
+  // gets subject and corresponding topics, but not subtopics
   getSubject = (id) => {
 		var url = "subjectswithoutsubtopics/" + id + "/";
 		var handleStatus = (res) => {}
@@ -134,6 +136,7 @@ export class Subject extends React.Component {
   }
 
   render() {
+    //chooses which buttons to show, and give them methods to callback on
     const buttonGroup = {
       edit: this.state.edit || this.state.new ?  undefined : this.onClickEdit,
       new: this.state.edit || this.state.new ?  undefined : this.onClickNew,

@@ -2,6 +2,8 @@ import React from 'react'
 import {List, Grid } from 'semantic-ui-react'
 import { getData } from '../../helpers'
 
+//lives in the edit component, but only when it is references from the topic component.
+//SubTopicListEdit is just as topicedit (topicnav) but for subtopics :)
 export class SubTopicListEdit extends React.Component {
 
     constructor(props) {
@@ -36,6 +38,7 @@ export class SubTopicListEdit extends React.Component {
       var handleStatus = (res) => {}
       var handleData = (res) => {
         var copy = res
+        //filters out active and all subtopics
         if(this.state.activeSubTopics !== undefined) {
           var all_subtopics_without_active = copy.map((subtopic) => {
             if(!this.state.activeSubTopics.some((activeSubTopic) => {

@@ -2,7 +2,9 @@
 import React from 'react'
 import {Message} from 'semantic-ui-react'
 
-/* Show is a dumb component that displays name, description, (content), and buttongroup*/
+// Custom message shows a message and based on props will be negative or positive.
+// It will automaticly disable itself after a timeinterval, now it is 5 seconds
+// You can also just pass it a status, and it will figure out correct message to display
 export class CustomMessage extends React.Component {
     constructor(props) {
       super(props);

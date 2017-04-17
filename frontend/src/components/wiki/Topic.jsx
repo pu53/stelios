@@ -5,6 +5,7 @@ import { CustomMessage } from './CustomMessage'
 import { getData, sendData } from '../../helpers'
 import {SubTopic} from './SubTopic'
 
+// topic holds topic info and all subtopics
 export class Topic extends React.Component {
   constructor(props) {
     super(props)
@@ -49,8 +50,10 @@ export class Topic extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.topics !== undefined && nextProps.activeTopicId !== this.state.activeTopicId) {
       var id = nextProps.activeTopicId
+      //finds the topic with activeTopicId
       var topic = nextProps.topics.map((topic) => {if (topic.id === id) {return topic}}).filter(Boolean)[0];
-			if (topic === undefined) {
+      // if none exist set default values
+      if (topic === undefined) {
 				this.setState({
 					activeTopicId: -1,
 					new: false,
@@ -68,6 +71,7 @@ export class Topic extends React.Component {
 	      this.getSubTopics(id)
 			}
     }
+    //if user is not logged in, the user cant create or edit.
     if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
       this.setState({
         new: false, edit: false

@@ -5,6 +5,7 @@ import { Edit } from './Edit'
 import { CustomMessage } from './CustomMessage'
 import { sendData } from '../../helpers'
 
+//subtopic holds all subtopic info and displays it
 export class SubTopic extends React.Component {
   constructor(props) {
     super(props)

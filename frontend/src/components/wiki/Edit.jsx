@@ -7,7 +7,8 @@ import { sendData } from '../../helpers'
 import {SubTopicListEdit} from './SubTopicListEdit'
 
 
-/* Show is a dumb component that displays name, description, (content), and buttongroup*/
+// edit is a component that handles all editing for all components.
+// diffrent features are activated based on the props.header (ie "topics" or "subjects")
 export class Edit extends React.Component {
     constructor(props) {
       super(props)
@@ -111,6 +112,7 @@ export class Edit extends React.Component {
       var handleData = (res) => {
         this.props.onClickSave(res.id, _name, _description, _markdown_content)
         if (this.props.header === "topics") {
+          //saves all activeSubTopics to this topic
           activeSubTopics.map((subtopic) => {
             if(!subtopic.topics.some((topicId) => {return topicId === res.id})) {
               var url = "subtopics/" + subtopic.id + "/"
@@ -130,6 +132,7 @@ export class Edit extends React.Component {
               sendData(url, method, body, handleStatus, handleData, handleError)
             }
           })
+          //removes all subtopics that previously was in activeSubTopics
           allSubTopics.map((subtopic) => {
             var index = subtopic.topics.indexOf(res.id);
             if (index !== -1) {
