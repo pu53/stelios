@@ -7,7 +7,8 @@ import { sendData } from '../../helpers'
 import {SubTopicListEdit} from './SubTopicListEdit'
 
 
-/* Show is a dumb component that displays name, description, (content), and buttongroup*/
+// edit is a component that handles all editing for all components.
+// diffrent features are activated based on the props.header (ie "topics" or "subjects")
 export class Edit extends React.Component {
     constructor(props) {
       super(props)
@@ -18,19 +19,20 @@ export class Edit extends React.Component {
         markdownContent: this.props.markdownContent,
         loading: false,
 
-        activeSubTopics: [],
+        activeSubTopics: props.subTopics ? props.subTopics : [],
         allSubTopics: []
       }
     }
 
     componentWillReceiveProps(nextProps){
       if (!this.props.new) {
-        if (this.state.id !== nextProps.id || this.state.name !== nextProps.name || this.state.description !== nextProps.description || this.state.markdownContent !== this.state.markdownContent) {
+        if (this.state.id !== nextProps.id || this.state.name !== nextProps.name || this.state.description !== nextProps.description || this.state.markdownContent !== nextProps.markdownContent || this.state.activeSubTopics !== nextProps.subTopics ) {
           this.setState({
             id: nextProps.id,
             name: nextProps.name,
             description: nextProps.description,
-            markdownContent: nextProps.markdownContent
+            markdownContent: nextProps.markdownContent,
+            activeSubTopics: nextProps.subTopics
           })
         }
       }
@@ -42,7 +44,8 @@ export class Edit extends React.Component {
           id: -1,
           name: '',
           description: '',
-          markdownContent: ''
+          markdownContent: '',
+          activeSubTopics: []
         })
       }
     }
@@ -66,7 +69,6 @@ export class Edit extends React.Component {
     }
 
     onMarkdownContentChange = (e) => {
-      console.log("in onMarkdownContentChange", e);
       this.setState({
         markdownContent: e
       })
@@ -83,10 +85,12 @@ export class Edit extends React.Component {
     }
 
     onClickSave = (e) => {
-      console.log("in onClickSave ", this.state.markdownContent);
       this.setState({
         loading: true
       })
+      //because of some wierd bug that causes state to change somewhere in this method, save all state variables to local vars at the start
+      var activeSubTopics = this.state.activeSubTopics
+      var allSubTopics = this.state.allSubTopics
       var _id = this.state.id
       var _name = this.state.name
       var _description = this.state.description
@@ -96,14 +100,65 @@ export class Edit extends React.Component {
       var url = this.props.header + "/" + id
       var method = this.props.method
       var body = {name: this.state.name, description: this.state.description}
+      // adds component specefics fields to body:
       if (_markdown_content) {
         body['markdown_content'] = _markdown_content
+      }
+      if (this.props.header === "topics" && method === "POST") {
+        body['subjects'] = [this.props.subjectId]
+      }
+      if (this.props.header === "subtopics" && method === "POST") {
+        body['topics'] = [this.props.activeTopicId]
       }
       var handleStatus = (res) => {
         this.props.onChangeMessage(res.status);
       }
       var handleData = (res) => {
         this.props.onClickSave(res.id, _name, _description, _markdown_content)
+        if (this.props.header === "topics") {
+          //saves all activeSubTopics to this topic
+          activeSubTopics.map((subtopic) => {
+            if(!subtopic.topics.some((topicId) => {return topicId === res.id})) {
+              var url = "subtopics/" + subtopic.id + "/"
+              var method = "PUT"
+              subtopic.topics.push(res.id)
+              var body = {
+                id: subtopic.id,
+                topics: subtopic.topics
+              }
+              var handleStatus = (res) => {
+                this.props.onChangeMessage(res.status)
+              }
+              var handleData = (res) => {}
+              var handleError = (e) => {
+                this.props.onChangeMessage(-1, e, true)
+              }
+              sendData(url, method, body, handleStatus, handleData, handleError)
+            }
+          })
+          //removes all subtopics that previously was in activeSubTopics
+          allSubTopics.map((subtopic) => {
+            var index = subtopic.topics.indexOf(res.id);
+            if (index !== -1) {
+              subtopic.topics.splice(index, 1);
+              var url = "subtopics/" + subtopic.id + "/"
+              var method = "PUT"
+              var body = {
+                id: subtopic.id,
+                topics: subtopic.topics
+              }
+              var handleStatus = (res) => {
+                this.props.onChangeMessage(res.status)
+              }
+              var handleData = (res) => {}
+              var handleError = (e) => {
+                this.props.onChangeMessage(-1, e, true)
+              }
+              sendData(url, method, body, handleStatus, handleData, handleError)
+            }
+          })
+          this.props.onSubTopicsChange(activeSubTopics)
+        }
         this.setState({loading:false})
       }
       var handleError = (e) => {
@@ -111,56 +166,10 @@ export class Edit extends React.Component {
         this.setState({loading:false})
       }
       sendData(url,method,body,handleStatus,handleData,handleError)
-      if (this.props.header === "topics") {
-        console.log("in edit topiclist ", this.state.activeSubTopics, this.state.allSubTopics);
-        this.state.activeSubTopics.map((subtopic) => {
-          if(!subtopic.topics.some((topicId) => {return topicId === this.state.id})) {
-            var url = "subtopics/" + subtopic.id + "/"
-            var method = "PUT"
-            subtopic.topics.push(this.state.id)
-            var body = {
-              id: subtopic.id,
-              topics: subtopic.topics
-            }
-            var handleStatus = (res) => {
-              this.props.onChangeMessage(res.status)
-            }
-            var handleData = (res) => {}
-            var handleError = (e) => {
-              this.props.onChangeMessage(-1, e, true)
-            }
-
-            sendData(url, method, body, handleStatus, handleData, handleError)
-          }
-        })
-        this.state.allSubTopics.map((subtopic) => {
-          var index = subtopic.topics.indexOf(this.state.id);
-          console.log("in edit sub", index);
-          if (index !== -1) {
-            subtopic.topics.splice(index, 1);
-            var url = "subtopics/" + subtopic.id + "/"
-            var method = "PUT"
-            var body = {
-              id: subtopic.id,
-              topics: subtopic.topics
-            }
-            var handleStatus = (res) => {
-              this.props.onChangeMessage(res.status)
-            }
-            var handleData = (res) => {}
-            var handleError = (e) => {
-              this.props.onChangeMessage(-1, e, true)
-            }
-            sendData(url, method, body, handleStatus, handleData, handleError)
-          }
-        })
-        this.props.onSubTopicsChange(this.state.activeSubTopics)
-      }
     }
 
 
     render() {
-      console.log("in edit renderer, ", this.state.id);
         return (
           <Form>
      				<Grid>
@@ -197,10 +206,10 @@ export class Edit extends React.Component {
             {this.props.header === "topics" ?
               <SubTopicListEdit
                 topicId={this.state.id}
-                activeSubTopics={this.state.activeSubTopics}
-                allSubTopics={this.state.allSubTopics}
                 onChangeMessage={this.onChangeMessage}
                 onSubTopicListChange={this.onSubTopicListChange}
+                activeSubTopics={this.state.activeSubTopics}
+                allSubTopics={this.state.allSubTopics}
                 />
               :
               null

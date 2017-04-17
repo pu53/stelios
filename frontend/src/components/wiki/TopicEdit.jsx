@@ -2,6 +2,7 @@ import React from 'react'
 import {List, Grid, Button} from 'semantic-ui-react'
 import { getData, sendData } from '../../helpers'
 
+//component that lives in topicNav, and is used to select between the topics.
 export class TopicEdit extends React.Component {
 
     constructor(props) {
@@ -29,7 +30,6 @@ export class TopicEdit extends React.Component {
         var copy = res
         var all_topics_without_active = copy.map((topic) => {
           if(!this.state.activeTopics.some((activeTopic) => {
-            console.log(topic, activeTopic);
             return topic.id === activeTopic.id
           })) {
             return topic
@@ -43,7 +43,7 @@ export class TopicEdit extends React.Component {
       getData(url,handleStatus, handleData,handleError)
     }
 
-
+    // adds the activeTopics to the subject and removes the ones that are in allTopics that previously was in active
     onClickSave = () => {
       this.state.activeTopics.map((topic) => {
         if(!topic.subjects.some((subjectId) => {return subjectId === this.props.subjectId})) {
@@ -96,10 +96,10 @@ export class TopicEdit extends React.Component {
     }
 
     onClickCancel = () => {
-      console.log("in topicedit onClickCancel");
       this.props.onClickCancel()
     }
 
+    //removes the topic from active and adds it to allTopics
     onClickActiveTopic = (id) => {
       var active_topics = JSON.parse(JSON.stringify(this.state.activeTopics))
       var all_topics = this.state.allTopics
@@ -130,6 +130,7 @@ export class TopicEdit extends React.Component {
       })
     }
 
+    //return all activeTopics
     chosenTopics = () => {
       if (this.state.activeTopics !== undefined) {
         return(
@@ -149,6 +150,7 @@ export class TopicEdit extends React.Component {
       }
     }
 
+    //returns all allTopics
     allTopics = () => {
       if (this.state.allTopics !== undefined) {
         return(
@@ -167,7 +169,6 @@ export class TopicEdit extends React.Component {
     }
 
     render() {
-      console.log("topicedit state: ", this.state);
       return (
         <Grid>
           <Grid.Column width={16}>

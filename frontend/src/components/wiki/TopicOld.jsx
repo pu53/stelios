@@ -48,7 +48,6 @@ export class Topic extends React.Component{
 	}
 
 	topic() {
-		console.log("topic", this.state.new, this.state.edit);
 		if(this.state.new) {
 			return(
 				this.edit(

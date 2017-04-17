@@ -2,29 +2,30 @@ import React from 'react'
 import {List, Grid } from 'semantic-ui-react'
 import { getData } from '../../helpers'
 
+//lives in the edit component, but only when it is references from the topic component.
+//SubTopicListEdit is just as topicedit (topicnav) but for subtopics :)
 export class SubTopicListEdit extends React.Component {
 
     constructor(props) {
       super(props);
       this.state = {
         activeSubTopics: props.activeSubTopics ? props.activeSubTopics : [],
-        allSubTopics: []
+        allSubTopics: props.allSubTopics ? props.allSubTopics : [],
       }
       this.getallSubTopics()
     }
 
 		componentWillMount() {
-			console.log("subtopiclisteditwillmount");
 			this.getallSubTopics()
 		}
 
     componentWillReceiveProps(nextProps) {
-      console.log("SubTopicListEdit nextprops", nextProps);
       if (this.state.activeSubTopics !== nextProps.activeSubTopics && nextProps.activeSubTopics !== undefined) {
         this.setState({
           activeSubTopics: nextProps.activeSubTopics
         })
       }
+
       if (nextProps.allSubTopics !== undefined && this.state.allSubTopics !== nextProps.allSubTopics) {
         this.setState({
           allSubTopics: nextProps.allSubTopics
@@ -37,6 +38,7 @@ export class SubTopicListEdit extends React.Component {
       var handleStatus = (res) => {}
       var handleData = (res) => {
         var copy = res
+        //filters out active and all subtopics
         if(this.state.activeSubTopics !== undefined) {
           var all_subtopics_without_active = copy.map((subtopic) => {
             if(!this.state.activeSubTopics.some((activeSubTopic) => {
@@ -51,6 +53,7 @@ export class SubTopicListEdit extends React.Component {
         this.setState({
           allSubTopics: all_subtopics_without_active
         })
+        this.props.onSubTopicListChange(this.state.activeSubTopics, all_subtopics_without_active)
       }
       var handleError = (res) => {}
       getData(url,handleStatus, handleData,handleError)
@@ -118,7 +121,6 @@ export class SubTopicListEdit extends React.Component {
     }
 
     render() {
-      console.log("subtopiclistedit state: ", this.state);
       return (
         <Grid>
           <Grid.Column width={16}>

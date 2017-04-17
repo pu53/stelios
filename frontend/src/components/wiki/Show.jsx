@@ -9,19 +9,8 @@ var Markdown = require('react-remarkable');
 /* Show is a dumb component that displays name, description, (content), and buttongroup*/
 export class Show extends React.Component {
 
-//   toShowOrNotToShowMarkdown = () => {
-//     if (this.props.markdownContent !== undefined) {
-//       return (
-//         <Grid.Column>
-//         </Grid.Column>
-//       )
-//     } else {
-//       return null
-//     }
-//   }
 
     render() {
-      console.log("in show ", this.props.markdownContent);
         return (
      			<Grid>
      				<Grid.Column width={12}>
