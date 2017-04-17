@@ -6,7 +6,7 @@ import { TopicNav } from './TopicNav'
 import { getData } from '../../helpers'
 import { CustomMessage } from './CustomMessage'
 
-//supposed to render a single subject w/topics, preferably with jabbe
+//Main entry point to wiki, one subject w/topics, preferably with jabbe subtopics
 export class WikiPage extends React.Component{
 	displayName="WikiPage"
 	constructor(props){
@@ -45,6 +45,7 @@ export class WikiPage extends React.Component{
 		})
 	}
 
+	//blocks all new messages if message is important
 	blockMessage = (status,message,neg) => {
 		this.setState({
 			status, message, neg, blockMessage: true
@@ -52,12 +53,14 @@ export class WikiPage extends React.Component{
 		setTimeout(() => this.setState({blockMessage: false}), 3000)
 	}
 
+	//displays message on the top
 	onChangeMessage = (status,message='',neg=false) => {
 		this.setState({
 			status,message,neg
 		})
 	}
 
+	//called when updating/creating subject, hard reloads site yeboi hacky solution is best solution
 	onSubjectSubmit = (id, newSub=false) => {
 		this.setState({
 			subjectId: id,
@@ -68,9 +71,9 @@ export class WikiPage extends React.Component{
 				topics: [],
 				active_topic_id: -1
 			})
+			this.props.router.push('/wiki/'+id);
+			window.location.reload();
 		}
-		this.props.router.push('/wiki/'+id);
-		window.location.reload();
 	}
 
 	onTopicSubmit = (activeTopicId, newTop=false) => {
@@ -85,6 +88,7 @@ export class WikiPage extends React.Component{
 		}
 	}
 
+	//gets all subjects, and matches them with url. if no match is found it reverts to first subject
 	getAllSubjects = (id) => {
 		var url = "subjects/?fields=id,name";
 		var handleStatus = (res) => {}
@@ -118,6 +122,7 @@ export class WikiPage extends React.Component{
 		getData(url, handleStatus, handleData, handleError);
 	}
 
+	//method called when topics need to be updated. called from subject (and other?)
 	updateTopics = (res) => {
 		var id = this.props.params.topicId;
 		var activeTopicId = -1
@@ -156,6 +161,7 @@ export class WikiPage extends React.Component{
 		this.componentDidMount()
 	}
 
+	//when user clicks something in topic nav, this gets called.
 	clickTopic = (id) => {
 		this.setState({
 			activeTopicId: id
