@@ -72,12 +72,12 @@ export class SubTopic extends React.Component {
 
   onClickDelete = (e) => {
     e.preventDefault()
-    if (confirm("Are you sure you want to delete this topic")) {
-      var url = "topics/" + this.state.activeTopicId + "/"
+    if (confirm("Are you sure you want to delete this subtopic")) {
+      var url = "subtopics/" + this.state.id + "/"
       var method = "DELETE"
-      var body = {id: this.state.activeTopicId}
+      var body = {id: this.state.id}
       var handleStatus = (res) => {
-        this.onChangeMessage(-1,'Topic deleted',false)
+        this.onChangeMessage(-1,'SubTopic deleted',false)
       }
       var handleData = (res) => {
         this.props.triggerRefresh();
