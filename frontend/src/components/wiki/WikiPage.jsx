@@ -120,14 +120,15 @@ export class WikiPage extends React.Component{
 
 	updateTopics = (res) => {
 		var id = this.props.params.topicId;
+		var activeTopicId = -1
 		if (id !== undefined) {
 			id = parseInt(id, 10)
 			if(res.topics.some((topic) => {
 				return topic.id === id
 			})) {
-				var activeTopicId = id
+				activeTopicId = id
 			} else {
-				var activeTopicId = res.topics[0] !== undefined ? res.topics[0].id : -1
+				activeTopicId = res.topics[0] !== undefined ? res.topics[0].id : -1
 			}
 		}
 		console.log("in updateTopics", id, activeTopicId);
@@ -136,7 +137,11 @@ export class WikiPage extends React.Component{
 			activeTopicId,
 			updateSubject: false,
 		})
-		this.props.router.push('/wiki/'+this.state.subjectId + '/' + activeTopicId + '/');
+		if (activeTopicId !== -1){
+			this.props.router.push('/wiki/'+this.state.subjectId + '/' + activeTopicId + '/');
+		} else {
+			this.props.router.push('/wiki/'+this.state.subjectId + '/');
+		}
 	}
 
 	//when the component mounts we want to fetch data from the server
