@@ -33,14 +33,12 @@ export class TopicNav extends React.Component {
     }
 
     onClickCancel = () => {
-      console.log("in onClickCancel");
       this.setState({
         edit: false
       })
     }
 
     render() {
-      console.log("in topicNav ", this.props.topics);
       if (this.props.topics !== undefined) {
         if (!this.state.edit) {
           return (

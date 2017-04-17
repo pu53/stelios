@@ -13,7 +13,6 @@ export class CustomMessage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-      console.log("next, ",nextProps);
       if (this.state.message !== nextProps.message || this.state.status !== nextProps.status) {
         this.setState({
           message: nextProps.message,
@@ -24,7 +23,6 @@ export class CustomMessage extends React.Component {
             message: '',
             status: -1
           })
-          console.log("cm ", nextProps)
           nextProps.onChangeMessage(-1, '', false)
         }, 5000)
       }

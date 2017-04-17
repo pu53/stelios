@@ -53,7 +53,6 @@ export class Edit extends React.Component {
       this.setState({
         activeSubTopics, allSubTopics
       })
-      console.log("subtopiclistedit edit state: ", activeSubTopics, allSubTopics);
     }
 
     onNameChange = (e) => {
@@ -69,7 +68,6 @@ export class Edit extends React.Component {
     }
 
     onMarkdownContentChange = (e) => {
-      console.log("in onMarkdownContentChange", e);
       this.setState({
         markdownContent: e
       })
@@ -165,7 +163,6 @@ export class Edit extends React.Component {
 
 
     render() {
-      console.log("in edit renderer, ", this.props);
         return (
           <Form>
      				<Grid>

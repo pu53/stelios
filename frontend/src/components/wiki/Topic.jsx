@@ -47,9 +47,7 @@ export class Topic extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("inTopic willrecivepropsstart");
     if (nextProps.topics !== undefined && nextProps.activeTopicId !== this.state.activeTopicId) {
-			console.log("inTopic will recive" , nextProps);
       var id = nextProps.activeTopicId
       var topic = nextProps.topics.map((topic) => {if (topic.id === id) {return topic}}).filter(Boolean)[0];
 			if (topic === undefined) {
@@ -86,7 +84,6 @@ export class Topic extends React.Component {
   getSubTopics = (id) => {
 		var url = "topics/" + id + "/?fields=id,subtopics";
 		var handleStatus = (res) => {
-      console.log("it is here");
     }
 		var handleData = (res) => {
       this.setState({
@@ -168,9 +165,6 @@ export class Topic extends React.Component {
 
 
   render() {
-    console.log("inTopic", this.state);
-    console.log("in topic render: ", this.state.subtopics);
-    console.log("props in topic: ", this.props);
     const buttonGroup = {
       edit: this.state.edit || this.state.new || this.state.name === '' ?  undefined : this.onClickEdit,
       new: this.state.edit || this.state.new ?  undefined : this.onClickNew,

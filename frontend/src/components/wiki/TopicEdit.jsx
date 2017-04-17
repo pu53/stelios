@@ -29,7 +29,6 @@ export class TopicEdit extends React.Component {
         var copy = res
         var all_topics_without_active = copy.map((topic) => {
           if(!this.state.activeTopics.some((activeTopic) => {
-            console.log(topic, activeTopic);
             return topic.id === activeTopic.id
           })) {
             return topic
@@ -96,7 +95,6 @@ export class TopicEdit extends React.Component {
     }
 
     onClickCancel = () => {
-      console.log("in topicedit onClickCancel");
       this.props.onClickCancel()
     }
 
@@ -167,7 +165,6 @@ export class TopicEdit extends React.Component {
     }
 
     render() {
-      console.log("topicedit state: ", this.state);
       return (
         <Grid>
           <Grid.Column width={16}>

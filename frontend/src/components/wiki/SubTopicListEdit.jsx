@@ -14,13 +14,10 @@ export class SubTopicListEdit extends React.Component {
     }
 
 		componentWillMount() {
-			console.log("subtopiclisteditwillmount");
 			this.getallSubTopics()
 		}
 
     componentWillReceiveProps(nextProps) {
-
-      console.log("SubTopicListEdit nextprops", nextProps);
       if (this.state.activeSubTopics !== nextProps.activeSubTopics && nextProps.activeSubTopics !== undefined) {
         this.setState({
           activeSubTopics: nextProps.activeSubTopics
@@ -121,7 +118,6 @@ export class SubTopicListEdit extends React.Component {
     }
 
     render() {
-      console.log("subtopiclistedit state: ", this.state.activeSubTopics, this.state.allSubTopics);
       return (
         <Grid>
           <Grid.Column width={16}>

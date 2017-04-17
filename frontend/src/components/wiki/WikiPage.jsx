@@ -131,7 +131,6 @@ export class WikiPage extends React.Component{
 				activeTopicId = res.topics[0] !== undefined ? res.topics[0].id : -1
 			}
 		}
-		console.log("in updateTopics", id, activeTopicId);
 		this.setState({
 			topics: res.topics,
 			activeTopicId,
@@ -165,7 +164,6 @@ export class WikiPage extends React.Component{
 	}
 
 	render() {
-		console.log(this.state);
 		if(this.state.result !== []) {
 			return(
 				<Grid>

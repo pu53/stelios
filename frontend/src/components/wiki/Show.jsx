@@ -21,7 +21,6 @@ export class Show extends React.Component {
 //   }
 
     render() {
-      console.log("in show ", this.props.markdownContent);
         return (
      			<Grid>
      				<Grid.Column width={12}>
