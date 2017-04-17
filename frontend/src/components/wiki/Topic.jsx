@@ -145,6 +145,7 @@ export class Topic extends React.Component {
           new: false,
           edit: false
         })
+        window.location.reload();
       }
       var handleError = (e) => {this.onChangeMessage(-1, e, true)}
       sendData(url, method, body, handleStatus, handleData, handleError)
