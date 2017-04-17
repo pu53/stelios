@@ -100,11 +100,15 @@ export class Edit extends React.Component {
       var url = this.props.header + "/" + id
       var method = this.props.method
       var body = {name: this.state.name, description: this.state.description}
+      // adds component specefics fields to body:
       if (_markdown_content) {
         body['markdown_content'] = _markdown_content
       }
       if (this.props.header === "topics" && method === "POST") {
         body['subjects'] = [this.props.subjectId]
+      }
+      if (this.props.header === "subtopics" && method === "POST") {
+        body['topics'] = [this.props.activeTopicId]
       }
       var handleStatus = (res) => {
         this.props.onChangeMessage(res.status);

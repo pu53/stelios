@@ -10,16 +10,16 @@ export class SubTopic extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      new: false,
+      new: this.props.subtopic ? false : true,
       edit: false,
       message: '',
       status: -1,
       neg: false,
-      name: this.props.subtopic.name,
-      description:this.props.subtopic.description,
-      markdownContent: this.props.subtopic.content,
+      name: this.props.subtopic ? this.props.subtopic.name : '',
+      description:this.props.subtopic ? this.props.subtopic.description : '',
+      markdownContent: this.props.subtopic ? this.props.subtopic.content : '',
       activeTopicId: -1,
-      id: this.props.subtopic.id
+      id: this.props.subtopic ? this.props.subtopic.id : -1
     }
   }
 
@@ -33,6 +33,11 @@ export class SubTopic extends React.Component {
         name: nextProps.subtopic.name,
         description: nextProps.subtopic.description,
         markdownContent: nextProps.subtopic.content
+      })
+    } else {
+      //if subtopic is new
+      this.setState({
+        new: true
       })
     }
     if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
@@ -92,9 +97,18 @@ export class SubTopic extends React.Component {
       edit: false,
       new: false
     })
+    if (this.state.new) {
+      this.props.onClickCancel()
+    }
   }
 
   onClickSave = (id,name,description, markdownContent) => {
+    if (this.state.new) {
+      var subtopic = {
+        id, name, description, content: markdownContent
+      }
+      this.props.onClickSave(subtopic)
+    }
     this.setState({
       id,
       name,
@@ -108,7 +122,6 @@ export class SubTopic extends React.Component {
   render() {
     const buttonGroup = {
       edit: this.state.edit || this.state.new ?  undefined : this.onClickEdit,
-      new: this.state.edit || this.state.new ?  undefined : this.onClickNew,
       delete: this.state.edit ? this.onClickDelete : undefined
     }
     if (this.state.edit) {
