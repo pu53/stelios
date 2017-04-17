@@ -125,15 +125,13 @@ export class WikiPage extends React.Component{
 	//method called when topics need to be updated. called from subject (and other?)
 	updateTopics = (res) => {
 		var id = this.props.params.topicId;
-		var activeTopicId = -1
+		var activeTopicId = res.topics[0] !== undefined ? res.topics[0].id : -1
 		if (id !== undefined) {
 			id = parseInt(id, 10)
 			if(res.topics.some((topic) => {
 				return topic.id === id
 			})) {
 				activeTopicId = id
-			} else {
-				activeTopicId = res.topics[0] !== undefined ? res.topics[0].id : -1
 			}
 		}
 		this.setState({
