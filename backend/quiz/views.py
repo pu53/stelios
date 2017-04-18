@@ -200,14 +200,24 @@ class SaveQuizResult(APIView):
 		return Response(answer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ChoiceIsTrue(APIView):
+class QuizCorrectAnswers(APIView):
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 
 	def get(self, request, pk, format=json):
-		choice = Choice.objects.get(id=pk)
-		isTrue = ChoiceIsTrueSerializer(choice)
+		quiz = Quiz.objects.get(id=pk)
+		correct_answers = []
 
-		return Response(isTrue.data)
+		questions = quiz.quiz_question.all()
+		for question in questions:
+			
+			choices = question.question_choice.all()
+
+			for choice in choices:
+
+				if(choice.is_correct):
+					correct_answers.append(choice.id)
+
+		return Response({'correct': correct_answers})
 
 
 class quizSubjectName(APIView):

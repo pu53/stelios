@@ -47,47 +47,43 @@ export class FeedbackContainer extends React.Component{
 	*/
 
 	getIsTrue(){
-		const answers = this.state.answers;
- 		const subtopics = this.state.subtopics;
+		const answers = this.props.answers;
+ 		const quizid = this.props.quizid;
  		
  		console.log("Answers from props: " +  this.props.answers)
- 		console.log("subtopics from props: " + this.props.subtopics[0].name)
+ 		console.log("subtopics from props: " + this.props.quizid)
 
-		// iterate over every answer, finding falsely answered questions
-		for (var i = 0; i < answers.length; i++) {
 
-			// gets from DB if the answer is marked as true
-			if(answers[i] !== -1 && answers[i] !== undefined){
-				// isTrue = this.getIsTrue(answers[i]);
-				getData("choice/istrue/"+answers[i].toString(),
-					(()=>{}),
-					((res) => {
-						// this.state.isTrue.push(res.is_correct);
-						var isTrue = this.state.isTrue;
-						isTrue.push(res.is_correct);
-						// this.setState({
-						// 	isTrue: isTrue,
-						// })
-							this.CalcTrueTotal(isTrue);
-						console.log(this.state.isTrue);
-					}),
-					(()=>{}));
-			}
-		}
+ 		getData('quiz/true/'+quizid.toString(),
+ 			(() => {}),
+ 			((res) => {
+ 				const correct = res.correct;
+
+ 				var isTrue = []
+
+ 				for (var i = 0; i < correct.length; i++) {
+ 					console.log("correct: " + correct[i] + "   answers: " + answers[i]);
+ 					if(correct[i] === answers[i]){
+ 						isTrue.push(true);
+ 					}else{
+ 						isTrue.push(false);
+ 					}
+ 				}
+ 				this.CalcTrueTotal(isTrue);
+ 			}),
+ 			(() => {})
+ 		);
 	}
 
 	/**
-<<<<<<< HEAD
 	*	Method for creating the object with [correct, total] array 
 	*	per question in a dict with 
-=======
 	* generates a list of weak topics based on the answers
 	* on the form [
 	* 	{ID:id, Correct: %correct},
  	*	...
 	* ]
 	*
->>>>>>> 207438c8f467911536f5eaf7c6dbedf22ae9da27
 	*/
 
 

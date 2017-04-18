@@ -37,7 +37,7 @@ class QuizDataSerializer(serializers.Serializer):
 class ChoiceIsTrueSerializer(QueryFieldsMixin,serializers.ModelSerializer):
 	class Meta:
 		model = Choice
-		fields = (['is_correct'])
+		fields = ('id','is_correct')
 
 class AnswerSerializer(serializers.ModelSerializer):
 	class Meta:

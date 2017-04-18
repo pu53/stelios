@@ -157,7 +157,7 @@ export class Quiz extends Component {
 			return(
 				<Container className="quizWrapper">
 					<h1>The quiz is finished!</h1>
-					<FeedbackContainer answers={this.state.answers} subtopics={this.state.questions.map((question) => question.subtopic.map((subtopic) => subtopic.id))}/>
+					<FeedbackContainer answers={this.state.answers} quizid={this.props.data.id} subtopics={this.state.questions.map((question) => question.subtopic.map((subtopic) => subtopic.id))}/>
 				</Container>
 			);
 		}
