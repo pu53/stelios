@@ -14,6 +14,6 @@ before_script:
     - python backend/manage.py migrate
 script:
   cd backend
-  coverage run --branch --source=quiz,wiki,profiles ./backend/manage.py test
+  coverage run --branch --source=quiz,wiki,profiles ./manage.py test
 after_success:
   coveralls
