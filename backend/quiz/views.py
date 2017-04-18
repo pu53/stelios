@@ -4,7 +4,7 @@ from profiles.models import Profile
 
 from quiz.serializers import ChoiceSerializer, QuestionSerializer, QuizSerializer
 from quiz.serializers import QuizDataSerializer, QuestionDataSerializer, ChoiceDataSerializer
-from quiz.serializers import ChoiceIsTrueSerializer, AnswerSerializer
+from quiz.serializers import ChoiceIsTrueSerializer, AnswerSerializer, BlankAnswerSerializer
 
 from profiles.serializers import UserSerializer, UserIDNameSerializer, ProfileSerializer
 
@@ -115,6 +115,7 @@ class SingleQuizResults(APIView):
 			#Serialize the answer, and add it to the current list element
 			result_serializer = AnswerSerializer(result)
 			result_data = result_serializer.data
+			result_data.pop('answer_history')
 			list_element.update(result_data)
 			
 			#Find out whether the answer is true or false, adds it to list element
@@ -135,37 +136,58 @@ class SingleQuizResults(APIView):
 			
 		return Response(return_data)
 		
-	
+		
+#A view for saving the answer data from a quiz
 class SaveQuizResult(APIView):
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 	
 	def post(self, request, format=json):
-		
 		answer_data_rows = []
-		questions=request.data["questions"]
-		answers=request.data["choices"]
-		quizID = request.data["quizID"]
-		userID = request.data["userID"]
+		blank_answer_data_rows = []
+		questions= request.data["questions"]
+		answers  = request.data["choices"]
+		quizID   = request.data["quizID"]
+		userID   = request.data["userID"]
 		
+		#Iterates over every question 
 		for i in range(len(questions)):
 			print("Dette er spørsmål nr " + str(i) + " og det har data " + str(questions[i]))
-			answer_data = {
+			
+			#The blank and non blank answers have different serializers, and has
+			#to be saved in seperate arrays
+			if(answers[i]==-1):
+				print("Blankt svar!")
+				answer_data = {
 				'quizID':quizID,
 				'questionID':questions[i]['id'],
-				'choiceID':(None if answers[i]==-1 else answers[i])
-			}
-			#answer_serializer = AnswerSerializer(data=answer_data)
-			answer_data_rows.append(answer_data)
+				'answer_history': [userID]
+				}
+				blank_answer_data_rows.append(answer_data)
+			
+			else:
+				answer_data = {
+					'quizID':quizID,
+					'questionID':questions[i]['id'],
+					'choiceID':answers[i],
+					'answer_history': [userID]
+				}
+				answer_data_rows.append(answer_data)
+			
 			print("Dette er dataen: " + str(answer_data))
-			#profile_updater = 
-
-		answer_serializer = AnswerSerializer(data=answer_data_rows, many=True)
-		#print("Funker serialiseringen?" + str(answer_serializer.is_valid()))
-		#print("Dette er feltene som valideres: " + str(answer_serializer))
 		
-		if(answer_serializer.is_valid()):
+		#The answers are serialized
+		answer_serializer = AnswerSerializer(data=answer_data_rows, many=True)
+		blank_answer_serializer = BlankAnswerSerializer(data=blank_answer_data_rows, many=True)
+		
+		#If the serialization was successfull, the answers get saved, 
+		#a relation between the user answering and the answers are made,
+		#and 201 response is returned
+		if(answer_serializer.is_valid() and blank_answer_serializer.is_valid()):
 			answer_serializer.save()
+			blank_answer_serializer.save()
 			return Response(answer_serializer.data, status = status.HTTP_201_CREATED)
+		#If not, noting gets saved, and an error message is returned
+		#along with a 400 response
 		print("Dette gikk galt: " + str(answer_serializer.errors))
 		return Response(answer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

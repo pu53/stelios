@@ -14,6 +14,11 @@ class SubtopicNameIDSerializer(serializers.ModelSerializer):
 		model =  Subtopic
 		fields = ('name', 'id')
 
+class SubtopicNameSerializer(serializers.ModelSerializer):
+	class Meta:
+		model =  Subtopic
+		fields = ('name',)
+
 class TopicSerializer(QueryFieldsMixin,serializers.ModelSerializer):
     subtopics = SubtopicSerializer(required=False, many=True, read_only=True)
     class Meta:
