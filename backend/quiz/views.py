@@ -8,7 +8,7 @@ from quiz.serializers import ChoiceIsTrueSerializer, AnswerSerializer
 
 from profiles.serializers import UserSerializer, UserIDNameSerializer, ProfileSerializer
 
-from wiki.serializers import SubtopicNameIDSerializer
+from wiki.serializers import SubtopicNameIDSerializer, SubjectNameSerializer
 
 from rest_framework import generics
 from rest_framework.response import Response
@@ -186,3 +186,28 @@ class ChoiceIsTrue(APIView):
 		isTrue = ChoiceIsTrueSerializer(choice)
 
 		return Response(isTrue.data)
+
+
+class quizSubjectName(APIView):
+	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
+
+	def get(self, request, format=json):
+		quizes = Quiz.objects.all()
+		quiz_data_name = []
+
+		for quiz in quizes:
+			quiz_serializer = QuizDataSerializer(quiz)
+			quiz_data = quiz_serializer.data
+
+			subject = quiz.subject
+			subjectnameserializer = SubjectNameSerializer(subject)
+			subject_name_data = subjectnameserializer.data
+
+
+			quiz_data.update(subject_name_data)
+
+			quiz_data_name.append(quiz_data)
+
+		
+		return Response(quiz_data_name)
+

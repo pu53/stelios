@@ -75,3 +75,8 @@ class SubjectWithoutSubtopicsSerializer(QueryFieldsMixin,serializers.ModelSerial
 ##        for topic_data in topics_data:
 ##            Topic.objects.create(subject=subject, **topic_data)
 #        return subject
+
+class SubjectNameSerializer(QueryFieldsMixin,serializers.ModelSerializer):
+    class Meta:
+        model = Topic
+        fields = ('name', )

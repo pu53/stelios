@@ -9,7 +9,7 @@ var Markdown = require('react-remarkable');;
 export class FeedbackContainer extends React.Component{
 	constructor(props){
 		super();
-		//dummy variable for state. should be passed as props
+		console.log(props);
 		this.state={
 			answers: props.answers,
 			subtopics: props.subtopics,

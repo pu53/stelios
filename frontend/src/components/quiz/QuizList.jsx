@@ -16,6 +16,7 @@ export class QuizList extends React.Component {
 
 		this.state = {
 			quizobject: {},
+			reRender: false,
 		};
 	}
 
@@ -33,11 +34,11 @@ export class QuizList extends React.Component {
 	* 	content <- quizes to subject
 	*/
 	getQuizList(){
-		getData("quiz/",
+		getData("quizsubjectname/",
 			(() => {}),
 			((res) => {
 				const quizes = res;
-				console.log(res);
+				// console.log(res);
 				this.makeQuizObject(quizes);
 			}),
 			(() => {})
@@ -51,14 +52,14 @@ export class QuizList extends React.Component {
 			const quiz = quizes[i];
 
 			var temp;
-			if (!object.hasOwnProperty(quiz.subject)) {
+			if (!object.hasOwnProperty(quiz.name)) {
 				temp = [];
-		    	// console.log("new subject " + quiz.subject);
+		    	console.log("new subject " + quiz.name);
 		    	temp.push(quiz);
-		    	object[quiz.subject] = temp;
+		    	object[quiz.name] = temp;
 		    }else{
-		    	// console.log("old subject " + quiz.subject);
-		    	temp = object[quiz.subject];
+		    	console.log("old subject " + quiz.name);
+		    	temp = object[quiz.name];
 		    	temp.push(quiz);
 				
 		    }
@@ -78,9 +79,12 @@ export class QuizList extends React.Component {
 	}
 
 
+
 	render(){
+		console.log(this.state.quizobject);
+		// console.log(Object.keys(this.state.quizobject).length);
 		if(Object.keys(this.state.quizobject).length === 0){
-			return <div>loading ... .. .
+			return <div>loading ... .. . <br />
 			or empty </div>;
 		}else{
 			const keys = Object.keys(this.state.quizobject);
@@ -88,11 +92,11 @@ export class QuizList extends React.Component {
 				{
 					// make an accordion from the quizobject
 					// one identity
-					keys.map((subjectID) => {
-						const quizArray = this.state.quizobject[subjectID];
-						return <Accordion key={subjectID}>
+					keys.map((subject) => {
+						const quizArray = this.state.quizobject[subject];
+						return <Accordion key={subject}>
 							<Accordion.Title>
-								<Icon name='dropdown' /> <b>{subjectID} getData w/this</b>
+								<Icon name='dropdown' /> <b>{subject} </b>
 							</Accordion.Title>
 							<Accordion.Content>
 								<List bulleted>

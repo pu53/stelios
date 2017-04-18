@@ -12,6 +12,7 @@ urlpatterns = [
 	url(r'^choice/(?P<pk>[0-9]+)/$', views.ChoiceDetail.as_view()),
 	url(r'^quiz/data/(?P<pk>[0-9]+)/$', views.QuizData.as_view()),
 	url(r'^choice/istrue/(?P<pk>[0-9]+)$', views.ChoiceIsTrue.as_view()),
+	url(r'^quizsubjectname/$', views.quizSubjectName.as_view()),
 	url(r'result/quiz/(?P<pk>[0-9]+)$', views.SingleQuizResults.as_view()),
 	url(r'result/quiz/save/$', views.SaveQuizResult.as_view())
 ]
