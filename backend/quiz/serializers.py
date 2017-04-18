@@ -40,7 +40,6 @@ class ChoiceIsTrueSerializer(QueryFieldsMixin,serializers.ModelSerializer):
 		fields = (['is_correct'])
 
 class AnswerSerializer(serializers.ModelSerializer):
-	
 	choiceID = serializers.PrimaryKeyRelatedField(
 		#many=True, 
 		queryset=Choice.objects.all(),
@@ -54,8 +53,15 @@ class AnswerSerializer(serializers.ModelSerializer):
 	
 	def create(self, validated_data):
 		print("Validert data: " + repr(validated_data))
-		return Answer.objects.create(**validated_data)
+		new_answer = Answer.objects.create(**validated_data)
+		return new_answer
 	
 	class Meta:
 		model = Answer
 		fields = ('questionID','choiceID','quizID')
+
+
+class BlankAnswerSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Answer
+		fields = ('questionID', 'quizID')

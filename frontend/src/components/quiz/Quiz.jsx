@@ -77,29 +77,28 @@ export class Quiz extends Component {
 
 	/*Sends the result back to the server*/
 	postAnswers(){
-
-		/*var quizID = this.props.data.id*/
-		var userID = localStorage.getItem('stelios_current_user')
-		//console.log("Current user on quiz result save: " + userID)
 		
-		if(userID === null){
+		//Checks whether the current session is a user or not. If the session
+		//taking the quiz is not a logged in user, the immidiate feedback will be 
+		//visible as normal, but the results will not be saved
+		var userID = localStorage.getItem('stelios_current_user')
+		if(userID === 'null'){
 			console.log("Not logged in, quiz will not be saved");
 			return;
 		}
-
+		//Wraps the answer data in a dictionary, ready to be sent to backend
 		var result={
 			quizID:this.props.data.id,
 			userID:userID,
 			questions:this.state.questions,
 			choices:this.state.answers,
 		};
-		//sendData(url, method_, body, handleStatus, handleData, handleError)
-		sendData("result/quiz/save/","post",result,(()=>{}),(()=>{}),(()=>{}))
 		
-		console.log("Current user: " + result.userID);
+		//Uses the helper method to post the data
+		sendData("result/quiz/save/","post",result,(()=>{}),(()=>{}),(()=>{}))
 	}
 
-	/*Updates the answer*/
+	/*Updates the answer internally*/
 	changeQuestion(increment, chosenAlternative) {
 		if(chosenAlternative===undefined){chosenAlternative=-1}
 		if(this.state.currently_asking + increment < 1){
@@ -154,9 +153,7 @@ export class Quiz extends Component {
 		}
 		else {
 			this.postAnswers()
-
 			var counter=-1;
-			// Correct:{this.areEqual(answer,this.state.questions[counter].correct_answer[0].id)}
 			return(
 				<Container className="quizWrapper">
 					<h1>The quiz is finished!</h1>
