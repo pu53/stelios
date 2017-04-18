@@ -115,6 +115,7 @@ class SingleQuizResults(APIView):
 			#Serialize the answer, and add it to the current list element
 			result_serializer = AnswerSerializer(result)
 			result_data = result_serializer.data
+			result_data.pop('answer_history')
 			list_element.update(result_data)
 			
 			#Find out whether the answer is true or false, adds it to list element
@@ -159,6 +160,7 @@ class SaveQuizResult(APIView):
 				answer_data = {
 				'quizID':quizID,
 				'questionID':questions[i]['id'],
+				'answer_history': [userID]
 				}
 				blank_answer_data_rows.append(answer_data)
 			
@@ -166,22 +168,26 @@ class SaveQuizResult(APIView):
 				answer_data = {
 					'quizID':quizID,
 					'questionID':questions[i]['id'],
-					'choiceID':(answers[i])
+					'choiceID':answers[i],
+					'answer_history': [userID]
 				}
 				answer_data_rows.append(answer_data)
 			
 			print("Dette er dataen: " + str(answer_data))
-			#profile_updater = 
 		
-		#The answers are serialized with the correct serializer
+		#The answers are serialized
 		answer_serializer = AnswerSerializer(data=answer_data_rows, many=True)
 		blank_answer_serializer = BlankAnswerSerializer(data=blank_answer_data_rows, many=True)
 		
-		#If the serialization was successfull, the answers get saved
+		#If the serialization was successfull, the answers get saved, 
+		#a relation between the user answering and the answers are made,
+		#and 201 response is returned
 		if(answer_serializer.is_valid() and blank_answer_serializer.is_valid()):
 			answer_serializer.save()
 			blank_answer_serializer.save()
 			return Response(answer_serializer.data, status = status.HTTP_201_CREATED)
+		#If not, noting gets saved, and an error message is returned
+		#along with a 400 response
 		print("Dette gikk galt: " + str(answer_serializer.errors))
 		return Response(answer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
