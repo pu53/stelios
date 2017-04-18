@@ -13,7 +13,7 @@ before_script:
     - python backend/manage.py makemigrations profiles
     - python backend/manage.py migrate
 script:
-  cd backend
-  coverage run --branch --source=quiz,wiki,profiles ./manage.py test
+  - cd backend/
+  - coverage run --branch --source=quiz,wiki,profiles ./manage.py test
 after_success:
   coveralls
