@@ -6,10 +6,6 @@ import {Button} from 'semantic-ui-react'
 export class ButtonGroup extends React.Component {
 
     render() {
-      if (this.props.steliosToken === "null" || this.props.steliosToken === null) {
-        return null
-      }
-      else {
         return (
           <Button.Group basic float="right">
             {this.props.edit ? <Button content="Edit" onClick={this.props.edit} /> : null }
@@ -17,6 +13,5 @@ export class ButtonGroup extends React.Component {
             {this.props.delete ? <Button basic negative content="Delete" onClick={this.props.delete} /> : null }
           </Button.Group>
         );
-      }
     }
 }

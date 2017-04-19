@@ -5,21 +5,20 @@ import { Edit } from './Edit'
 import { CustomMessage } from './CustomMessage'
 import { sendData } from '../../helpers'
 
-//subtopic holds all subtopic info and displays it
 export class SubTopic extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      new: this.props.subtopic ? false : true,
+      new: false,
       edit: false,
       message: '',
       status: -1,
       neg: false,
-      name: this.props.subtopic ? this.props.subtopic.name : '',
-      description:this.props.subtopic ? this.props.subtopic.description : '',
-      markdownContent: this.props.subtopic ? this.props.subtopic.content : '',
+      name: this.props.subtopic.name,
+      description:this.props.subtopic.description,
+      markdownContent: this.props.subtopic.content,
       activeTopicId: -1,
-      id: this.props.subtopic ? this.props.subtopic.id : -1
+      id: this.props.subtopic.id
     }
   }
 
@@ -34,16 +33,6 @@ export class SubTopic extends React.Component {
         description: nextProps.subtopic.description,
         markdownContent: nextProps.subtopic.content
       })
-    } else {
-      //if subtopic is new
-      this.setState({
-        new: true
-      })
-    }
-    if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
-      this.setState({
-        new: false, edit: false
-      });
     }
   }
 
@@ -72,12 +61,12 @@ export class SubTopic extends React.Component {
 
   onClickDelete = (e) => {
     e.preventDefault()
-    if (confirm("Are you sure you want to delete this subtopic")) {
-      var url = "subtopics/" + this.state.id + "/"
+    if (confirm("Are you sure you want to delete this topic")) {
+      var url = "topics/" + this.state.activeTopicId + "/"
       var method = "DELETE"
-      var body = {id: this.state.id}
+      var body = {id: this.state.activeTopicId}
       var handleStatus = (res) => {
-        this.onChangeMessage(-1,'SubTopic deleted',false)
+        this.onChangeMessage(-1,'Topic deleted',false)
       }
       var handleData = (res) => {
         this.props.triggerRefresh();
@@ -85,7 +74,6 @@ export class SubTopic extends React.Component {
           new: false,
           edit: false
         })
-        window.location.reload();
       }
       var handleError = (e) => {this.onChangeMessage(-1, e, true)}
       sendData(url, method, body, handleStatus, handleData, handleError)
@@ -98,18 +86,9 @@ export class SubTopic extends React.Component {
       edit: false,
       new: false
     })
-    if (this.state.new) {
-      this.props.onClickCancel()
-    }
   }
 
   onClickSave = (id,name,description, markdownContent) => {
-    if (this.state.new) {
-      var subtopic = {
-        id, name, description, content: markdownContent
-      }
-      this.props.onClickSave(subtopic)
-    }
     this.setState({
       id,
       name,
@@ -123,6 +102,7 @@ export class SubTopic extends React.Component {
   render() {
     const buttonGroup = {
       edit: this.state.edit || this.state.new ?  undefined : this.onClickEdit,
+      new: this.state.edit || this.state.new ?  undefined : this.onClickNew,
       delete: this.state.edit ? this.onClickDelete : undefined
     }
     if (this.state.edit) {
@@ -177,7 +157,9 @@ export class SubTopic extends React.Component {
     } else {
       return(
         <div>
-
+          <Grid.Column width={16}>
+            <Divider />
+          </Grid.Column>
           <CustomMessage onChangeMessage={this.onChangeMessage} header="Subtopic" status={this.state.status} message={this.state.message} neg={this.state.neg} />
           <Show {...this.props}
             buttonGroup={buttonGroup}
@@ -186,9 +168,6 @@ export class SubTopic extends React.Component {
             description={this.state.description}
             markdownContent={this.state.markdownContent}
             />
-          <Grid.Column width={16}>
-            <Divider />
-          </Grid.Column>
         </div>
       )
     }
