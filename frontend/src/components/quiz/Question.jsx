@@ -138,7 +138,7 @@ export class Question extends Component {
 						this.state.data.choices.map((choice)=> {
 							return(
 								<Answer
-								key={choice.choice_text}
+								key={choice.id}
 								opNr={choice.id}
 								text={choice.choice_text}
 								toggleCallback={this.changeToggle}

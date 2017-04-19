@@ -52,8 +52,8 @@ export class Quiz extends Component {
 
 	fetchData() {
 		if (this.props.data !== undefined) {
-			console.log("The quiz received this data");
-			console.log(this.props.data)
+			// console.log("The quiz received this data");
+			// console.log(this.props.data)
 			this.setState({
 				title:this.props.data.title,
 				questions:this.props.data.questions,
@@ -100,6 +100,7 @@ export class Quiz extends Component {
 
 	/*Updates the answer internally*/
 	changeQuestion(increment, chosenAlternative) {
+		// console.log(chosenAlternative);
 		if(chosenAlternative===undefined){chosenAlternative=-1}
 		if(this.state.currently_asking + increment < 1){
 
@@ -107,7 +108,7 @@ export class Quiz extends Component {
 		else if(this.state.currently_asking + increment > this.state.number_of_questions){
 			var tempAnswers=this.state.answers;
 			tempAnswers[this.state.currently_asking-1] = chosenAlternative;
-			console.log("finished");
+			// console.log("finished");
 			this.setState({
 				finished:true,
 				answers:tempAnswers
