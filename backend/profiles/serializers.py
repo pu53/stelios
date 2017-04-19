@@ -32,5 +32,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
         user = get_user_model().objects.create(**validated_data)
         return user
 
-class ProfileDataSerializer(serializers.Serializer):
-    pass
+class UserIDNameSerializer(serializers.ModelSerializer):
+	profile = ProfileSerializer()
+	class Meta:
+		model = User
+		fields = ('id', 'profile')
+

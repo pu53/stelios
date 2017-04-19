@@ -6,8 +6,8 @@ import { TopicNav } from './TopicNav'
 import { getData } from '../../helpers'
 import { CustomMessage } from './CustomMessage'
 
-//Main entry point to wiki, one subject w/topics, preferably with jabbe subtopics
-export class WikiPage extends React.Component{
+//supposed to render a single subject w/topics, preferably with jabbe
+export class WikiPage extends React.Component {
 	displayName="WikiPage"
 	constructor(props){
 		super(props);

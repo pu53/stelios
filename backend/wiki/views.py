@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from wiki.models import Subject, Topic, Subtopic
-from wiki.serializers import SubjectSerializer, TopicSerializer, SubtopicSerializer, SubjectOnlyTopicIdAndNameSerializer, SubjectWithoutSubtopicsSerializer
+from wiki.serializers import SubjectSerializer, TopicSerializer, SubtopicSerializer, SubjectOnlyTopicIdAndNameSerializer, SubjectWithoutSubtopicsSerializer, SubjectNameSerializer
 from rest_framework import generics
 import json
 
@@ -71,3 +71,4 @@ class SubtopicList(generics.ListCreateAPIView):
 class SubtopicDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Subtopic.objects.all().order_by('id')
     serializer_class = SubtopicSerializer
+
