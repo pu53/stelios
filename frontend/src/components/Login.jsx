@@ -67,7 +67,7 @@ export class Login extends React.Component{
 			link = 'http://localhost:8000/'+ 'api-token-auth/';
     		// dev code
     } else {
-    		link = 'http://api.stelios.no/'+ 'api-token-auth/';
+    		link = 'http://stelios.no/api/'+ 'api-token-auth/';
 		    // production code
 		}
 
