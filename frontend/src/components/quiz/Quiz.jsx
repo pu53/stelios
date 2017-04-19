@@ -3,13 +3,7 @@ import './quiz.css'
 import { Container, Segment } from 'semantic-ui-react';
 import { FeedbackContainer } from './Feedback.jsx';
 import { Question } from './Question.jsx'
-
 import { sendData } from '../../helpers.jsx' 
-/**TODO: Make nav buttons stay in the same place?
- * TODO: Quiz generation
- * TODO: Scramble order of alternatives
- */ 
-
 /**TODO: Make nav buttons stay in the same place?
  * TODO: Quiz generation
  * TODO: Scramble order of alternatives

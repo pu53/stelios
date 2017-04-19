@@ -1,0 +1,19 @@
+language: python
+python:
+  - "3.6"
+install:
+  - pip install -r backend/requirements.txt
+  - pip install coveralls
+services:
+  - postgresql
+before_script:
+    - psql -c 'CREATE DATABASE stelios_backend;' -U postgres
+    - python backend/manage.py makemigrations quiz
+    - python backend/manage.py makemigrations wiki
+    - python backend/manage.py makemigrations profiles
+    - python backend/manage.py migrate
+script:
+  - cd backend/
+  - coverage run --branch --source=quiz,wiki,profiles ./manage.py test
+after_success:
+  coveralls

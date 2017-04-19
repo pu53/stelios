@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import './App.css';
 import { NavLink } from './components/NavLink.jsx';
 import { IndexLink } from 'react-router'
-import { Menu, Grid, Segment, Image } from 'semantic-ui-react'
+import { Menu, Dropdown, Icon, Grid, Segment, Image } from 'semantic-ui-react'
 import { SearchBar } from './components/SearchBar'
 import { Login } from './components/Login'
 
 
 export class App extends Component {
-    constructor(props) {
+  		constructor(props) {
       super();
       this.state = ({
         token: localStorage.getItem('stelios_token'),
@@ -49,13 +49,12 @@ export class App extends Component {
     }
 
   render() {
-    /*var login_text = this.state.token === "null" ? "login" : "logout"*/
-    var login_text = this.state.token === "null" ? "login" : "logout"
+    var login_text = this.state.token === "null" || this.state.token === null ? "login" : "logout"
     return (
       <div className="App" style={{width:'100%'}}>
-        <Segment raised style={{"color":"#FFFFFF","backgroundColor":"#3F51B5","padding":"0 0 0 0"}}>
-          <div style={{"display":"flex", "alignItems":"center","marginTop":"px", "marginBottom":"25px"}}>
-            <Image style={{"marginLeft":"20px", "marginTop":"23px", "marginRight":"20px"}} src={process.env.PUBLIC_URL + "logo.png"} width="50px" height="50px" shape="circular"/>
+        <Segment raised style={{"color":"#FFFFFF","background-color":"#3F51B5","padding":"0 0 0 0"}}>
+          <div style={{"display":"flex", "align-items":"center","margin-top":"px", "margin-bottom":"25px"}}>
+            <Image inverted style={{"margin-left":"20px", "margin-top":"23px", "margin-right":"20px"}} src={process.env.PUBLIC_URL + "logo.png"} width="50px" height="50px" shape="circular" />
             <h1>Stelios</h1>
           </div>
           <div style={{"width":"100%", "backgroundColor": "#303F9F"}}>
@@ -64,7 +63,16 @@ export class App extends Component {
               <NavLink to="/wiki" ><Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Wiki</Menu.Item></NavLink>
               <NavLink to="/quiz" ><Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Quiz</Menu.Item></NavLink>
               <Menu.Menu position='right'>
+                {this.state.token === "null" ?
                 <Menu.Item onClick={() => this.handleLogin(login_text)} style={{"color":"#FFFFFF"}}>{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item>
+                :
+                <Dropdown item text="User" style={{"color":"#FFFFFF"}}>
+                    <Dropdown.Menu>
+                        <Dropdown.Item><NavLink to="/user" ><Menu.Item name="user" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick}  ><Icon name='user' />Profile</Menu.Item></NavLink></Dropdown.Item>
+                        <NavLink to="/" ><Dropdown.Item><Menu.Item onClick={() => this.handleLogin(login_text)}><Icon name='log out' />{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item></Dropdown.Item></NavLink>
+                    </Dropdown.Menu>
+                </Dropdown>
+                }
               </Menu.Menu>
             </Menu>
           </div>
@@ -73,8 +81,13 @@ export class App extends Component {
           <Grid>
             {this.state.show_login ?
               <Grid.Row centered>
-                <Login show={this.state.show_login} success={() => this.successLogin()} />
+                <Grid.Column width={16}>
+                    <Segment raised style={{"justify-content":"center","marginTop":"-20px", "marginLeft":"-70px", "marginRight":"-70px"}}>
+                        <Login show={this.state.show_login} success={() => this.successLogin()} />
+                    </Segment>
+                </Grid.Column>
               </Grid.Row>
+
               :
               null
             }
@@ -84,7 +97,7 @@ export class App extends Component {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          {this.props.children}
+          {React.cloneElement(this.props.children, { steliosToken: this.state.token, steliosUser: this.state.current_user })}
         </div>
       </div>
     );

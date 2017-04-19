@@ -1,5 +1,6 @@
 from django.db import models
 import wiki
+#import profiles
 
 # models with fields related to quizes
 

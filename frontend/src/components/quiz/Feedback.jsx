@@ -182,7 +182,10 @@ export class FeedbackContainer extends React.Component{
 
 	}	
 	
+<<<<<<< HEAD
 
+=======
+>>>>>>> 37a18e266568c67fce4f8190f5a27736db8ba848
 	render(){
 		// console.log(this.state.weaktopicsID);
 		if(this.state.render){
