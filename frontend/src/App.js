@@ -140,7 +140,7 @@ class List extends Component {
       link = 'http://localhost:8000/subjects/1'
     // dev code
     } else {
-      link = 'http://api.stelios.no/users.json'
+      link = 'https://stelios.no/api/users.json'
     // production code
     }
     var request = new Request(link, {
