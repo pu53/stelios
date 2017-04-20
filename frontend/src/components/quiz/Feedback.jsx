@@ -50,8 +50,6 @@ export class FeedbackContainer extends React.Component{
 		const answers = this.props.answers;
  		const quizid = this.props.quizid;
  		
- 		// console.log("Answers from props: " +  this.props.answers)
- 		// console.log("subtopics from props: " + this.props.quizid)
 
 
  		getData('quiz/true/'+quizid.toString(),
@@ -62,7 +60,7 @@ export class FeedbackContainer extends React.Component{
  				var isTrue = []
 
  				for (var i = 0; i < correct.length; i++) {
- 					// console.log("correct: " + correct[i] + "   answers: " + answers[i]);
+ 					console.log("correct: " + correct[i] + "   answers: " + answers[i]);
  					if(correct[i] === answers[i]){
  						isTrue.push(true);
  					}else{

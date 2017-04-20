@@ -154,14 +154,14 @@ export class Template extends Component {
               url = "choice/"
               method="POST"
               // if (choice.correct_answer) {
-              body = {choice_text: choice.choice_text, question: res.id, is_correct: choice.is_correct}
+              body = {choice_text: choice.choice_text, question: res.id, is_correct: choice.correct_answer}
               // } else {
               //   body = {choice_text: choice.choice_text, question: res.id, correct_answer_to: null}
               // }
             } else {
               url="choice/" + question.id + "/"
               // if (choice.correct_answer) {
-              body = {id: choice.id, choice_text: choice.choice_text, question: res.id, is_correct: choice.is_correct}
+              body = {id: choice.id, choice_text: choice.choice_text, question: res.id, is_correct: choice.correct_answer}
               // } else {
               //   body = {id: choice.id, choice_text: choice.choice_text, question: res.id, correct_answer_to: null}
               // }
