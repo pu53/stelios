@@ -16,7 +16,7 @@ export class UserQuizes extends React.Component {
         if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
           link = 'http://localhost:8000/'+ url;
         } else {
-          link = 'http://stelios.no/api/'+ url;
+          link = 'https://stelios.no/api/'+ url;
         }
         //generated request
         var request = new Request(link, {

@@ -27,7 +27,7 @@ export function getData(url, handleStatus, handleData, handleError) {
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     link = 'http://localhost:8000/'+ url;
   } else {
-    link = 'http://stelios.no/api/'+ url;
+    link = 'https://stelios.no/api/'+ url;
   }
   //generated request
   var request = new Request(link, {
@@ -71,7 +71,7 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
     link = 'http://localhost:8000/'+ url;
       // dev code
   } else {
-      link = 'http://stelios.no/api/' + url;
+      link = 'https://stelios.no/api/' + url;
       // production code
   }
   if(url !== "signup/") {
@@ -120,7 +120,7 @@ export function getDataSimple(url, handleData) {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       link = 'http://localhost:8000/'+ url;
     } else {
-      link = 'http://stelios.no/api/'+ url;
+      link = 'https://stelios.no/api/'+ url;
     }
     //generated request
     var request = new Request(link, {
