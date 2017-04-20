@@ -4,9 +4,12 @@ python:
 node_js:
   - "7"
 install:
-  - pip install -r backend/requirements.txt
+  - cd backend/
+  - pip install -r requirements.txt
   - pip install coveralls
+  - cd ../frontend/
   - npm install
+  - cd ..
 services:
   - postgresql
 before_script:
@@ -20,5 +23,6 @@ script:
   - coverage run --branch --source=quiz,wiki,profiles ./manage.py test
   - cd ../frontend/
   - npm test
+  - cd ..
 after_success:
   coveralls
