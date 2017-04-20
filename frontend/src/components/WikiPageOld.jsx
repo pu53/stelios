@@ -95,9 +95,9 @@ export class WikiPage extends React.Component{
 	dataLoad = (url, prejson, dataFunc) => {
 		var link = '';
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			link = 'http://localhost:8000/'+ url;
+			link = 'http://localhost:8000/api/'+ url;
     } else {
-    		link = 'http://api.stelios.no/'+ url;
+    		link = 'https://stelios.no/api/'+ url;
 		}
 		var request = new Request(link, {
 			method: 'GET',
@@ -228,10 +228,10 @@ export class WikiPage extends React.Component{
 
 		var link = '';
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			link = 'http://localhost:8000/'+ urll;
+			link = 'http://localhost:8000/api/'+ urll;
     		// dev code
     } else {
-    		link = 'http://api.stelios.no/' +urll;
+    		link = 'https://stelios.no/api/' +urll;
 		    // production code
 		}
 
@@ -349,10 +349,10 @@ export class WikiPage extends React.Component{
 
 			var link = '';
 			if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-				link = 'http://localhost:8000/'+ "topics/" + id + "/";
+				link = 'http://localhost:8000/api/'+ "topics/" + id + "/";
 	    		// dev code
 	    } else {
-	    		link = 'http://api.stelios.no/' + "topics/" + id + "/";
+	    		link = 'https://stelios.no/api/' + "topics/" + id + "/";
 			    // production code
 			}
 

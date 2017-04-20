@@ -14,9 +14,9 @@ export class WelcomeMessage extends React.Component {
         var link = '';
         var url = 'users/data/' + localStorage.getItem('stelios_current_user') + '/?format=json';
         if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-          link = 'http://localhost:8000/'+ url;
+          link = 'http://localhost:8000/api/'+ url;
         } else {
-          link = 'http://api.stelios.no/'+ url;
+          link = 'https://stelios.no/api/'+ url;
         }
         //generated request
         var request = new Request(link, {
