@@ -1,3 +1,9 @@
+#
+#														WARNING
+# 						THIS FILE IS JUST A COPY OF /etc/nginx/sites-availible/stelios.no
+#					CHANGES TO THIS FILE WILL NOT AFFECT THE SERVER, AND HAS TO BE MANUALLY CHANGED/CREATED
+#		K - THANKS
+
 # You should look at the following URL's in order to grasp a solid understanding
 # of Nginx configuration files in order to fully unleash the power of Nginx.
 # http://wiki.nginx.org/Pitfalls
