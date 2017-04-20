@@ -33,11 +33,11 @@ export class App extends Component {
 			localStorage.setItem('stelios_current_user', "null")
 		}
 	}
-	
+
 	componentWillMount() {
 		this.setState({activeItem:(window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")})
 	}
-	
+
 	componentWillUpdate() {
 		if(window.location.href.split("/")[3] === "") {
 			console.log("Start updating, going to home page from" + this.state.activeItem)
@@ -46,7 +46,7 @@ export class App extends Component {
 			}
 			console.log("Stop updating")
 		}
-		
+
 		else if(this.state.activeItem !== window.location.href.split("/")[3])
 		{
 			console.log("Start updating, going to " + window.location.href.split("/")[3] + " the current state is " + this.state.activeItem)
@@ -137,7 +137,7 @@ class List extends Component {
     event.preventDefault();
     var link = '';
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      link = 'http://localhost:8000/subjects/1'
+      link = 'http://localhost:8000/api/subjects/1'
     // dev code
     } else {
       link = 'https://stelios.no/api/users.json'

@@ -33,7 +33,7 @@ export class Login extends React.Component{
 		});
 		var link = '';
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			link = 'http://localhost:8000/'+ 'api-token-auth/';
+			link = 'http://localhost:8000/api/'+ 'api-token-auth/';
     		// dev code
     } else {
     		link = 'https://stelios.no/api/'+ 'api-token-auth/';

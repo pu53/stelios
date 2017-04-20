@@ -25,7 +25,7 @@ export function getData(url, handleStatus, handleData, handleError) {
   //builds the link with respect to production/development
   var link = '';
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    link = 'http://localhost:8000/'+ url;
+    link = 'http://localhost:8000/api/'+ url;
   } else {
     link = 'https://stelios.no/api/'+ url;
   }
@@ -68,7 +68,7 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
 
   var link = '';
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    link = 'http://localhost:8000/'+ url;
+    link = 'http://localhost:8000/api/'+ url;
       // dev code
   } else {
       link = 'https://stelios.no/api/' + url;
@@ -118,7 +118,7 @@ export function getDataSimple(url, handleData) {
     //builds the link with respect to production/development
     var link = '';
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      link = 'http://localhost:8000/'+ url;
+      link = 'http://localhost:8000/api/'+ url;
     } else {
       link = 'https://stelios.no/api/'+ url;
     }

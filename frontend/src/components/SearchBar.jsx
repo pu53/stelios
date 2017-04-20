@@ -43,7 +43,7 @@ export class SearchBar extends Component {
 		/*Setting host*/
 		var host = '';
 		if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			host = 'http://localhost:8000';
+			host = 'http://localhost:8000/api';
 		}
 		else {
 			host ='https://stelios.no/api/';
@@ -58,7 +58,7 @@ export class SearchBar extends Component {
 
 
 			if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-				link = 'http://localhost:8000/subjects/?fields=id,name'
+				link = 'http://localhost:8000/api/subjects/?fields=id,name'
 			// dev code
 			} else {
 				link = 'https://stelios.no/api/subjects/?fields=id,name'
