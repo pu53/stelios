@@ -2,13 +2,13 @@ import os
 import random
 from .base import *
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['stelios.no', 'www.stelios.no', '146.185.153.19', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-STATIC_URL = '/api/static/'
-# Database:
+STATIC_URL = '/static/'
+# Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {

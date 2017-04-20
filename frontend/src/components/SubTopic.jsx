@@ -71,7 +71,7 @@ export class SubTopic extends React.Component {
 			link = 'http://localhost:8000/'+ 'subtopics/' + url;
     		// dev code
     } else {
-    		link = 'https://stelios.no/api/'+ 'subtopics/' +url;
+    		link = 'http://api.stelios.no/'+ 'subtopics/' +url;
 		    // production code
 		}
 

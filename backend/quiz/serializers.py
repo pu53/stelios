@@ -30,10 +30,6 @@ class QuestionDataSerializer(QueryFieldsMixin,serializers.ModelSerializer):
 		model = Question
 		fields = (['id','text','subtopic'])
 
-class QuestionDataSerializer(serializers.Serializer):
-	id = serializers.IntegerField(read_only=True)
-	text = serializers.CharField(max_length = 1000)
-
 class QuizDataSerializer(serializers.Serializer):
 	id = serializers.IntegerField(read_only=True)
 	title = serializers.CharField(max_length=200)

@@ -27,7 +27,7 @@ export function getData(url, handleStatus, handleData, handleError) {
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     link = 'http://localhost:8000/'+ url;
   } else {
-    link = 'https://stelios.no/api/'+ url;
+    link = 'http://api.stelios.no/'+ url;
   }
   //generated request
   var request = new Request(link, {
@@ -71,7 +71,7 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
     link = 'http://localhost:8000/'+ url;
       // dev code
   } else {
-      link = 'https://stelios.no/api/' + url;
+      link = 'http://api.stelios.no/' + url;
       // production code
   }
   if(url !== "signup/") {
@@ -142,65 +142,3 @@ export function getDataSimple(url, handleData) {
       console.log(e);
     });
 }
-
-export function getDataSimple(url, handleData) {
-    console.log("fetching data");
-    //builds the link with respect to production/development
-    var link = '';
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      link = 'http://localhost:8000/'+ url;
-    } else {
-      link = 'http://api.stelios.no/'+ url;
-    }
-    //generated request
-    var request = new Request(link, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    });
-
-    //javascripts fetch method. after fetch is executed and respone is recived,
-    //the first .then() is called, and after that the next .then()
-    fetch(request).then((res) => {
-      console.log(res.status)
-      return res.json();
-    })
-    .then((res) => {
-        handleData(res)
-    }).catch((e) => {
-      console.log(e);
-    });
-}
-
-}
-
-export function getDataSimple(url, handleData) {
-    console.log("fetching data");
-    //builds the link with respect to production/development
-    var link = '';
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      link = 'http://localhost:8000/'+ url;
-    } else {
-      link = 'https://stelios.no/api/'+ url;
-    }
-    //generated request
-    var request = new Request(link, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    });
-
-    //javascripts fetch method. after fetch is executed and respone is recived,
-    //the first .then() is called, and after that the next .then()
-    fetch(request).then((res) => {
-      console.log(res.status)
-      return res.json();
-    })
-    .then((res) => {
-        handleData(res)
-    }).catch((e) => {
-      console.log(e);
-    });
-}

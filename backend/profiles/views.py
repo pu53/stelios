@@ -1,10 +1,11 @@
 from django.contrib.auth.models import User
-from profiles.serializers import UserSerializer
+from profiles.serializers import UserSerializer, UserCreateSerializer
 from wiki.serializers import SubjectSerializer, SubjectInfoSerializer
 from quiz.serializers import QuizSerializer
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.contrib.auth import get_user_model
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -13,6 +14,11 @@ class UserList(generics.ListCreateAPIView):
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class UserCreate(generics.CreateAPIView):
+    model = get_user_model()
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = UserCreateSerializer
 
 class UserSubjects(APIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
