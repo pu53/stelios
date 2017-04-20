@@ -8,52 +8,32 @@ import { Login } from './components/Login'
 
 
 export class App extends Component {
-	constructor(props) {
-		super();
-		this.state = ({
-			token: localStorage.getItem('stelios_token'),
-			current_user: localStorage.getItem('stelios_current_user'),
-			show_login: false,
-			activeItem: (window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")
-		})
-	}
+  		constructor(props) {
+      super();
+      this.state = ({
+        token: localStorage.getItem('stelios_token'),
+        current_user: localStorage.getItem('stelios_current_user'),
+        show_login: false,
+        activeItem: 'home'
+      })
+    }
 
-	handleLogin(e) {
-		if (e === "login") {
-			this.setState({
-				show_login: !this.state.show_login
-			});
-		} else {
-			this.setState({
-				token: "null",
-				current_user: "null",
-				show_login: false
-			});
-			localStorage.setItem('stelios_token', "null");
-			localStorage.setItem('stelios_current_user', "null")
-		}
-	}
-	
-	componentWillMount() {
-		this.setState({activeItem:(window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")})
-	}
-	
-	componentWillUpdate() {
-		if(window.location.href.split("/")[3] === "") {
-			console.log("Start updating, going to home page from" + this.state.activeItem)
-			if(this.state.activeItem !== "home") {
-				this.setState({activeItem:"home"})
-			}
-			console.log("Stop updating")
-		}
-		
-		else if(this.state.activeItem !== window.location.href.split("/")[3])
-		{
-			console.log("Start updating, going to " + window.location.href.split("/")[3] + " the current state is " + this.state.activeItem)
-			this.setState({activeItem:(window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")})
-			console.log("Stop updating")
-		}
-	}
+    handleLogin(e) {
+      if (e === "login") {
+        this.setState({
+          show_login: !this.state.show_login
+        });
+      } else {
+        this.setState({
+          token: "null",
+          current_user: "null",
+          show_login: false
+        });
+        localStorage.setItem('stelios_token', "null");
+        localStorage.setItem('stelios_current_user', "null")
+      }
+    }
+
     successLogin() {
       this.setState({
         token: localStorage.getItem('stelios_token'),

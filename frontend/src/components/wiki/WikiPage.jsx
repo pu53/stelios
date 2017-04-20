@@ -7,7 +7,7 @@ import { getData } from '../../helpers'
 import { CustomMessage } from './CustomMessage'
 
 //supposed to render a single subject w/topics, preferably with jabbe
-export class WikiPage extends React.Component {
+export class WikiPage extends React.Component{
 	displayName="WikiPage"
 	constructor(props){
 		super(props);
@@ -158,6 +158,19 @@ export class WikiPage extends React.Component {
 						</Grid.Column>
 						<Grid.Column width={13}>
 							<Segment raised>
+								<Subject
+									updateTopics={this.updateTopics}
+									onSubjectNew={this.onSubjectNew}
+									onSubjectNotNew={this.onSubjectNotNew}
+									subjectId={this.state.subjectId}
+									onParentSubmit={this.onSubjectSubmit}
+									triggerRefresh={this.triggerRefresh}
+									blockMessage={this.blockMessage}
+									/>
+								<Grid.Column width={16}>
+									<Divider />
+								</Grid.Column>
+								<br />
 								{!this.state.new ?
 									<Topic
 										activeTopicId={this.state.activeTopicId}

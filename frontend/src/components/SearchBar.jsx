@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import { browserHistory } from 'react-router'
 import { Search, Grid, Label } from 'semantic-ui-react'
 import _ from 'lodash'
@@ -97,12 +96,10 @@ export class SearchBar extends Component {
 		this.setState({value:event.target.value})
 	}
 
-	
 	handleClick(id) {
-		//browserHistory.push("/wiki/" + id);
-		//window.location.reload();
+		browserHistory.push("/wiki/" + id);
+		window.location.reload();
 	}
-	
 
 	componentWillMount() {
 	this.resetComponent()
@@ -156,7 +153,7 @@ export class SearchBar extends Component {
 						var link = "/wiki/".concat(data['id']);
 						const re = new RegExp(_.escapeRegExp(this.state.value).toUpperCase(), 'i');
 						if(this.state.value === "" || (this.state.value !== "" && data["name"].toUpperCase().search(re) !== -1)) {
-							return(<li key={data.id}><Link to={"/wiki/"+data['id']} onClick={() => this.handleClick(data['id'])}>{data["name"]}</Link></li>);
+							return(<li key={data.id}><a href="" onClick={() => this.handleClick(data['id'])}>{data["name"]}</a></li>);
 						}
 					}
 					)}
@@ -166,9 +163,3 @@ export class SearchBar extends Component {
 		}
 	}
 }
-
-/*
- * if(this.state.value === "" || (this.state.value !== "" && data["name"].toUpperCase().search(re) !== -1)) {
-		return(<li key={data.id}><Link to="" onClick={() => this.handleClick(data['id'])}>{data["name"]}</a></li>);
-	}
- */

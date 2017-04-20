@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Grid, Segment, List, Accordion, Icon} from 'semantic-ui-react';
+import { Container, Grid, Segment, List } from 'semantic-ui-react';
 import { getData } from '../../helpers.jsx'
 var Markdown = require('react-remarkable');;
 
@@ -8,7 +8,7 @@ var Markdown = require('react-remarkable');;
 export class FeedbackContainer extends React.Component{
 	constructor(props){
 		super();
-		console.log(props);
+		//dummy variable for state. should be passed as props
 		this.state={
 			quizID: 1,
 			answers: [
@@ -44,60 +44,29 @@ export class FeedbackContainer extends React.Component{
 	correct(){
 		var answers = this.state.answers;
 
-	// decides when to call different methods since the depent on state
-	// and setState is everything else than instant.
-	componentDidUpdate(){
-		// if(this.state.isTrue.length === this.state.answers.length &&
-		// 	Object.keys(this.state.subtopicTrueTotal).length === 0){
-		// 	// console.log("time to calculate");
-		// 	this.CalcTrueTotal();
-		// }
-		// if(Object.keys(this.state.subtopicTrueTotal).length > 0 &&
-		// 	this.state.render === false){
-		// 	// console.log("time to judge");
-		// 	this.weakTopics();
-		// }
+		for (var i = 0; i < answers.length; i++) {
+			var answer=answers[i];
+			const choice = answer.choice;
+			const questionID = answer.questionID;
+
+			getData("choice/"+choice.toString()+"/",
+				(() => {}),
+				((res) => {
+					console.log(res);
+					if(res.question == questionID){
+						answers[i] = {
+							questionID: questionID,
+							choice: choice,
+							correct: true //only change
+						};
+					}
+				}),
+				(() => {})
+			);
+		}
 	}
 
 	/**
-	*	updates state.isTrue with an array with true/false
-	*	dependant on wheter the answer was true or not
-	*	the index in this array will be same index for question
-	*/
-
-	getIsTrue(){
-		const answers = this.props.answers;
- 		const quizid = this.props.quizid;
- 		
- 		// console.log("Answers from props: " +  this.props.answers)
- 		// console.log("subtopics from props: " + this.props.quizid)
-
-
- 		getData('quiz/true/'+quizid.toString(),
- 			(() => {}),
- 			((res) => {
- 				const correct = res.correct;
-
- 				var isTrue = []
-
- 				for (var i = 0; i < correct.length; i++) {
- 					// console.log("correct: " + correct[i] + "   answers: " + answers[i]);
- 					if(correct[i] === answers[i]){
- 						isTrue.push(true);
- 					}else{
- 						isTrue.push(false);
- 					}
- 					// console.log(isTrue);
- 				}
- 				this.CalcTrueTotal(isTrue);
- 			}),
- 			(() => {})
- 		);
-	}
-
-	/**
-	*	Method for creating the object with [correct, total] array 
-	*	per question in a dict with 
 	* generates a list of weak topics based on the answers
 	* on the form [
 	* 	{ID:id, Correct: %correct},
@@ -106,38 +75,27 @@ export class FeedbackContainer extends React.Component{
 	*
 	*/
 
-
-	CalcTrueTotal(isTrue){
- 		const subtopics = this.state.subtopics;
- 		// const isTrue = this.state.isTrue;
-
-
- 		// creates empty dict
- 		var subtopicObject = {}
- 		for (var i = 0; i < isTrue.length; i++) {
-			for (var j = 0; j < subtopics[i].length; j++) {
-				subtopicObject[subtopics[i][j]]=[0,0];
-			}
+	weakTopics(){
+ 		const answers = this.state.answers;
+		var subtopics = {};
+		// add all subtopics to the object
+		for(var i=0;i<answers.length;i++){
+			const subtopicID = answers[i].subTopicID;
+			subtopics[subtopicID]=[0,0];
 		}
 
-		// updates the dict with the datas from state.isTrue
-		for (var i = 0; i < isTrue.length; i++) {
-			for (var j = 0; j < subtopics[i].length; j++) {
-				const oldvalue=subtopicObject[subtopics[i][j]];
-
-				let newvalue = oldvalue;
-				if(isTrue[i]){
-					newvalue[0]+=1;
-				}
-				newvalue[1]+=1;
-
-				subtopicObject[subtopics[i][j]]=newvalue;
-
+		// iterate over every answer, finding falsely answered questions
+		for(var i=0;i<answers.length;i++){
+			const subtopicID = answers[i].subTopicID
+			const oldValue = subtopics[subtopicID];
+			if ( answers[i].correct ){
+				oldValue[0] += 1;
 			}
 			oldValue[1] += 1;
 			subtopics[subtopicID] = oldValue;
 		}
-		// console.log(subtopicObject);  // this is fine ^^
+
+		// console.log(subtopics);  // this is fine ^^
 		// now, thesubtopics be like
 		// {
 		// 	subtopicID: [x,y]
@@ -145,27 +103,6 @@ export class FeedbackContainer extends React.Component{
 		// 	....
 		// }
 		// x is correctm Y is total questions about subtopicID.
-
-		// this.setState({
-		// 	subtopicTrueTotal: subtopicObject,
-		// });
-		this.weakTopics(subtopicObject);
-	}
-
-
-	/**
-	* generates a list of weak topics based on the answers 
-	* on the form [
-	* 	{ID:id, Correct: %correct}, 
- 	*	...
-	* ]
-	*
-	*/
-	weakTopics(subtopicObject){
- 		const answers = this.state.answers;
- 		const subtopics = this.state.subtopics;
- 		// const subtopicObject = this.state.subtopicTrueTotal;
-
 
 		// weakTopics = [];
 
@@ -197,33 +134,22 @@ export class FeedbackContainer extends React.Component{
 		// returns array sorted by correctness
 		return weaktopicsID;
 
-	}	
+	}
 
 	render(){
-		// console.log(this.state.weaktopicsID);
-		if(this.state.render){
-			const weaktopics = this.state.weaktopicsID;
-			if(Object.keys(weaktopics).length > 0){
-				return (<div>
-					<h1>Topics you may want to read a bit about: <br /></h1>
-					<List >
-					{
-						weaktopics.map((subtopic) => {
-							return (
-									<FeedbackSubTopic weaktopic={subtopic} key={subtopic.ID}/>
-							)
-						}
-					)}
-					</List>
-				</div>);
-			}else{
-				return <h1>
-					Well Done! You have a good understanding of all topics covered by the quiz.
-				</h1>;
-			}
-		}else{
-			return <h1>loading ... .. . </h1>;
-		}
+		const weaktopics = this.weakTopics();
+		return (<div>
+			<h1>Topics you may want to read a bit about: <br /></h1>
+			<List >
+			{
+				weaktopics.map((subtopic) => {
+					return (
+						<FeedbackSubTopic weaktopic={subtopic} />
+					)
+				}
+			)}
+			</List>
+		</div>);
 	}
 }
 
@@ -277,15 +203,17 @@ class FeedbackSubTopic extends React.Component {
 	render(){
 		return <Container style={{overflow: "hidden"}}>
 			<Segment>
-				<Accordion>
-					<Accordion.Title>
-						<h2>{this.state.name} - {this.props.weaktopic.Correct * 100}% correct</h2>
-						<p><b>{this.state.description}</b></p><Icon name="dropdown" />
-					</Accordion.Title>
-					<Accordion.Content>
-						<Markdown source={this.state.content} />
-					</Accordion.Content>
-				</Accordion>
+				<Grid>
+					<Grid.Column width={12}>
+						<h2>{this.state.name}</h2>
+					</Grid.Column>
+					<Grid.Column width={12}>
+						<p><b>{this.state.description}</b></p>
+					</Grid.Column>
+					<Grid.Column width={12}>
+              			<Markdown source={this.state.content} />
+					</Grid.Column>
+				</Grid>
 			</Segment>
 			<br />
 		</Container>;

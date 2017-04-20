@@ -94,7 +94,6 @@ export class QuizPage extends Component {
 	render() {
 		if(this.state.quizState === "inQuiz" && this.state.quizData.questions !== undefined) {
 			console.log("in render, the data in state is: ");
-			console.log(this.state.quizData);
 		
 			return(
 				<Grid>

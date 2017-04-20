@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^subtopics/$', views.SubtopicList.as_view()),
     url(r'^subtopics/(?P<pk>[0-9]+)/$', views.SubtopicDetail.as_view()),
 
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

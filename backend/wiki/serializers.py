@@ -9,15 +9,10 @@ class SubtopicSerializer(QueryFieldsMixin,serializers.ModelSerializer):
         model = Subtopic
         fields = ('__all__')
         
-class SubtopicNameIDSerializer(serializers.ModelSerializer):
-	class Meta:
-		model =  Subtopic
-		fields = ('name', 'id')
-
 class SubtopicNameSerializer(serializers.ModelSerializer):
 	class Meta:
 		model =  Subtopic
-		fields = ('name',)
+		fields = ('name', )
 
 class TopicSerializer(QueryFieldsMixin,serializers.ModelSerializer):
     subtopics = SubtopicSerializer(required=False, many=True, read_only=True)
@@ -80,8 +75,3 @@ class SubjectWithoutSubtopicsSerializer(QueryFieldsMixin,serializers.ModelSerial
 ##        for topic_data in topics_data:
 ##            Topic.objects.create(subject=subject, **topic_data)
 #        return subject
-
-class SubjectNameSerializer(QueryFieldsMixin,serializers.ModelSerializer):
-    class Meta:
-        model = Topic
-        fields = ('name', )

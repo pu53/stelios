@@ -1,13 +1,3 @@
-/* Palette:
- * dark primary: #303F9F
- * default primary: #3F51B5
- * light primary: #C5CAE9
- * text primary: #FFFFFF
- * accent color: #03A9F4
- * primary text color: #212121
- * seconady text color: #757575
- * divider color: #BDBDBD
- */
 
 .quizWrapper {
 	overflow:auto;
@@ -109,13 +99,13 @@
 	position:relative;
 	cursor:pointer; 
 	text-align:center; 
-	background-color:#C5CAE9;
+	background-color:background;
 	color:#ffffff;
 	min-height:50px;
 	width:100%;
 	display:flex;
 	align-items: center;
-	border-color:#C5CAE9;
+	border-color:background;
 	border-radius:10px;
 	border-style:none;
 }
