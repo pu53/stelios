@@ -36,7 +36,7 @@ export class QuizPage extends Component {
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 			link = 'http://localhost:8000/';
 		} else {
-			link = 'https://stelios.no/api/';
+			link = 'http://api.stelios.no/';
 		}
 		
 		//Adding suffix and parameter to the link path, completing it

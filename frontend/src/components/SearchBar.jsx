@@ -46,7 +46,7 @@ export class SearchBar extends Component {
 			host = 'http://localhost:8000';
 		}
 		else {
-			host ='https://stelios.no/api';
+			host ='http://api.stelios.no';
 		}
 		/*uses data offered through props*/
 		if(this.props.data !== undefined) {
@@ -61,7 +61,7 @@ export class SearchBar extends Component {
 				link = 'http://localhost:8000/subjects/?fields=id,name'
 			// dev code
 			} else {
-				link = 'https://stelios.no/api/subjects/?fields=id,name'
+				link = 'http://api.stelios.no/subjects/?fields=id,name'
 			// production code
 			}
 

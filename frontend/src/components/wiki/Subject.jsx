@@ -4,6 +4,7 @@ import { Edit } from './Edit'
 import { CustomMessage } from './CustomMessage'
 import { getData, sendData } from '../../helpers'
 
+//Subject holds the subject name and description, it also handles dataload
 export class Subject extends React.Component {
   displayName="Subject"
   constructor(props) {
@@ -22,7 +23,6 @@ export class Subject extends React.Component {
 
   componentDidMount() {
     if(this.state.subjectId !== undefined) {
-      console.log(this.getSubject);
       this.getSubject(this.state.subjectId)
     }
   }
@@ -32,14 +32,20 @@ export class Subject extends React.Component {
       this.setState({
         subjectId: nextProps.subjectId
       })
-      console.log(this.getSubject);
-
       this.getSubject(nextProps.subjectId)
+    }
+    if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
+      this.setState({
+        new: false, edit: false
+      });
+    }
+    if (nextProps.update) {
+      this.getSubject(nextProps.subjectId ? nextProps.subjectId : this.state.subjectId)
     }
   }
 
+  // gets subject and corresponding topics, but not subtopics
   getSubject = (id) => {
-    console.log("in getSubject with id ", id);
 		var url = "subjectswithoutsubtopics/" + id + "/";
 		var handleStatus = (res) => {}
 		var handleData = (res) => {
@@ -67,6 +73,7 @@ export class Subject extends React.Component {
       status, message, neg
     })
   }
+
 
   onClickEdit = (e) => {
     e.preventDefault()
@@ -102,6 +109,7 @@ export class Subject extends React.Component {
           new: false,
           edit: false
         })
+        window.location.reload();
       }
       var handleError = (e) => {this.onChangeMessage(-1, e, true)}
       sendData(url, method, body, handleStatus, handleData, handleError)
@@ -129,7 +137,7 @@ export class Subject extends React.Component {
   }
 
   render() {
-    console.log("subjectId is in subject: ", this.state.subjectId);
+    //chooses which buttons to show, and give them methods to callback on
     const buttonGroup = {
       edit: this.state.edit || this.state.new ?  undefined : this.onClickEdit,
       new: this.state.edit || this.state.new ?  undefined : this.onClickNew,
@@ -144,7 +152,8 @@ export class Subject extends React.Component {
             status={this.state.status}
             message={this.state.message}
             neg={this.state.neg} />
-          <Edit {...this.props}
+          <Edit
+            {...this.props}
             edit
             id={this.state.subjectId}
             name={this.state.name}
@@ -162,7 +171,8 @@ export class Subject extends React.Component {
       return(
         <div>
           <CustomMessage onChangeMessage={this.onChangeMessage} header="Subject" status={this.state.status} message={this.state.message} neg={this.state.neg} />
-          <Edit {...this.props}
+          <Edit
+            {...this.props}
             new
             id={this.state.subjectId}
             name={this.state.name}
