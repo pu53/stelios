@@ -3,20 +3,12 @@ import {Segment, List, Grid, Button} from 'semantic-ui-react'
 /*var Markdown = require('react-remarkable');*/
 import { TopicEdit } from './TopicEdit'
 
-//topicnav holds all topics, and the user can select between them, aswell as edit topics in the subject.
+/* Show is a dumb component that displays name, description, (content), and buttongroup*/
 export class TopicNav extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
         edit: false
-      }
-    }
-
-    componentWillReceiveProps(nextProps) {
-      if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
-        this.setState({
-          edit: false
-        });
       }
     }
 
@@ -33,12 +25,14 @@ export class TopicNav extends React.Component {
     }
 
     onClickCancel = () => {
+      console.log("in onClickCancel");
       this.setState({
         edit: false
       })
     }
 
     render() {
+      console.log("in topicNav ", this.props.topics);
       if (this.props.topics !== undefined) {
         if (!this.state.edit) {
           return (
@@ -47,11 +41,9 @@ export class TopicNav extends React.Component {
                 <Grid.Column width={16}>
                   <h4>Topics: </h4>
                 </Grid.Column>
-                { this.props.steliosToken === "null" || this.props.steliosToken === null ? null :
-                  <Grid.Column width={16}>
-                    <Button basic fluid content="edit" onClick={(e) => {e.preventDefault(); this.onClickEdit()}} />
-                  </Grid.Column>
-                }
+                <Grid.Column width={16}>
+                  <Button basic fluid content="edit" onClick={(e) => {e.preventDefault(); this.onClickEdit()}} />
+                </Grid.Column>
                 <Grid.Row>
                   <Grid.Column width={16}>
                     <List selection>

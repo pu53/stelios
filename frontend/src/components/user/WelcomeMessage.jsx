@@ -16,7 +16,7 @@ export class WelcomeMessage extends React.Component {
         if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
           link = 'http://localhost:8000/'+ url;
         } else {
-          link = 'http://api.stelios.no/'+ url;
+          link = 'https://stelios.no/api/'+ url;
         }
         //generated request
         var request = new Request(link, {

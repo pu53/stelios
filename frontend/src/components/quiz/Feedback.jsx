@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Container, Grid, Segment, List, Accordion, Icon} from 'semantic-ui-react';
 import { getData } from '../../helpers.jsx'
@@ -11,19 +10,39 @@ export class FeedbackContainer extends React.Component{
 		super();
 		console.log(props);
 		this.state={
-			answers: props.answers,
-			subtopics: props.subtopics,
-			subtopicTrueTotal: {},
-			isTrue: [],
-			weaktopicsID: [],
-			render: false,
+			quizID: 1,
+			answers: [
+				{
+					quiestionID: 3, //props
+					choice: 5, //props
+					correct: false //standard value, change if wrong
+				},
+				{
+					quiestionID: 5,
+					choice: 10
+				},
+				{
+					quiestionID: 9,
+					choice: 15
+				},
+				{
+					quiestionID: 12,
+					choice: 24
+				}
+			]
 		};
 	} //end of constructor
 
+	/**
+	* 	should correct answers passed by props
+	*	look into database
+	*	cross-reference with questionID-correctanswerto
+	*
+	*
+	*/
 
-	componentDidMount(){
-		this.getIsTrue();
-	}
+	correct(){
+		var answers = this.state.answers;
 
 	// decides when to call different methods since the depent on state
 	// and setState is everything else than instant.
@@ -115,6 +134,8 @@ export class FeedbackContainer extends React.Component{
 				subtopicObject[subtopics[i][j]]=newvalue;
 
 			}
+			oldValue[1] += 1;
+			subtopics[subtopicID] = oldValue;
 		}
 		// console.log(subtopicObject);  // this is fine ^^
 		// now, thesubtopics be like
@@ -155,14 +176,14 @@ export class FeedbackContainer extends React.Component{
 
 		var weaktopicsID=[];
 
-		for(var subtopicID in subtopicObject){
+		for(var subtopicID in subtopics){
 		    // skip loop if the property is from prototype
-		    if (!subtopicObject.hasOwnProperty(subtopicID)) {
+		    if (!subtopics.hasOwnProperty(subtopicID)) {
 		    	continue;
 		    }
 
-			const correct=subtopicObject[subtopicID][0];
-			const total=subtopicObject[subtopicID][1];
+			const correct=subtopics[subtopicID][0];
+			const total=subtopics[subtopicID][1];
 
 			if (correct/total < limit){
 				weaktopicsID.push({
@@ -174,11 +195,7 @@ export class FeedbackContainer extends React.Component{
 
 		// console.log(weaktopicsID);
 		// returns array sorted by correctness
-		this.setState({
-			weaktopicsID: weaktopicsID,
-			render: true,
-		})
-		// return weaktopicsID;
+		return weaktopicsID;
 
 	}	
 

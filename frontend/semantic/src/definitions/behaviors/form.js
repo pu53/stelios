@@ -1520,9 +1520,6 @@ $.fn.form.settings = {
         return;
       }
 
-      // allow dashes in card
-      cardNumber = cardNumber.replace(/[\-]/g, '');
-
       // verify card types
       if(requiredTypes) {
         $.each(requiredTypes, function(index, type){

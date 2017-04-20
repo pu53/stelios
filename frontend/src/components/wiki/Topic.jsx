@@ -4,11 +4,7 @@ import { Edit } from './Edit'
 import { CustomMessage } from './CustomMessage'
 import { getData, sendData } from '../../helpers'
 import {SubTopic} from './SubTopic'
-import { Button } from 'semantic-ui-react'
-var Scroll = require('react-scroll');
-var Element = Scroll.Element;
-var scroller = Scroll.scroller;
-// topic holds topic info and all subtopics
+
 export class Topic extends React.Component {
 	constructor(props) {
 		super(props)
