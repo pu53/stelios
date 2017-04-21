@@ -1,20 +1,25 @@
+#deploy file that test our project, if a commit was pushed to master it will also build & deploy to server.
+
+#define language python, altough we also use nodejs for frontend
 language: python
+#python version, installs dependecies for us
 python:
   - "3.6"
 install:
 - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm
   && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm
-  install 7.5.0
+  install 7.5.0 #uses nvm to install nodejs and npm.
 - cd frontend/
-- npm install -g npm@latest
-- npm install
+- npm install -g npm@latest #install latest version of npm
+- npm install #installs all requirements for the frontend, defined in frontend/package.json
 - cd ../backend/
-- pip install -r requirements.txt
-- pip install coveralls
+- pip install -r requirements.txt #install requirements for the backend
+- pip install coveralls #install coveralls to give us a report of code coverage
 - cd ..
 services:
-- postgresql
+- postgresql #installes and setups postgresql
 before_script:
+#tests that all commands required to initialize/update backend works,
 - psql -c 'CREATE DATABASE stelios_backend;' -U postgres
 - python backend/manage.py makemigrations quiz
 - python backend/manage.py makemigrations wiki
@@ -22,35 +27,34 @@ before_script:
 - python backend/manage.py migrate
 script:
 - cd backend/
-- coverage run --branch --source=quiz,wiki,profiles ./manage.py test
+- coverage run --branch --source=quiz,wiki,profiles ./manage.py test #tests the backend
 - cd ../frontend/
-- npm test
+- npm test #tests the frontend
 - cd ..
 after_succes:
-- coveralls
+- coveralls #gathers the test data into a report. Used to give us a code coverage percentage on our github page
 addons:
-  ssh_known_hosts: stelios.no
+  ssh_known_hosts: stelios.no #remeber to add encrypted private key to travis first. Using this guide https://oncletom.io/2016/travis-ssh-deploy/
 before_deploy:
 - openssl aes-256-cbc -K $encrypted_41c5c3ce1f10_key -iv $encrypted_41c5c3ce1f10_iv
-  -in deploy_rsa.enc -out /tmp/deploy_rsa -d
-- eval "$(ssh-agent -s)"
-- ls
+  -in deploy_rsa.enc -out /tmp/deploy_rsa -d #decrypts our encrypted private key
+- eval "$(ssh-agent -s)" #commands to add ssh key to ssh thingy
 - chmod 600 /tmp/deploy_rsa
 - ssh-add /tmp/deploy_rsa
-deploy:
+deploy: #deploy script, is only run on branches specified
   provider: script
   skip_cleanup: true
-  script:
-  - ssh pekka@stelios.no 'cd /home/stelios/; git stash; git checkout continuous_integration;
+  script: #mega script to first pull latest changes from branch, then it will update the backend, and then update the frontend
+  - ssh pekka@stelios.no 'cd /home/stelios/; git stash; git checkout master;
     git pull; cd backend/; source backendenv/bin/activate; python manage.py makemigrations
     wiki; python manage.py makemigrations quiz; python manage.py makemigrations profiles;
     python manage.py migrate; cd ../frontend/; npm install; npm run build; cp -R /home/stelios/frontend/build/*
     /var/www/stelios.no/html/;'
-  on:
-    branch: continuous_integration
+  on: #only commits pushed to these branches will trigger the deploy part
+    branch: master
 after_deploy:
-- rm -f /tmp/deploy_rsa
-- ssh pekka@stelios.no 'sudo reboot now'
+- rm -f /tmp/deploy_rsa #removes the unencrypted private key for security reasons
+- ssh pekka@stelios.no 'sudo reboot now' #reboots the server, remember to remove the input of sudo password on the reboot command in the server
 notifications:
-  slack:
+  slack: #Slack integration, messages the channel travis-notifications on completed builds regardless of status (error, ok etc) key is encrypted
     secure: TZjkF1ouaLkKYg1oNA/ZLPP70T7XC6lQmc6aewpNn/qh0D8TFrot9SqtfCLdFyt/CeocUdLoi4hHpQVsuN6Hr1AcNN1lVfrrjsJdO4uPCbiUc8znob8yrTU3+Qw9KrO5vaVMV+omA11MmiEMv74ACNqUnBBU+tPHs2cmo9Pjy2ocPl6BGoquUG5oJT5wFANmmK7MgbRoAsr/qztFeBeOIYRSdrZRl/5s5u/EI2J6oLdreVBakjhLL6OwjJBBs6VopuEeETvuaUAVYuWKqVNcGDmWGtPgxwdu3TV0y5hoCFl854A8NgVcsij2GncgQfutNADNBqs5jzhooAe7s5Gu67CFSuBKK+zG/a4nTG+033IsjmHEoKEhyvPsdAJyt3xVBjjHxYazGEuvOX1Z4x8xo4fsXF7b6xGxxcvDY/+4uXDT8oZtoTLTPDnmaDqJqxSr+7E2wVk/xziOcUX/c0UMaQDI9FBFfXStpETuzuKjuck5gglWFj/GYhehmK5x+7dcJwx9Cpawz/tKfaAKFzP48qa0M/qdh4xbcYxSa1Xn3TG7acBY0dhzcyqGY1z48dwpKnEZdjsMS+ZGhhY2Ry3bfSfdMm38nZ2oW4848F6dRguopVDg6CwsnszD4rD3YkrsvQNoDbvMdUXhKFI0NqPKKji0yjcT8wNvrtyHLHy2XWg=
