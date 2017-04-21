@@ -1,3 +1,6 @@
+language: python
+python:
+  - "3.6"
 install:
 - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm
   && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm
@@ -6,17 +9,17 @@ install:
 - npm install -g npm@latest
 - npm install
 - cd ../backend/
-- pip3 install -r requirements.txt
-- pip3 install coveralls
+- pip install -r requirements.txt
+- pip install coveralls
 - cd ..
 services:
 - postgresql
 before_script:
 - psql -c 'CREATE DATABASE stelios_backend;' -U postgres
-- python3 backend/manage.py makemigrations quiz
-- python3 backend/manage.py makemigrations wiki
-- python3 backend/manage.py makemigrations profiles
-- python3 backend/manage.py migrate
+- python backend/manage.py makemigrations quiz
+- python backend/manage.py makemigrations wiki
+- python backend/manage.py makemigrations profiles
+- python backend/manage.py migrate
 script:
 - cd backend/
 - coverage run --branch --source=quiz,wiki,profiles ./manage.py test
