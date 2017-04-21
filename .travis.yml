@@ -27,6 +27,7 @@ script:
   - cd ../frontend/
   - npm test
   - npm run build
+  - cat /home/travis/build/pu53/stelios/frontend/npm-debug.log
   - mv build html
   - cd ..
 after_succes:
