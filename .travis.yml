@@ -1,14 +1,30 @@
-#deploy script
-language: python
-python:
-  - '3.6'
 install:
-  - cd backend/
+  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm
+    && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm
+    install 7.5.0
+  - cd frontend/
+  - npm install -g npm@latest
+  - npm install
+  - cd ../backend/
   - pip install -r requirements.txt
+  - pip install coveralls
   - cd ..
+services:
+  - postgresql
+before_script:
+  - psql -c 'CREATE DATABASE stelios_backend;' -U postgres
+  - python backend/manage.py makemigrations quiz
+  - python backend/manage.py makemigrations wiki
+  - python backend/manage.py makemigrations profiles
+  - python backend/manage.py migrate
 script:
   - cd backend/
+  - coverage run --branch --source=quiz,wiki,profiles ./manage.py test
+  - cd ../frontend/
+  - npm test
   - cd ..
+after_succes:
+  - coveralls
 addons:
   ssh_known_hosts: stelios.no
 before_deploy:
@@ -21,9 +37,7 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
-    - ssh pekka@stelios.no 'cd /home/stelios/; git stash; git checkout continuous_integration; git pull; cd backend/; source backendenv/bin/activate; python manage.py makemigrations wiki; python manage.py makemigrations quiz; python manage.py makemigrations profiles; python manage.py migrate;'
-    # cd frontend/; npm install; npm run build; cp -R /home/stelios/frontend/build/* /var/www/stelios.no/html/;
-    #rsync -r --delete-after --quiet /home/travis/build/pu53/stelios/frontend/html pekka@stelios.no:/var/www/stelios.no/
+    - ssh pekka@stelios.no 'cd /home/stelios/; git stash; git checkout continuous_integration; git pull; cd backend/; source backendenv/bin/activate; python manage.py makemigrations wiki; python manage.py makemigrations quiz; python manage.py makemigrations profiles; python manage.py migrate; cd ../frontend/; npm install; npm run build; cp -R /home/stelios/frontend/build/* /var/www/stelios.no/html/;'
   on:
     branch: continuous_integration
 after_deploy:
