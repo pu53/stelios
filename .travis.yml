@@ -4,10 +4,7 @@ python:
 install:
   - cd backend/
   - pip install -r requirements.txt
-  - pip install coveralls
   - cd ..
-services:
-  - postgresql
 script:
   - cd backend/
   - cd ..
@@ -24,7 +21,6 @@ deploy:
   skip_cleanup: true
   script:
     - ssh pekka@stelios.no 'cd /home/stelios/; git stash; git checkout origin master; git pull;'
-    - ssh pekka@stelios.no 'cd /home/stelios/frontend/; npm run build; cp -R /home/stelios/frontend/build/* /var/www/stelios.no/html/'
     #rsync -r --delete-after --quiet /home/travis/build/pu53/stelios/frontend/html pekka@stelios.no:/var/www/stelios.no/
   on:
     branch: continuous_integration
