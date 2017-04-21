@@ -6,18 +6,17 @@ install:
 - npm install -g npm@latest
 - npm install
 - cd ../backend/
-- source backendenv/bin/activate
-- pip install -r requirements.txt
-- pip install coveralls
+- pip3 install -r requirements.txt
+- pip3 install coveralls
 - cd ..
 services:
 - postgresql
 before_script:
 - psql -c 'CREATE DATABASE stelios_backend;' -U postgres
-- python backend/manage.py makemigrations quiz
-- python backend/manage.py makemigrations wiki
-- python backend/manage.py makemigrations profiles
-- python backend/manage.py migrate
+- python3 backend/manage.py makemigrations quiz
+- python3 backend/manage.py makemigrations wiki
+- python3 backend/manage.py makemigrations profiles
+- python3 backend/manage.py migrate
 script:
 - cd backend/
 - coverage run --branch --source=quiz,wiki,profiles ./manage.py test
