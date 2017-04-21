@@ -8,6 +8,7 @@ install:
   - node -v
   - npm -v
   - cd frontend/
+  - npm install -g npm@latest
   - npm install
   - cd ../backend/
   - pip install -r requirements.txt
@@ -26,6 +27,8 @@ script:
   - coverage run --branch --source=quiz,wiki,profiles ./manage.py test
   - cd ../frontend/
   - npm test
+  - npm -v
+  - node -v
   - npm run build
   - cat /home/travis/build/pu53/stelios/frontend/npm-debug.log
   - mv build html
