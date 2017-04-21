@@ -6,6 +6,7 @@ export class WelcomeMessage extends React.Component {
 		super(props);
 	}
 
+    /* Display welome <username> */
     render() {
         return (
             <div>

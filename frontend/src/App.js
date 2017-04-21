@@ -8,32 +8,52 @@ import { Login } from './components/Login'
 
 
 export class App extends Component {
-  		constructor(props) {
-      super();
-      this.state = ({
-        token: localStorage.getItem('stelios_token'),
-        current_user: localStorage.getItem('stelios_current_user'),
-        show_login: false,
-        activeItem: 'home'
-      })
-    }
+	constructor(props) {
+		super();
+		this.state = ({
+			token: localStorage.getItem('stelios_token'),
+			current_user: localStorage.getItem('stelios_current_user'),
+			show_login: false,
+			activeItem: (window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")
+		})
+	}
 
-    handleLogin(e) {
-      if (e === "login") {
-        this.setState({
-          show_login: !this.state.show_login
-        });
-      } else {
-        this.setState({
-          token: "null",
-          current_user: "null",
-          show_login: false
-        });
-        localStorage.setItem('stelios_token', "null");
-        localStorage.setItem('stelios_current_user', "null")
-      }
-    }
+	handleLogin(e) {
+		if (e === "login") {
+			this.setState({
+				show_login: !this.state.show_login
+			});
+		} else {
+			this.setState({
+				token: "null",
+				current_user: "null",
+				show_login: false
+			});
+			localStorage.setItem('stelios_token', "null");
+			localStorage.setItem('stelios_current_user', "null")
+		}
+	}
 
+	componentWillMount() {
+		this.setState({activeItem:(window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")})
+	}
+
+	componentWillUpdate() {
+		if(window.location.href.split("/")[3] === "") {
+			console.log("Start updating, going to home page from" + this.state.activeItem)
+			if(this.state.activeItem !== "home") {
+				this.setState({activeItem:"home"})
+			}
+			console.log("Stop updating")
+		}
+
+		else if(this.state.activeItem !== window.location.href.split("/")[3])
+		{
+			console.log("Start updating, going to " + window.location.href.split("/")[3] + " the current state is " + this.state.activeItem)
+			this.setState({activeItem:(window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")})
+			console.log("Stop updating")
+		}
+	}
     successLogin() {
       this.setState({
         token: localStorage.getItem('stelios_token'),
@@ -117,10 +137,10 @@ class List extends Component {
     event.preventDefault();
     var link = '';
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      link = 'http://localhost:8000/subjects/1'
+      link = 'http://localhost:8000/api/subjects/1'
     // dev code
     } else {
-      link = 'http://api.stelios.no/users.json'
+      link = 'https://stelios.no/api/users.json'
     // production code
     }
     var request = new Request(link, {

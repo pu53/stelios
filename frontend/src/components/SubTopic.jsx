@@ -68,10 +68,10 @@ export class SubTopic extends React.Component {
 		}
 		var link = '';
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			link = 'http://localhost:8000/'+ 'subtopics/' + url;
+			link = 'http://localhost:8000/api/'+ 'subtopics/' + url;
     		// dev code
     } else {
-    		link = 'http://api.stelios.no/'+ 'subtopics/' +url;
+    		link = 'https://stelios.no/api/'+ 'subtopics/' +url;
 		    // production code
 		}
 

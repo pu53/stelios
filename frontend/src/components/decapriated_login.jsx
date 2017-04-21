@@ -33,10 +33,10 @@ export class Login extends React.Component{
 		});
 		var link = '';
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			link = 'http://localhost:8000/'+ 'api-token-auth/';
+			link = 'http://localhost:8000/api/'+ 'api-token-auth/';
     		// dev code
     } else {
-    		link = 'http://api.stelios.no/'+ 'api-token-auth/';
+    		link = 'https://stelios.no/api/'+ 'api-token-auth/';
 		    // production code
 		}
 
@@ -66,7 +66,7 @@ export class Login extends React.Component{
       console.log(e);
 			if (e instanceof TypeError) {
 				this.setState({
-					login_error_message: "Couldnt connect to api.stelios.no",
+					login_error_message: "Couldnt connect to backend api server",
 					loading: false
 	      });
 			} else {

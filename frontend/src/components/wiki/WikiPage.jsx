@@ -203,7 +203,6 @@ export class WikiPage extends React.Component {
 						</Grid.Column>
 						<Grid.Column width={13}>
 							<Segment raised>
-
 								{!this.state.new ?
 									<Topic
 										{...this.props}

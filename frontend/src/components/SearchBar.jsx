@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import { browserHistory } from 'react-router'
 import { Search, Grid, Label } from 'semantic-ui-react'
 import _ from 'lodash'
@@ -42,10 +43,10 @@ export class SearchBar extends Component {
 		/*Setting host*/
 		var host = '';
 		if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			host = 'http://localhost:8000';
+			host = 'http://localhost:8000/api';
 		}
 		else {
-			host ='http://api.stelios.no';
+			host ='https://stelios.no/api/';
 		}
 		/*uses data offered through props*/
 		if(this.props.data !== undefined) {
@@ -57,10 +58,10 @@ export class SearchBar extends Component {
 
 
 			if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-				link = 'http://localhost:8000/subjects/?fields=id,name'
+				link = 'http://localhost:8000/api/subjects/?fields=id,name'
 			// dev code
 			} else {
-				link = 'http://api.stelios.no/subjects/?fields=id,name'
+				link = 'https://stelios.no/api/subjects/?fields=id,name'
 			// production code
 			}
 
@@ -96,10 +97,12 @@ export class SearchBar extends Component {
 		this.setState({value:event.target.value})
 	}
 
+
 	handleClick(id) {
-		browserHistory.push("/wiki/" + id);
-		window.location.reload();
+		//browserHistory.push("/wiki/" + id);
+		//window.location.reload();
 	}
+
 
 	componentWillMount() {
 	this.resetComponent()
@@ -153,7 +156,7 @@ export class SearchBar extends Component {
 						var link = "/wiki/".concat(data['id']);
 						const re = new RegExp(_.escapeRegExp(this.state.value).toUpperCase(), 'i');
 						if(this.state.value === "" || (this.state.value !== "" && data["name"].toUpperCase().search(re) !== -1)) {
-							return(<li key={data.id}><a href="" onClick={() => this.handleClick(data['id'])}>{data["name"]}</a></li>);
+							return(<li key={data.id}><Link to={"/wiki/"+data['id']} onClick={() => this.handleClick(data['id'])}>{data["name"]}</Link></li>);
 						}
 					}
 					)}
@@ -163,3 +166,9 @@ export class SearchBar extends Component {
 		}
 	}
 }
+
+/*
+ * if(this.state.value === "" || (this.state.value !== "" && data["name"].toUpperCase().search(re) !== -1)) {
+		return(<li key={data.id}><Link to="" onClick={() => this.handleClick(data['id'])}>{data["name"]}</a></li>);
+	}
+ */
