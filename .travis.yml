@@ -1,6 +1,16 @@
 language: python
 python:
   - '3.6'
+install:
+  - cd backend/
+  - pip install -r requirements.txt
+  - pip install coveralls
+  - cd ..
+services:
+  - postgresql
+script:
+  - cd backend/
+  - cd ..
 addons:
   ssh_known_hosts: stelios.no
 before_deploy:
