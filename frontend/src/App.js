@@ -74,7 +74,7 @@ export class App extends Component {
       <div className="App" style={{width:'100%'}}>
         <Segment raised style={{"color":"#FFFFFF","background-color":"#3F51B5","padding":"0 0 0 0"}}>
           <div style={{"display":"flex", "align-items":"center","margin-top":"px", "margin-bottom":"25px"}}>
-            <Image inverted style={{"margin-left":"20px", "margin-top":"23px", "margin-right":"20px"}} src={process.env.PUBLIC_URL + "logo.png"} width="50px" height="50px" shape="circular" />
+            <Image inverted style={{"marginLeft":"20px", "marginTop":"23px", "marginRight":"20px"}} src={"https://stelios.no/logo.png"} width="50px" height="50px" shape="circular" />
             <h1>Stelios</h1>
           </div>
           <div style={{"width":"100%", "backgroundColor": "#303F9F"}}>

@@ -27,11 +27,6 @@ script:
   - coverage run --branch --source=quiz,wiki,profiles ./manage.py test
   - cd ../frontend/
   - npm test
-  - npm -v
-  - node -v
-  - npm run build
-  - cat /home/travis/build/pu53/stelios/frontend/npm-debug.log
-  - mv build html
   - cd ..
 after_succes:
   - coveralls
@@ -46,6 +41,7 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
-    - rsync -r --delete-after --quiet /home/travis/build/pu53/stelios/frontend/html pekka@stelios.no:/var/www/stelios.no/
+    - ssh pekka@stelios.no 'ls; cd /home/stelios/; git status'
+    #rsync -r --delete-after --quiet /home/travis/build/pu53/stelios/frontend/html pekka@stelios.no:/var/www/stelios.no/
   on:
     branch: continuous_integration
