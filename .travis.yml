@@ -21,7 +21,7 @@ deploy:
   skip_cleanup: true
   script:
     - ssh pekka@stelios.no 'cd /home/stelios/; git stash; git checkout continuous_integration; git pull;'
-    - ssh pekka@stelios.no 'cd /home/stelios/frontend/; npm install; npm run build'
+    - ssh pekka@stelios.no 'cd /home/stelios/frontend/; npm install; npm run build; cp -R /home/stelios/frontend/build/* /var/www/stelios.no/html/'
     #rsync -r --delete-after --quiet /home/travis/build/pu53/stelios/frontend/html pekka@stelios.no:/var/www/stelios.no/
   on:
     branch: continuous_integration
