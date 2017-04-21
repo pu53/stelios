@@ -20,7 +20,8 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
-    - ssh pekka@stelios.no 'cd /home/stelios/; git stash; git checkout continuous_integration; git pull; cd frontend/; npm install; npm run build; cp -R /home/stelios/frontend/build/* /var/www/stelios.no/html/;'
+    - ssh pekka@stelios.no 'cd /home/stelios/; git stash; git checkout continuous_integration; git pull; cd backend/; source backendenv/bin/activate; python manage.py makemigrations wiki; python manage.py makemigrations quiz; python manage.py makemigrations profiles; python manage.py migrate;'
+    # cd frontend/; npm install; npm run build; cp -R /home/stelios/frontend/build/* /var/www/stelios.no/html/;
     #rsync -r --delete-after --quiet /home/travis/build/pu53/stelios/frontend/html pekka@stelios.no:/var/www/stelios.no/
   on:
     branch: continuous_integration
