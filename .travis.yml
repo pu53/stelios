@@ -33,11 +33,8 @@ after_succes:
 addons:
   ssh_known_hosts: stelios.no
 before_deploy:
-  - openssl aes-256-cbc -K $encrypted_41c5c3ce1f10_key -iv $encrypted_41c5c3ce1f10_iv -in deploy_rsa.enc -out deploy_rsa -d
+  - openssl aes-256-cbc -K $encrypted_41c5c3ce1f10_key -iv $encrypted_41c5c3ce1f10_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
   - eval "$(ssh-agent -s)"
-  - ls
-  - mv deploy_rsa /tmp/deploy_rsa
-  - rm -f deploy_rsa
   - ls
   - chmod 600 /tmp/deploy_rsa
   - ssh-add /tmp/deploy_rsa
@@ -45,7 +42,9 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
-    - ssh pekka@stelios.no 'ls; cd /home/stelios/; git status'
+    - ssh pekka@stelios.no 'cd /home/stelios/; git stash; git checkout origin master; git pull;'
+    - ssh pekka@stelios.no 'cd /home/stelios/frontend/; npm run build; cp -R /home/stelios/frontend/build/* /var/www/stelios.no/html/'
     #rsync -r --delete-after --quiet /home/travis/build/pu53/stelios/frontend/html pekka@stelios.no:/var/www/stelios.no/
   on:
     branch: continuous_integration
+after_deploy: rm -f /tmp/deploy_rsa
