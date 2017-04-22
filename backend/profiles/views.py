@@ -21,7 +21,7 @@ class UserCreate(generics.CreateAPIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = UserCreateSerializer
 
-class UserSubjects(APIView):
+class UserData(APIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 
     def get(self, request, pk, format = None):
