@@ -8,7 +8,7 @@ class SubtopicSerializer(QueryFieldsMixin,serializers.ModelSerializer):
     class Meta:
         model = Subtopic
         fields = ('__all__')
-        
+
 class SubtopicNameIDSerializer(serializers.ModelSerializer):
 	class Meta:
 		model =  Subtopic

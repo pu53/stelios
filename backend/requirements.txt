@@ -1,4 +1,4 @@
-appdirs==1.4.0
+appdirs==1.4.3
 Django==1.10.5
 django-cors-headers==2.0.2
 django-filter==1.0.1
