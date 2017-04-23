@@ -74,8 +74,8 @@ export class App extends Component {
       <div className="App" style={{width:'100%'}}>
         <Segment raised style={{"color":"#FFFFFF","background-color":"#3F51B5","padding":"0 0 0 0"}}>
           <div style={{"display":"flex", "align-items":"center","margin-top":"px", "margin-bottom":"25px"}}>
-            <Image inverted style={{"marginLeft":"20px", "marginTop":"23px", "marginRight":"20px"}} src={"https://stelios.no/logo.png"} width="50px" height="50px" shape="circular" />
-            <h1>Stelios</h1>
+            <IndexLink to="/"><Image inverted style={{"marginLeft":"20px", "marginTop":"23px", "marginRight":"20px"}} src={"https://stelios.no/logo.png"} width="50px" height="50px" shape="circular" /></IndexLink>
+            <h1><IndexLink to="/" style={{"color":"#FFFFFF"}}>Stelios</IndexLink></h1>
           </div>
           <div style={{"width":"100%", "backgroundColor": "#303F9F"}}>
             <Menu pointing secondary style={{"padding":"10px 0px 10px 30px"}}>
