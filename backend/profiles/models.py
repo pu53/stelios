@@ -6,10 +6,6 @@ from django.conf import settings
 from rest_framework.authtoken.models import Token
 import wiki
 import quiz
-# Create your models here.
-
-# kommentert ut da sudy og year ikke er viktige. kan tas ed senere if need be
-# STUDY_PROGRAM_CHOICES = [(1,"Datateknologi - 5 årig master"), (2,"Datateknologi - 2 årig master"),]
 
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
