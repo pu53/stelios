@@ -3,13 +3,7 @@ import './quiz.css'
 import { Container, Segment } from 'semantic-ui-react';
 import { FeedbackContainer } from './Feedback.jsx';
 import { Question } from './Question.jsx'
-import { sendData } from '../../helpers.jsx' 
-/**TODO: Make nav buttons stay in the same place?
- * TODO: Quiz generation
- * TODO: Scramble order of alternatives
- * TODO: Show earlier answers
- */
-
+import { sendData } from '../../helpers.jsx'
 
 /*The head element of a quiz. Fetches all the data for all the quiestions included
  * in the quiz and passes them on to the subcomponents when needed*/
@@ -46,8 +40,6 @@ export class Quiz extends Component {
 
 	fetchData() {
 		if (this.props.data !== undefined) {
-			// console.log("The quiz received this data");
-			// console.log(this.props.data)
 			this.setState({
 				title:this.props.data.title,
 				questions:this.props.data.questions,
@@ -71,9 +63,9 @@ export class Quiz extends Component {
 
 	/*Sends the result back to the server*/
 	postAnswers(){
-		
+
 		//Checks whether the current session is a user or not. If the session
-		//taking the quiz is not a logged in user, the immidiate feedback will be 
+		//taking the quiz is not a logged in user, the immidiate feedback will be
 		//visible as normal, but the results will not be saved
 		var userID = localStorage.getItem('stelios_current_user')
 		if(userID === 'null'){
@@ -87,14 +79,13 @@ export class Quiz extends Component {
 			questions:this.state.questions,
 			choices:this.state.answers,
 		};
-		
+
 		//Uses the helper method to post the data
 		sendData("result/quiz/save/","post",result,(()=>{}),(()=>{}),(()=>{}))
 	}
 
 	/*Updates the answer internally*/
 	changeQuestion(increment, chosenAlternative) {
-		// console.log(chosenAlternative);
 		if(chosenAlternative===undefined){chosenAlternative=-1}
 		if(this.state.currently_asking + increment < 1){
 
@@ -102,7 +93,7 @@ export class Quiz extends Component {
 		else if(this.state.currently_asking + increment > this.state.number_of_questions){
 			var tempAnswers=this.state.answers;
 			tempAnswers[this.state.currently_asking-1] = chosenAlternative;
-			// console.log("finished");
+			
 			this.setState({
 				finished:true,
 				answers:tempAnswers

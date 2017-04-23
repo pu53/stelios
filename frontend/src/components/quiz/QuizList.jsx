@@ -1,14 +1,7 @@
 import React from 'react';
-// import { Container, Grid, Button, Segment, List, Divider} from 'semantic-ui-react';
 import { getData } from '../../helpers.jsx';
 import { Accordion, Icon, Button, List} from 'semantic-ui-react';
 import { Link } from 'react-router'
-
-/** Class for
-* 	listing quizes
-*
-*
-*/
 
 export class QuizList extends React.Component {
 	constructor(props){
@@ -24,9 +17,6 @@ export class QuizList extends React.Component {
 		this.getQuizList(); //starts the chain
 	}
 
-	componentDidUpdate(){
-		// console.log(this.state.quizobject);
-	}
 
 	/** method for getting the quizes from DB
 	* return an object with
@@ -38,7 +28,6 @@ export class QuizList extends React.Component {
 			(() => {}),
 			((res) => {
 				const quizes = res;
-				// console.log(res);
 				this.makeQuizObject(quizes);
 			}),
 			(() => {})
@@ -61,7 +50,7 @@ export class QuizList extends React.Component {
 		    	console.log("old subject " + quiz.name);
 		    	temp = object[quiz.name];
 		    	temp.push(quiz);
-				
+
 		    }
 		}
 
@@ -72,7 +61,6 @@ export class QuizList extends React.Component {
 	}
 
 	handleQuizClick(){
-		// window.location.reload();
 		this.setState({
 			reRender: true,
 		})
@@ -82,7 +70,6 @@ export class QuizList extends React.Component {
 
 	render(){
 		console.log(this.state.quizobject);
-		// console.log(Object.keys(this.state.quizobject).length);
 		if(Object.keys(this.state.quizobject).length === 0){
 			return <div>loading ... .. . <br />
 			or empty </div>;
@@ -114,7 +101,7 @@ export class QuizList extends React.Component {
 						</Accordion>
 					})
 				}
-			</List>;	
+			</List>;
 		}
 	}
 }
