@@ -24,16 +24,13 @@ export class ButtonGroup extends React.Component {
           var subjects = res.profile.subjects
           //check if current subject is in profile
           var subscribed = subjects.some((subject) => {
-            console.log("in buttonGroup ", subject, props.params.subjectId);
             return subject === parseInt(props.params.subjectId)
           })
-          console.log("in buttonGroup", subscribed);
           this.setState({
             subscribed
           })
         }
         var handleError = (res) => {}
-        console.log("geting data");
         getData(url, handleStatus, handleData, handleError)
       }
     }

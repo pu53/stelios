@@ -6,6 +6,7 @@ import { CustomMessage } from './CustomMessage'
 import { sendData } from '../../helpers'
 
 //subtopic holds all subtopic info and displays it
+//Lives in the Topic component. 
 export class SubTopic extends React.Component {
   constructor(props) {
     super(props)

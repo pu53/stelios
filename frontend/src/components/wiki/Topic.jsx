@@ -5,10 +5,15 @@ import { CustomMessage } from './CustomMessage'
 import { getData, sendData } from '../../helpers'
 import {SubTopic} from './SubTopic'
 import { Button } from 'semantic-ui-react'
+
+// elements used for scrolling :D
 var Scroll = require('react-scroll');
 var Element = Scroll.Element;
 var scroller = Scroll.scroller;
+
+
 // topic holds topic info and all subtopics
+// rendered component is to the right of topicnav and under the subject
 export class Topic extends React.Component {
 	constructor(props) {
 		super(props)
@@ -24,7 +29,7 @@ export class Topic extends React.Component {
 		subtopics: []
 		}
 	}
-	//because componentWillReceiveProps doesnt always fire we need this method to populate state. nextProps is just an alias for props because copypasta
+	//because componentWillReceiveProps doesnt always fire we need this method to populate state. nextProps is just an alias for props because copypasta of componentWillReceiveProps
 	componentWillMount() {
 	var nextProps = this.props
 	if (nextProps.topics !== undefined && nextProps.activeTopicId !== this.state.activeTopicId) {
@@ -92,12 +97,11 @@ export class Topic extends React.Component {
 
 	getSubTopics = (id) => {
 		var url = "topics/" + id + "/?fields=id,subtopics";
-		var handleStatus = (res) => {
-	}
+		var handleStatus = (res) => {}
 		var handleData = (res) => {
-		this.setState({
-			subtopics: res.subtopics
-		})
+			this.setState({
+				subtopics: res.subtopics
+			})
 		}
 		var handleError = (e) => {
 			this.setState({
@@ -179,9 +183,9 @@ export class Topic extends React.Component {
 			newSubTopic: true
 		})
 		scroller.scrollTo('newSubTopic', {
-		duration: 1500,
-		delay: 100,
-		smooth: true
+			duration: 1500,
+			delay: 100,
+			smooth: true
 		})
 	}
 
@@ -201,7 +205,6 @@ export class Topic extends React.Component {
 	}
 
 	render() {
-		console.log(this.state.subtopics);
 		const buttonGroup = {
 			edit: this.state.edit || this.state.new || this.state.name === '' ?  undefined : this.onClickEdit,
 			new: this.state.edit || this.state.new ?  undefined : this.onClickNew,

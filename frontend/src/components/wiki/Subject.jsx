@@ -5,6 +5,9 @@ import { CustomMessage } from './CustomMessage'
 import { getData, sendData } from '../../helpers'
 
 //Subject holds the subject name and description, it also handles dataload
+//the rendered component is represented at the top of the wiki under the searchbar
+//because of the way the layout in the wiki is designed. Callbacks to the main component WikiPage is used to pass data to "children"
+//such as topic and subtopic
 export class Subject extends React.Component {
   displayName="Subject"
   constructor(props) {
@@ -23,7 +26,7 @@ export class Subject extends React.Component {
 
   componentDidMount() {
     if(this.state.subjectId !== undefined) {
-      this.getSubject(this.state.subjectId)
+      this.getSubject(this.state.subjectId) //gets subjects if it is suplied valid id.
     }
   }
 
