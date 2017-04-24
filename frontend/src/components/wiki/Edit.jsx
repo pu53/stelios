@@ -7,8 +7,9 @@ import { sendData } from '../../helpers'
 import {SubTopicListEdit} from './SubTopicListEdit'
 
 
-// edit is a component that handles all editing for all components.
-// diffrent features are activated based on the props.header (ie "topics" or "subjects")
+// edit is a component that handles all editing for the Subject, Topic and SubTopic Components.
+// different features are activated based on the props.header (ie "topics" or "subjects")
+
 export class Edit extends React.Component {
     constructor(props) {
       super(props)

@@ -17,4 +17,3 @@ class LocalStorageMock {
 };
 
 global.localStorage = new LocalStorageMock;
-console.log("yes")

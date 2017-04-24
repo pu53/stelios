@@ -2,7 +2,16 @@ import React from 'react'
 import {List, Grid, Button} from 'semantic-ui-react'
 import { getData, sendData } from '../../helpers'
 
-//component that lives in topicNav, and is used to select between the topics.
+/*
+component that lives in topicNav, and is used to select between the topics.
+it also updates the topics so that they are added or deleted to the current subject
+
+this component works by having two arrays, one with the active items and one with the items you dont wish to have
+when an item is clicked it is added to the other array and delted from the current one. This triggers a rerender of the component
+If the user clicks save, it will update all changed topics in both arrays (because of how to backend is set up) and the parent component is updated
+with the new active topics.
+*/
+
 export class TopicEdit extends React.Component {
 
     constructor(props) {
@@ -11,7 +20,7 @@ export class TopicEdit extends React.Component {
         activeTopics: props.topics,
         allTopics: []
       }
-      this.getAllTopics()
+      this.getAllTopics() //get every singel topic
     }
 
     componentWillReceiveProps(nextProps) {
@@ -28,6 +37,7 @@ export class TopicEdit extends React.Component {
       var handleStatus = (res) => {}
       var handleData = (res) => {
         var copy = res
+        //filters out from alltopics the current active topics
         var all_topics_without_active = copy.map((topic) => {
           if(!this.state.activeTopics.some((activeTopic) => {
             return topic.id === activeTopic.id
@@ -43,9 +53,10 @@ export class TopicEdit extends React.Component {
       getData(url,handleStatus, handleData,handleError)
     }
 
-    // adds the activeTopics to the subject and removes the ones that are in allTopics that previously was in active
+    // Updates all topics that was changed. I.E active topics that were unselcted is updated to remove the subject. And vice versa.
     onClickSave = () => {
       this.state.activeTopics.map((topic) => {
+        //checks if topic does not contain current subject from before.
         if(!topic.subjects.some((subjectId) => {return subjectId === this.props.subjectId})) {
           var url = "topics/" + topic.id + "/"
           var method = "PUT"
@@ -69,7 +80,7 @@ export class TopicEdit extends React.Component {
         }
       })
       this.state.allTopics.map((topic) => {
-        var index = topic.subjects.indexOf(this.props.subjectId);
+        var index = topic.subjects.indexOf(this.props.subjectId); //checks if topic was previously in activeTopics
         if (index !== -1) {
           topic.subjects.splice(index, 1);
           var url = "topics/" + topic.id + "/"
@@ -101,6 +112,8 @@ export class TopicEdit extends React.Component {
 
     //removes the topic from active and adds it to allTopics
     onClickActiveTopic = (id) => {
+      //the json trick is used to create a (2) deep (4 meirl) copy
+      //this is used so to not manipulate state directly in acordance with react guidelines
       var active_topics = JSON.parse(JSON.stringify(this.state.activeTopics))
       var all_topics = this.state.allTopics
       for (var i in active_topics) {
@@ -116,6 +129,7 @@ export class TopicEdit extends React.Component {
     }
 
     onClickAllTopic = (id) => {
+      //read above
       var active_topics = JSON.parse(JSON.stringify(this.state.activeTopics))
       var all_topics = this.state.allTopics
       for (var i in this.state.allTopics) {

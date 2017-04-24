@@ -3,13 +3,15 @@ import React from 'react'
 import { Grid } from 'semantic-ui-react'
 import { ButtonGroup } from './ButtonGroup'
 var Markdown = require('react-remarkable');
-/*var SimpleMDE = require('react-simplemde-editor');*/
 
+/* Show is a dumb component that displays name, description, (content), and buttongroup
 
-/* Show is a dumb component that displays name, description, (content), and buttongroup*/
+It lives in the subject, topic and subtopic component.
+
+this component is just for displaying data, not manipulating it
+*/
+
 export class Show extends React.Component {
-
-
     render() {
         return (
      			<Grid>

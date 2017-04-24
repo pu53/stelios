@@ -3,7 +3,9 @@ import {Segment, List, Grid, Button} from 'semantic-ui-react'
 /*var Markdown = require('react-remarkable');*/
 import { TopicEdit } from './TopicEdit'
 
-//topicnav holds all topics, and the user can select between them, aswell as edit topics in the subject.
+//topicnav holds all topics beloning to the current subject, and the user can select between them, aswell as edit topics beloning to the current subject.
+//Topic nav lives in the WikiPage main component, but is located to the left of Topic and under Subject
+//
 export class TopicNav extends React.Component {
     constructor(props) {
       super(props)
@@ -13,6 +15,7 @@ export class TopicNav extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+      //do not show edit if user is not logged in or not a professor
       if (nextProps.steliosToken === "null" || nextProps.steliosToken === null || nextProps.steliosUserProfessor === "false") {
         this.setState({
           edit: false
