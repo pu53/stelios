@@ -13,6 +13,7 @@ export class App extends Component {
 		this.state = ({
 			token: localStorage.getItem('stelios_token'),
 			current_user: localStorage.getItem('stelios_current_user'),
+			current_user_professor: localStorage.getItem('stelios_current_user_professor'),
 			show_login: false,
 			activeItem: (window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")
 		})
@@ -27,10 +28,12 @@ export class App extends Component {
 			this.setState({
 				token: "null",
 				current_user: "null",
+				current_user_professor: "null",
 				show_login: false
 			});
 			localStorage.setItem('stelios_token', "null");
 			localStorage.setItem('stelios_current_user', "null")
+			localStorage.setItem('stelios_current_user_professor', "null")
 		}
 	}
 
@@ -58,8 +61,12 @@ export class App extends Component {
       this.setState({
         token: localStorage.getItem('stelios_token'),
         current_user: localStorage.getItem('stelios_current_user'),
+				current_user_professor: localStorage.getItem('stelios_current_user_professor'),
         show_login: false
       });
+			console.log("in app");
+			console.log(typeof localStorage.getItem('stelios_current_user_professor'));
+			console.log(localStorage.getItem('stelios_current_user_professor'));
     }
 
     handleItemClick = (e, {name}) => {
@@ -117,7 +124,7 @@ export class App extends Component {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          {React.cloneElement(this.props.children, { steliosToken: this.state.token, steliosUser: this.state.current_user })}
+          {React.cloneElement(this.props.children, { steliosToken: this.state.token, steliosUser: this.state.current_user, steliosUserProfessor: this.state.current_user_professor })}
         </div>
       </div>
     );
