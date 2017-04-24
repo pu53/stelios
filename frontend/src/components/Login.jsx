@@ -100,6 +100,8 @@ export class Login extends React.Component{
 	      })
 	      localStorage.setItem('stelios_token', res.token);
 		  	localStorage.setItem('stelios_current_user', res.id);
+				console.log(res);
+				localStorage.setItem('stelios_current_user_professor', res.professor);
 				this.props.success();
 			}
     }).catch((e) => {
@@ -172,6 +174,8 @@ export class Login extends React.Component{
 		var handleData = (res) => {
 			localStorage.setItem('stelios_token', res.token);
 			localStorage.setItem('stelios_current_user', res.id);
+			console.log("professor", res);
+			localStorage.setItem('stelios_current_user_professor', res.professor)
 			this.props.success();
 		}
 		var handleError = (err) => {

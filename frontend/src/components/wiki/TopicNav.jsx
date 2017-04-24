@@ -13,7 +13,7 @@ export class TopicNav extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-      if (nextProps.steliosToken === "null" || nextProps.steliosToken === null) {
+      if (nextProps.steliosToken === "null" || nextProps.steliosToken === null || nextProps.steliosUserProfessor === "false") {
         this.setState({
           edit: false
         });
@@ -47,7 +47,7 @@ export class TopicNav extends React.Component {
                 <Grid.Column width={16}>
                   <h4>Topics: </h4>
                 </Grid.Column>
-                { this.props.steliosToken === "null" || this.props.steliosToken === null ? null :
+                { this.props.steliosToken === "null" || this.props.steliosToken === null || this.props.steliosUserProfessor === "false"? null :
                   <Grid.Column width={16}>
                     <Button basic fluid content="edit" onClick={(e) => {e.preventDefault(); this.onClickEdit()}} />
                   </Grid.Column>
