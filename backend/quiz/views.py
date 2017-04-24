@@ -22,26 +22,32 @@ from django.utils.six import BytesIO
 # creating a list and detail view for all models using generics
 
 class QuestionList(generics.ListCreateAPIView):
+	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 	queryset = Question.objects.all()
 	serializer_class = QuestionSerializer
 
 class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 	queryset = Question.objects.all()
 	serializer_class = QuestionSerializer
 
 class ChoiceList(generics.ListCreateAPIView):
+	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 	queryset = Choice.objects.all()
 	serializer_class = ChoiceSerializer
 
 class ChoiceDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 	queryset = Choice.objects.all()
 	serializer_class = ChoiceSerializer
 
 class QuizList(generics.ListCreateAPIView):
+	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 	queryset = Quiz.objects.all()
 	serializer_class = QuizSerializer
 
 class QuizDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 	queryset = Quiz.objects.all()
 	serializer_class = QuizSerializer
 
@@ -52,50 +58,50 @@ class QuizData(APIView):
 	#post = nytt element, put = oppdater
 	#authentication_classes = (authentication.TokenAuthentication)
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
-	
+
 	def get(self, request, pk, format=json):
-		
+
 		quiz = Quiz.objects.get(id=pk)
 		quiz_serializer = QuizDataSerializer(quiz)
 		quiz_data = quiz_serializer.data
-		
+
 		questions = quiz.quiz_question.all()
 		question_data = []
 		for question in questions:
-			
+
 			question_serializer = QuestionDataSerializer(question)
 			question_info = question_serializer.data
-			
+
 			choices = question.question_choice.all()
 			choice_serializer = ChoiceDataSerializer(choices, many=True)
 			choice_data = choice_serializer.data
-			
+
 			subtopic = question.subtopic.all()
 			subtopic_serializer = SubtopicNameIDSerializer(subtopic, many=True)
 			subtopic_data = subtopic_serializer.data
-			
+
 			answers = {'choices': choice_data}
 			answers.update(question_info)
 			answers.update({'subtopic':subtopic_data})
 			question_data.append(answers)
-			
+
 		content = {'questions':question_data}
 		content.update(quiz_data)
-		
+
 		return Response(content)
 
 class SingleQuizResults(APIView):
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
-	
+
 	def get(self, request, pk, format=json):
 		results = Answer.objects.filter(quizID=pk)
 
 		return_data = []
-		for result in results: 
+		for result in results:
 			list_element = {}
 			user_id = -1
 			username = ""
-			
+
 			#Finds the related user to the current answer
 			result_query = result.answer_history.all()
 
@@ -117,7 +123,7 @@ class SingleQuizResults(APIView):
 			result_data = result_serializer.data
 			result_data.pop('answer_history')
 			list_element.update(result_data)
-			
+
 			#Find out whether the answer is true or false, adds it to list element
 			try:
 				related_choice = Choice.objects.get(id=result_data['choiceID'])
@@ -130,17 +136,17 @@ class SingleQuizResults(APIView):
 				list_element.update({
 					'correct':False
 				})
-			
+
 			#Add the list element to the return data
 			return_data.append(list_element)
-			
+
 		return Response(return_data)
-		
-		
+
+
 #A view for saving the answer data from a quiz
 class SaveQuizResult(APIView):
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
-	
+
 	def post(self, request, format=json):
 		answer_data_rows = []
 		blank_answer_data_rows = []
@@ -148,11 +154,11 @@ class SaveQuizResult(APIView):
 		answers  = request.data["choices"]
 		quizID   = request.data["quizID"]
 		userID   = request.data["userID"]
-		
-		#Iterates over every question 
+
+		#Iterates over every question
 		for i in range(len(questions)):
 			print("Dette er spørsmål nr " + str(i) + " og det har data " + str(questions[i]))
-			
+
 			#The blank and non blank answers have different serializers, and has
 			#to be saved in seperate arrays
 			if(answers[i]==-1):
@@ -163,7 +169,7 @@ class SaveQuizResult(APIView):
 				'answer_history': [userID]
 				}
 				blank_answer_data_rows.append(answer_data)
-			
+
 			else:
 				answer_data = {
 					'quizID':quizID,
@@ -172,14 +178,14 @@ class SaveQuizResult(APIView):
 					'answer_history': [userID]
 				}
 				answer_data_rows.append(answer_data)
-			
+
 			print("Dette er dataen: " + str(answer_data))
-		
+
 		#The answers are serialized
 		answer_serializer = AnswerSerializer(data=answer_data_rows, many=True)
 		blank_answer_serializer = BlankAnswerSerializer(data=blank_answer_data_rows, many=True)
-		
-		#If the serialization was successfull, the answers get saved, 
+
+		#If the serialization was successfull, the answers get saved,
 		#a relation between the user answering and the answers are made,
 		#and 201 response is returned
 		if(answer_serializer.is_valid() and blank_answer_serializer.is_valid()):
@@ -193,10 +199,10 @@ class SaveQuizResult(APIView):
 
 	def put(self, request, format=json):
 		answer_serializer = AnswerSerializer(data=request.data, many=True)
-		
+
 		if(answer_serializer.is_valid()):
 			answer_serializer.save()
-		
+
 		return Response(answer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -209,7 +215,7 @@ class QuizCorrectAnswers(APIView):
 
 		questions = quiz.quiz_question.all()
 		for question in questions:
-			
+
 			choices = question.question_choice.all()
 
 			for choice in choices:
@@ -240,6 +246,5 @@ class quizSubjectName(APIView):
 
 			quiz_data_name.append(quiz_data)
 
-		
-		return Response(quiz_data_name)
 
+		return Response(quiz_data_name)
