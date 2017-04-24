@@ -33,11 +33,11 @@ export class App extends Component {
 			localStorage.setItem('stelios_current_user', "null")
 		}
 	}
-	
+
 	componentWillMount() {
 		this.setState({activeItem:(window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")})
 	}
-	
+
 	componentWillUpdate() {
 		if(window.location.href.split("/")[3] === "") {
 			console.log("Start updating, going to home page from" + this.state.activeItem)
@@ -46,7 +46,7 @@ export class App extends Component {
 			}
 			console.log("Stop updating")
 		}
-		
+
 		else if(this.state.activeItem !== window.location.href.split("/")[3])
 		{
 			console.log("Start updating, going to " + window.location.href.split("/")[3] + " the current state is " + this.state.activeItem)
@@ -74,8 +74,8 @@ export class App extends Component {
       <div className="App" style={{width:'100%'}}>
         <Segment raised style={{"color":"#FFFFFF","background-color":"#3F51B5","padding":"0 0 0 0"}}>
           <div style={{"display":"flex", "align-items":"center","margin-top":"px", "margin-bottom":"25px"}}>
-            <Image inverted style={{"margin-left":"20px", "margin-top":"23px", "margin-right":"20px"}} src={process.env.PUBLIC_URL + "logo.png"} width="50px" height="50px" shape="circular" />
-            <h1>Stelios</h1>
+            <IndexLink to="/"><Image inverted style={{"marginLeft":"20px", "marginTop":"23px", "marginRight":"20px"}} src={"https://stelios.no/logo.png"} width="50px" height="50px" shape="circular" /></IndexLink>
+            <h1><IndexLink to="/" style={{"color":"#FFFFFF"}}>Stelios</IndexLink></h1>
           </div>
           <div style={{"width":"100%", "backgroundColor": "#303F9F"}}>
             <Menu pointing secondary style={{"padding":"10px 0px 10px 30px"}}>
@@ -123,74 +123,5 @@ export class App extends Component {
     );
   }
 }
-/*
-class List extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      result: []
-    };
-    this.fetchData = this.fetchData.bind(this);
-  }
 
-  fetchData(event) {
-    event.preventDefault();
-    var link = '';
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      link = 'http://localhost:8000/subjects/1'
-    // dev code
-    } else {
-      link = 'http://api.stelios.no/users.json'
-    // production code
-    }
-    var request = new Request(link, {
-      method: 'GET',
-      headers: {
-              'Accept': 'application/json',
-          },
-    });
-    console.log("yes");
-    fetch(request).then((res) => {
-      return res.json();
-    })
-    .then((res) => {
-      console.log(res);
-      this.setState({ result: res });
-    }).catch((e) => {console.log(e)});
-  }
-
-  render() {
-    console.log(this.state.result)
-    if (this.state.result.length > 0) {
-      return (
-        <div>
-          <button onClick={this.fetchData}>kappa</button>
-          <ul>
-            { this.state.result.map(function(user){
-                return(
-                  <ul>
-                    {Object.keys(user).map(function (key) {
-                      return(
-                        <li>{key}:  {user[key].toString()}</li>
-                      )
-                    })}
-                    <br />
-                  </ul>
-                );
-              })
-            }
-          </ul>
-        </div>
-      );
-    } else {
-      return(
-        <div>
-          <button onClick={this.fetchData}>kappa</button>
-          <li>no data recived, click button ples</li>
-        </div>
-
-      );
-    }
-  }
-}*/
 export default App;

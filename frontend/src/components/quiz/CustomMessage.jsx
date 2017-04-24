@@ -59,7 +59,7 @@ export class CustomMessage extends React.Component {
       } else if (status === "server error") {
           return(
             <Message negative>
-      				<Message.Header>{"Couldnt reach server api.stelios.no"}</Message.Header>
+      				<Message.Header>{"Couldnt reach backend api server"}</Message.Header>
       			</Message>
           )
       } else {

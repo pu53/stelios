@@ -33,33 +33,6 @@ class TopicList(generics.ListCreateAPIView):
     serializer_class = TopicSerializer
 
 
-#    def get_queryset(self):
-#        print(self.request.method)
-#        if self.request.method == 'POST':
-#            print("yes")
-#            print(self.request)
-#            received_json_data=json.loads(self.request.body)
-#            print(received_json_data)
-#            pk_list = self.request.GET.get('list_of_pk')
-#            print(pk_list)
-#            if pk_list:
-#                queryset = Topic.objects.filter(pk__in=pk_list)
-#            else:
-#                queryset = Topic.objects.all()
-#            print(queryset)
-#        else:
-#            queryset = Topic.objects.all()
-#        return queryset
-#
-#class TopicSubsetList(generics.ListCreateAPIView):
-#    serializer_class = TopicSerializer
-#
-#    def get_queryset(self):
-#        lst = self.kwargs['topic_list']
-#        print(lst)
-#        queryset = Topic.objects.filter(pk__in=pk_list)
-#        return queryset
-
 class TopicDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Topic.objects.all().order_by('id')
     serializer_class = TopicSerializer
@@ -71,4 +44,3 @@ class SubtopicList(generics.ListCreateAPIView):
 class SubtopicDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Subtopic.objects.all().order_by('id')
     serializer_class = SubtopicSerializer
-

@@ -29,24 +29,17 @@ export class SearchBar extends Component {
 		}
 	}
 
-	/*TODO: Implement several fetchmodes to allow for more flexible search fields.
-	 *Let users specify what data they are looking for in the props, through
-	 *sending data directly/using built in templates to have the component query for
-	 *data on it's own. Direct data takes priority over templates, that is, if
-	 *the "data" prop is defined, the component will display this data exclusivly.
-	 *Relevant props: type, data, template*/
 	fetchData() {
-		//console.log("Fetching data to search field")
 		/*Link path in 3 parts: the host + the table + the fields*/
 		var link = '';
 
 		/*Setting host*/
 		var host = '';
 		if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			host = 'http://localhost:8000';
+			host = 'http://localhost:8000/api';
 		}
 		else {
-			host ='http://api.stelios.no';
+			host ='https://stelios.no/api/';
 		}
 		/*uses data offered through props*/
 		if(this.props.data !== undefined) {
@@ -58,10 +51,10 @@ export class SearchBar extends Component {
 
 
 			if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-				link = 'http://localhost:8000/subjects/?fields=id,name'
+				link = 'http://localhost:8000/api/subjects/?fields=id,name'
 			// dev code
 			} else {
-				link = 'http://api.stelios.no/subjects/?fields=id,name'
+				link = 'https://stelios.no/api/subjects/?fields=id,name'
 			// production code
 			}
 
@@ -97,12 +90,12 @@ export class SearchBar extends Component {
 		this.setState({value:event.target.value})
 	}
 
-	
+
 	handleClick(id) {
 		//browserHistory.push("/wiki/" + id);
 		//window.location.reload();
 	}
-	
+
 
 	componentWillMount() {
 	this.resetComponent()
@@ -166,9 +159,3 @@ export class SearchBar extends Component {
 		}
 	}
 }
-
-/*
- * if(this.state.value === "" || (this.state.value !== "" && data["name"].toUpperCase().search(re) !== -1)) {
-		return(<li key={data.id}><Link to="" onClick={() => this.handleClick(data['id'])}>{data["name"]}</a></li>);
-	}
- */
