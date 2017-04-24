@@ -1,12 +1,15 @@
 from django.contrib.auth.models import User
 from profiles.serializers import UserSerializer, UserCreateSerializer
+from profiles.models import Profile
 from wiki.serializers import SubjectSerializer, SubjectInfoSerializer
+from wiki.models import Subject
 from quiz.serializers import QuizSerializer
 from quiz.models import Quiz
 from rest_framework import generics, permissions, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
+import json
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -58,3 +61,19 @@ class UserData(APIView):
         user_data.update(content)
 
         return Response(user_data)
+
+
+class addSubject(APIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
+
+    def put(self, request, format=json):
+        print("yolo test")
+        print(request.data)
+        subject = Subject.objects.get(id=request.data["subject"])
+        user = User.objects.get(id=request.data["user"])
+
+        profile = user.profile
+
+        profile.subjects.add(subject)
+
+        return Response({})
