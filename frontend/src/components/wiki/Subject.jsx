@@ -191,6 +191,7 @@ export class Subject extends React.Component {
         <div>
           <CustomMessage onChangeMessage={this.onChangeMessage} header="Subject" status={this.state.status} message={this.state.message} neg={this.state.neg} />
           <Show {...this.props}
+            addSubject={true}
             buttonGroup={buttonGroup}
             header="subjects"
             name={this.state.name}
