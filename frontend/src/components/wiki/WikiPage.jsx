@@ -7,11 +7,13 @@ import { getData } from '../../helpers'
 import { CustomMessage } from './CustomMessage'
 
 //supposed to render a single subject w/topics, preferably with jabbe
+//WikiPage is the main component and entry point to the wiki, the data in this component should serve as a replica of what is on the server
+//In other words, only use callbacks to this component if the data was accepted by server
 export class WikiPage extends React.Component {
 	displayName="WikiPage"
 	constructor(props){
 		super(props);
-
+		//masive component state:
 		this.state = ({
 			result: [],
 			topics_id: [],
@@ -36,6 +38,7 @@ export class WikiPage extends React.Component {
 		});
 	}
 
+	//calback functions to set state
 	onSubjectNew = () => {
 		this.setState({
 			new: true
@@ -64,6 +67,7 @@ export class WikiPage extends React.Component {
 	}
 
 	//called when updating/creating subject, hard reloads site yeboi hacky solution is best solution
+	//this hardload is used because fixing it would take quite some time and you wont create an entire subject very often. (probably only once per professor)
 	onSubjectSubmit = (id, newSub=false) => {
 		this.setState({
 			subjectId: id,
@@ -79,6 +83,7 @@ export class WikiPage extends React.Component {
 		}
 	}
 
+	//when a topic is updated/created this is called
 	onTopicSubmit = (activeTopicId, newTop=false) => {
 		this.setState({
 			activeTopicId,
@@ -110,7 +115,7 @@ export class WikiPage extends React.Component {
 						})
 					}
 				}
-				id = res[0].id
+				id = res[0].id //sets id to first availible subject
 			}
 			this.setState({
 				subjectId: id,
@@ -138,7 +143,7 @@ export class WikiPage extends React.Component {
 			id = parseInt(id, 10)
 			var topicMatch = res.topics.some((topic) => {
 				return topic.id === id
-			})
+			}) //checks if supplied topic matches topic gotten from server
 			if(topicMatch) {
 				activeTopicId = id
 			}
