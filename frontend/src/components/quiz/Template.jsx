@@ -153,10 +153,10 @@ export class Template extends Component {
             if (this.props.new) {
               url = "choice/"
               method="POST"
-              body = {choice_text: choice.choice_text, question: res.id, is_correct: choice.is_correct}
+              body = {choice_text: choice.choice_text, question: res.id, is_correct: choice.correct_answer}
             } else {
               url="choice/" + question.id + "/"
-              body = {id: choice.id, choice_text: choice.choice_text, question: res.id, is_correct: choice.is_correct}
+              body = {id: choice.id, choice_text: choice.choice_text, question: res.id, is_correct: choice.correct_answer}
             }
             var handleStatus = (result) => {
               this.props.onChangeMessage(result.status);

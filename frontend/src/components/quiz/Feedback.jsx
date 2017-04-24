@@ -93,7 +93,7 @@ export class FeedbackContainer extends React.Component{
 			}
 		}
 
-		this.weakTopics(subtopicObject);
+		this.weakTopics(subtopicObject, isTrue);
 	}
 
 
@@ -104,7 +104,7 @@ export class FeedbackContainer extends React.Component{
  	*	...
 	* ]
 	*/
-	weakTopics(subtopicObject){
+	weakTopics(subtopicObject, isTrue){
  		const answers = this.state.answers;
  		const subtopics = this.state.subtopics;
  		// const subtopicObject = this.state.subtopicTrueTotal;
@@ -133,9 +133,36 @@ export class FeedbackContainer extends React.Component{
 		}
 		// returns array sorted by correctness
 		this.setState({
+			isTrue: isTrue,
 			weaktopicsID: weaktopicsID,
 			render: true,
 		})
+	}
+
+	getQuestionResult(){
+		const isTrue = this.state.isTrue;
+
+		var i=1;
+		return(
+		<Segment>
+			<Accordion>
+				<Accordion.Title>
+					<h1>Result from quiz<Icon name="dropdown" /></h1>
+				</Accordion.Title>
+				<Accordion.Content>
+				<List bulleted>
+					{
+						isTrue.map((answer) => {
+							return <List.Item>
+								Question {i++}: {answer ? "Correct" : "Wrong"}
+							</List.Item>
+						})
+					}
+				</List>
+				</Accordion.Content>
+			</Accordion>
+		</Segment>
+		);
 	}
 
 	render(){
@@ -143,6 +170,7 @@ export class FeedbackContainer extends React.Component{
 			const weaktopics = this.state.weaktopicsID;
 			if(Object.keys(weaktopics).length > 0){
 				return (<div>
+					{this.getQuestionResult()}
 					<h1>Topics you may want to read a bit about: <br /></h1>
 					<List >
 					{
@@ -157,6 +185,7 @@ export class FeedbackContainer extends React.Component{
 			}else{
 				return <h1>
 					Well Done! You have a good understanding of all topics covered by the quiz.
+					{this.getQuestionResult()}
 				</h1>;
 			}
 		}else{
@@ -215,8 +244,8 @@ class FeedbackSubTopic extends React.Component {
 			<Segment>
 				<Accordion>
 					<Accordion.Title>
-						<h2>{this.state.name} - {this.props.weaktopic.Correct * 100}% correct</h2>
-						<p><b>{this.state.description}</b></p><Icon name="dropdown" />
+						<h2><Icon name="dropdown" /> {this.state.name} - you got {this.props.weaktopic.Correct * 100}% of questions about this topic correct</h2>
+						<p><b>{this.state.description}</b></p>
 					</Accordion.Title>
 					<Accordion.Content>
 						<Markdown source={this.state.content} />

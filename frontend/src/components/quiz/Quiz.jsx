@@ -109,8 +109,15 @@ export class Quiz extends Component {
 		}
 	}
 
+	
 	render() {
+		// About: {this.state.questions[this.state.currently_asking-1].subtopic.map((subtopic) => {subtopic.name})}
 		if(this.state.finished===false) {
+			const subtopics = this.state.questions[this.state.currently_asking-1].subtopic;
+			var subtopicNames = [];
+			for (var i = 0; i < subtopics.length; i++) {
+				subtopicNames.push(subtopics[i].name);
+			}
 			return (
 			<Container className="quizWrapper">
 				<div className="quizContainer">
@@ -122,7 +129,9 @@ export class Quiz extends Component {
 							Question: {this.state.currently_asking}/{this.state.number_of_questions}
 						</div>
 						<div className="topInfoSubTopic">
-							About: {this.state.questions[this.state.currently_asking-1].subtopic.name}
+							About: {subtopicNames.map((name) => {
+								return(<k key="name">{name}, </k>);
+							})}
 						</div>
 					</div>
 					<div>
@@ -135,7 +144,7 @@ export class Quiz extends Component {
 					</div>
 				</div>
 			</Container>
-		);
+		); 
 		}
 		else {
 			this.postAnswers()
