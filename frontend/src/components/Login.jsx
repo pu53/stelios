@@ -215,20 +215,22 @@ export class Login extends React.Component{
 								<Message negative hidden={this.state.message === ""}>
 									<Message.Header>{this.state.message}</Message.Header>
 								</Message>
-								<Grid>
-									<Grid.Column width={16}>
-										<Input fluid placeholder='Username' value={this.state.username} onChange={this.handleUsername} />
-									</Grid.Column>
-									<Grid.Column width={16} style={{"marginTop":"-20px"}}>
-										<Input fluid type='password' placeholder='Password' value={this.state.password} onChange={this.handlePassword} />
-									</Grid.Column>
-									<Grid.Column width={16} style={{"marginTop":"-10px"}}>
-										<Button fluid disabled={disable_button} positive fluid loading={this.state.loading} onClick={this.handleLogin}>Login</Button>
-									</Grid.Column>
-									<Grid.Column width={16} style={{"marginTop":"-20px"}}>
-										<Button style={{"backgroundColor":"#03a9f4"}} fluid onClick={this.handleSignup}>Signup</Button>
-									</Grid.Column>
-								</Grid>
+								<Form>
+									<Grid>
+										<Grid.Column width={16}>
+											<Input fluid placeholder='Username' value={this.state.username} onChange={this.handleUsername} />
+										</Grid.Column>
+										<Grid.Column width={16} style={{"marginTop":"-20px"}}>
+											<Input fluid type='password' placeholder='Password' value={this.state.password} onChange={this.handlePassword} />
+										</Grid.Column>
+										<Grid.Column width={16} style={{"marginTop":"-10px"}}>
+											<Button fluid disabled={disable_button} positive fluid loading={this.state.loading} onClick={this.handleLogin}>Login</Button>
+										</Grid.Column>
+										<Grid.Column width={16} style={{"marginTop":"-20px"}}>
+											<Button style={{"backgroundColor":"#03a9f4"}} fluid onClick={this.handleSignup}>Signup</Button>
+										</Grid.Column>
+									</Grid>
+								</Form>
 							</Grid.Column>
 							<Grid.Column width={4}></Grid.Column>
 						</Grid>
