@@ -77,3 +77,13 @@ class addSubject(APIView):
         profile.subjects.add(subject)
 
         return Response({})
+
+    def delete(self, request, format=json):
+        subject = Subject.objects.get(id=request.data["subject"])
+        user = User.objects.get(id=request.data["user"])
+
+        profile = user.profile
+
+        profile.subjects.remove(subject)
+
+        return Response({})
