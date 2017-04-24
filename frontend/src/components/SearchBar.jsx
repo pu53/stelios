@@ -29,14 +29,7 @@ export class SearchBar extends Component {
 		}
 	}
 
-	/*TODO: Implement several fetchmodes to allow for more flexible search fields.
-	 *Let users specify what data they are looking for in the props, through
-	 *sending data directly/using built in templates to have the component query for
-	 *data on it's own. Direct data takes priority over templates, that is, if
-	 *the "data" prop is defined, the component will display this data exclusivly.
-	 *Relevant props: type, data, template*/
 	fetchData() {
-		//console.log("Fetching data to search field")
 		/*Link path in 3 parts: the host + the table + the fields*/
 		var link = '';
 
@@ -166,9 +159,3 @@ export class SearchBar extends Component {
 		}
 	}
 }
-
-/*
- * if(this.state.value === "" || (this.state.value !== "" && data["name"].toUpperCase().search(re) !== -1)) {
-		return(<li key={data.id}><Link to="" onClick={() => this.handleClick(data['id'])}>{data["name"]}</a></li>);
-	}
- */
