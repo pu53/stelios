@@ -260,6 +260,8 @@ export class Login extends React.Component{
 												<label>Retype password:</label>
 												<Form.Input error={!this.state.passwordMatch} fluid type='password' placeholder='Retype password' value={this.state.retypePassword} onChange={this.handleRetypePassword} />
 											</Form.Field>
+											<p><i>If you are a professor, please contact us at ceo(at)kimborgen(dot)no and we will give you special access</i></p>
+											<br />
 											<h4 style={{"marginTop":"-5px"}}>Optional:</h4>
 											<Form.Field width={16} >
 												<label>First name:</label>
