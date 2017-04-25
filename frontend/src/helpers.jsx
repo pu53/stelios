@@ -27,16 +27,16 @@ export function getData(url, handleStatus, handleData, handleError) {
 	if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 		link = 'http://localhost:8000/api/'+ url;
 	} else {
-		link = 'http://stelios.no/api/'+ url;
+		link = 'https://stelios.no/api/'+ url;
 	}
 	//generated request
-	
+
 	let token = localStorage.getItem("stelios_token");
-	
+
 	let request = ""
-	
+
 	//console.log("Current user: " + token)
-	
+
 	if(token !== 'null') {
 		console.log("Authorized request")
 		request = new Request(link, {
@@ -126,7 +126,7 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
       link = 'https://stelios.no/api/' + url;
       // production code
   }
-  //if the url is signup, then the request is not built with Authorization token. 
+  //if the url is signup, then the request is not built with Authorization token.
   if(url !== "signup/") {
     var request = new Request(link, {
       method: method_,
