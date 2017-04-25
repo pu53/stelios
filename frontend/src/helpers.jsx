@@ -21,21 +21,41 @@
                 function defaults to an empty function
 */
 export function getData(url, handleStatus, handleData, handleError) {
-  console.log("fetching data");
-  //builds the link with respect to production/development
-  var link = '';
-  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    link = 'http://localhost:8000/api/'+ url;
-  } else {
-    link = 'https://stelios.no/api/'+ url;
-  }
-  //generated request
-  var request = new Request(link, {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-    },
-  });
+	//console.log("fetching data");
+	//builds the link with respect to production/development
+	var link = '';
+	if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+		link = 'http://localhost:8000/api/'+ url;
+	} else {
+		link = 'http://stelios.no/api/'+ url;
+	}
+	//generated request
+	
+	let token = localStorage.getItem("stelios_token");
+	
+	let request = ""
+	
+	//console.log("Current user: " + token)
+	
+	if(token !== 'null') {
+		console.log("Authorized request")
+		request = new Request(link, {
+		method: 'GET',
+		headers: {
+			'Accept': 'application/json',
+			'Authorization': 'Token ' + token
+		},
+		});
+	}
+	else {
+		console.log("Unauthorized request")
+		request = new Request(link, {
+		method: 'GET',
+		headers: {
+			'Accept': 'application/json',
+		},
+		});
+	}
 
   //javascripts fetch method. after fetch is executed and respone is recived,
   //the first .then() is called, and after that the next .then()

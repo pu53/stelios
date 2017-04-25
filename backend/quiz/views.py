@@ -5,6 +5,7 @@ from profiles.models import Profile
 from quiz.serializers import ChoiceSerializer, QuestionSerializer, QuizSerializer
 from quiz.serializers import QuizDataSerializer, QuestionDataSerializer, ChoiceDataSerializer
 from quiz.serializers import ChoiceIsTrueSerializer, AnswerSerializer, BlankAnswerSerializer
+from quiz.serializers import AnswerSerializerNoHistory
 
 from profiles.serializers import UserSerializer, UserIDNameSerializer, ProfileSerializer
 
@@ -55,8 +56,6 @@ class QuizDetail(generics.RetrieveUpdateDestroyAPIView):
 An API endpoint giving all the information needed to present a quiz
 """
 class QuizData(APIView):
-	#post = nytt element, put = oppdater
-	#authentication_classes = (authentication.TokenAuthentication)
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 
 	def get(self, request, pk, format=json):
@@ -108,7 +107,7 @@ class SingleQuizResults(APIView):
 			#If there is a corresponding user, find name and id
 			if(len(result_query) > 0):
 				cur_user = result_query[0]
-				print("Relatert profil: " + repr(cur_user.user.id))
+				#print("Relatert profil: " + repr(cur_user.user.id))
 				user_id = cur_user.user.id
 				username = cur_user.user.username
 
@@ -157,12 +156,10 @@ class SaveQuizResult(APIView):
 
 		#Iterates over every question
 		for i in range(len(questions)):
-			print("Dette er spørsmål nr " + str(i) + " og det har data " + str(questions[i]))
-
 			#The blank and non blank answers have different serializers, and has
 			#to be saved in seperate arrays
 			if(answers[i]==-1):
-				print("Blankt svar!")
+				#print("Blankt svar!")
 				answer_data = {
 				'quizID':quizID,
 				'questionID':questions[i]['id'],
@@ -192,9 +189,8 @@ class SaveQuizResult(APIView):
 			answer_serializer.save()
 			blank_answer_serializer.save()
 			return Response(answer_serializer.data, status = status.HTTP_201_CREATED)
-		#If not, noting gets saved, and an error message is returned
-		#along with a 400 response
-		print("Dette gikk galt: " + str(answer_serializer.errors))
+		#If not, noting gets saved, and an error message and a 400 status is returned
+		print("This went wrong during serialization: " + str(answer_serializer.errors))
 		return Response(answer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 	def put(self, request, format=json):
@@ -205,6 +201,57 @@ class SaveQuizResult(APIView):
 
 		return Response(answer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#A view supplying an authenticated user with result statistics
+class QuizStatistics(APIView):
+	permission_classes = ((permissions.IsAuthenticatedOrReadOnly,))
+	
+	def findSortKey(self, answer):
+		number = answer['choiceID']
+		if number == None:
+			return -1
+		else:
+			return number
+	
+	def get(self, request, metric, scope, pk, format=json):
+		"""
+		The view starts by checking the scope, and retrives data accordingly
+		The options are quiz, question and user
+		"""
+		answer_data={}
+		scope_data={}
+		max_number_of_questions=0
+		if(scope == 'quiz'):
+			answers = Answer.objects.filter(quizID=pk)
+			answer_serializer = AnswerSerializerNoHistory(answers, many=True)
+			answer_data = answer_serializer.data
+			
+			answers=[]
+			
+			quiz = Quiz.objects.get(id=pk)
+			quiz_serializer = QuizSerializer(quiz)
+			scope_data = quiz_serializer.data
+			
+			answer_data = sorted(answer_data, key=lambda answer:self.findSortKey(answer))
+			answer_data = sorted(answer_data, key=lambda answer:answer['questionID'])
+			
+			new_answer_data=[]
+			
+			for answer in answer_data:
+				new_answer_data.append(
+					{
+						'questionID': answer['questionID'],
+						'choiceID': answer['choiceID']
+					}
+				)
+			
+			answer_data = new_answer_data
+			
+		data={
+			'title': scope_data["title"],
+			'id': scope_data["id"],
+			'answers': answer_data
+		}
+		return Response(data)
 
 class QuizCorrectAnswers(APIView):
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
@@ -245,6 +292,5 @@ class quizSubjectName(APIView):
 			quiz_data.update(subject_name_data)
 
 			quiz_data_name.append(quiz_data)
-
 
 		return Response(quiz_data_name)

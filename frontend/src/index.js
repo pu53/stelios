@@ -7,6 +7,7 @@ import { Home } from './components/Home'
 import { WikiPage } from './components/wiki/WikiPage'
 import { UserPage } from './components/user/UserPage'
 import { QuizPage } from './components/quiz/QuizPage'
+import { StatPage } from './components/stat/StatPage'
 import '../semantic/dist/semantic.min.css';
 
 
@@ -23,7 +24,10 @@ ReactDOM.render((
 			<Route path="/quiz/:quizId"/>
 		</Route>
 		<Route path="/test" component={List} />
-		<Route path="/user" component={ UserPage } />
+		<Route path="/user" component={UserPage} />
+		<Route path="/stat" component={StatPage}>
+			<Route path="/stat/quiz/:statId"/>
+		</Route>
 		<Route path="*" component={Home} />
 		</Route>
 	</Router>),

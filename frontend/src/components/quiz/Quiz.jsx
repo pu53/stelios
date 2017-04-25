@@ -8,10 +8,7 @@ import { sendData } from '../../helpers.jsx'
 /*The head element of a quiz. Fetches all the data for all the quiestions included
  * in the quiz and passes them on to the subcomponents when needed*/
 export class Quiz extends Component {
-	/* Props:
-	 * numberOfQuestions
-	 * inOrder # Thinking either this one or randomised as a bool.
-	 *         # Question order allways scrambeled within a single subtopic
+	/* Data fetched in the parent component is passed down through props
 	 */
 	constructor(props) {
 		super(props);
@@ -29,15 +26,16 @@ export class Quiz extends Component {
 
 		this.changeQuestion=this.changeQuestion.bind(this);
 	}
-
+	//On mount, a method that restructures and adds data to state is called
 	componentWillMount() {
 		this.fetchData();
 	}
-
+	
 	componentWillReceiveProps(nextProps) {
 		this.fetchData();
 	}
-
+	
+	//Restructure the data, and add data from props to state
 	fetchData() {
 		if (this.props.data !== undefined) {
 			this.setState({
@@ -51,7 +49,6 @@ export class Quiz extends Component {
 		}
 
 		var all_answers = [];
-
 		for(var i=0; i<this.props.data.questions.length;i++) {
 			all_answers[i]=-1;
 		}
@@ -67,13 +64,13 @@ export class Quiz extends Component {
 		//Checks whether the current session is a user or not. If the session
 		//taking the quiz is not a logged in user, the immidiate feedback will be
 		//visible as normal, but the results will not be saved
-		var userID = localStorage.getItem('stelios_current_user')
+		let userID = localStorage.getItem('stelios_current_user')
 		if(userID === 'null'){
 			console.log("Not logged in, quiz will not be saved");
 			return;
 		}
 		//Wraps the answer data in a dictionary, ready to be sent to backend
-		var result={
+		let result={
 			quizID:this.props.data.id,
 			userID:userID,
 			questions:this.state.questions,
@@ -87,9 +84,7 @@ export class Quiz extends Component {
 	/*Updates the answer internally*/
 	changeQuestion(increment, chosenAlternative) {
 		if(chosenAlternative===undefined){chosenAlternative=-1}
-		if(this.state.currently_asking + increment < 1){
-
-		}
+		if(this.state.currently_asking + increment < 1){}
 		else if(this.state.currently_asking + increment > this.state.number_of_questions){
 			var tempAnswers=this.state.answers;
 			tempAnswers[this.state.currently_asking-1] = chosenAlternative;
@@ -129,9 +124,7 @@ export class Quiz extends Component {
 							Question: {this.state.currently_asking}/{this.state.number_of_questions}
 						</div>
 						<div className="topInfoSubTopic">
-							About: {subtopicNames.map((name) => {
-								return(<k key="name">{name}, </k>);
-							})}
+							About: {this.state.questions[this.state.currently_asking-1].subtopic[0].name}
 						</div>
 					</div>
 					<div>
