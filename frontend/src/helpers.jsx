@@ -3,15 +3,15 @@
     url: an url on the form "topics/1/", url must always have an ending slash
         if you add "?fields!=somefield" do not add ending slash
     handleStatus: a function that will be called with the response message.
-                  example handleStatus function:
-                    ((res) => {
+                  example handleStatus function/variable to send to this function:
+                    var handleStatus = (res) => {
                       if (res.status === 404) {
                         this.setState({
                           message: "pekka not found",
                           negative: "yes"
                         })
                       }
-                    })
+                    }
     handleData: function that will be called after response is turned into json
                 example function: as above but setState updates
                 some field with res.somefield
@@ -25,9 +25,9 @@ export function getData(url, handleStatus, handleData, handleError) {
 	//builds the link with respect to production/development
 	var link = '';
 	if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-		link = 'http://localhost:8000/'+ url;
+		link = 'http://localhost:8000/api/'+ url;
 	} else {
-		link = 'http://api.stelios.no/'+ url;
+		link = 'http://stelios.no/api/'+ url;
 	}
 	//generated request
 	
@@ -72,7 +72,38 @@ export function getData(url, handleStatus, handleData, handleError) {
   });
 }
 
+/* sendData is a "generic" function to send data to the server
+  a valid token (except if url is "signup/") is required because of authentication with the server
+  input params:
+    url: an url on the form "topics/1/", url must always have an ending slash
+        if you add "?fields!=somefield" do not add ending slash
+    method_: a http method to mark the request with.
+      - "POST" for all request creating an object
+      - "PUT" for all request updating an object
+      - "DELETE" for all request deleting an object
+    body: The data you should send with the request. It has to be a valid javascript dictionary and decodable into json
+    handleStatus: a function that will be called after a response has been recived by the server, in other words after the server has
+                  decided if the action you requested was succesfull
+                  Example handleStatus function:
+                    var handleStatus = (res) => {
+                      if (res.status === 403) {
+                        this.setState({
+                          message: "pekka was not authorized",
+                          negative: "no" //emneknag kapparino cappachino
+                        })
+                      }
+                    }
+    handleData: function that will be called after response is turned into json
+                example function: as above but setState updates
+                some field with res.somefield
+                Normaly the res variable will contain the information you created/updated. For example when creating res will look exactly like the body function you sent in, but it also has an id field.
+    handleError: function that will be called if an error occurs in the javascript,
+                for example: will not be called if response from server is 404
+                but will be called if a connection cannot be established to server
+                function defaults to an empty function
+*/
 export function sendData(url, method_, body, handleStatus, handleData, handleError) {
+  //checks if token is avalible, if not the function selfDestructs
   var token = localStorage.getItem('stelios_token');
   if (token === "null" && url !== "signup/") {
     this.setState({
@@ -86,14 +117,16 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
     return
   }
 
+  //builds link based on enviroment, production/development
   var link = '';
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    link = 'http://localhost:8000/'+ url;
+    link = 'http://localhost:8000/api/'+ url;
       // dev code
   } else {
-      link = 'http://api.stelios.no/' + url;
+      link = 'https://stelios.no/api/' + url;
       // production code
   }
+  //if the url is signup, then the request is not built with Authorization token. 
   if(url !== "signup/") {
     var request = new Request(link, {
       method: method_,
@@ -132,15 +165,15 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
     handleError(e.toString());
   });
 }
-
+//simple getData function, because of simplicity. Read documentation above for more info.
 export function getDataSimple(url, handleData) {
     console.log("fetching data");
     //builds the link with respect to production/development
     var link = '';
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      link = 'http://localhost:8000/'+ url;
+      link = 'http://localhost:8000/api/'+ url;
     } else {
-      link = 'http://api.stelios.no/'+ url;
+      link = 'https://stelios.no/api/'+ url;
     }
     //generated request
     var request = new Request(link, {

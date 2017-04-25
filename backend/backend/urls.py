@@ -21,9 +21,9 @@ from rest_framework.authtoken import views
 from .views import CustomObtainAuthToken
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^api-token-auth/', CustomObtainAuthToken.as_view()),
-    url(r'^', include('profiles.urls')),
-    url(r'^', include('wiki.urls')),
-    url(r'^', include('quiz.urls'))
+    url(r'^api/admin/', admin.site.urls),
+    url(r'^api/api-token-auth/', CustomObtainAuthToken.as_view()),
+    url(r'^api/', include('profiles.urls')),
+    url(r'^api/', include('wiki.urls')),
+    url(r'^api/', include('quiz.urls'))
 ]

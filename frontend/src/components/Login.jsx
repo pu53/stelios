@@ -64,10 +64,10 @@ export class Login extends React.Component{
 		});
 		var link = '';
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			link = 'http://localhost:8000/'+ 'api-token-auth/';
+			link = 'http://localhost:8000/api/'+ 'api-token-auth/';
     		// dev code
     } else {
-    		link = 'http://api.stelios.no/'+ 'api-token-auth/';
+    		link = 'https://stelios.no/api/'+ 'api-token-auth/';
 		    // production code
 		}
 
@@ -100,6 +100,8 @@ export class Login extends React.Component{
 	      })
 	      localStorage.setItem('stelios_token', res.token);
 		  	localStorage.setItem('stelios_current_user', res.id);
+				console.log(res);
+				localStorage.setItem('stelios_current_user_professor', res.professor);
 				this.props.success();
 			}
     }).catch((e) => {
@@ -172,6 +174,8 @@ export class Login extends React.Component{
 		var handleData = (res) => {
 			localStorage.setItem('stelios_token', res.token);
 			localStorage.setItem('stelios_current_user', res.id);
+			console.log("professor", res);
+			localStorage.setItem('stelios_current_user_professor', res.professor)
 			this.props.success();
 		}
 		var handleError = (err) => {
@@ -211,20 +215,22 @@ export class Login extends React.Component{
 								<Message negative hidden={this.state.message === ""}>
 									<Message.Header>{this.state.message}</Message.Header>
 								</Message>
-								<Grid>
-									<Grid.Column width={16}>
-										<Input fluid placeholder='Username' value={this.state.username} onChange={this.handleUsername} />
-									</Grid.Column>
-									<Grid.Column width={16} style={{"marginTop":"-20px"}}>
-										<Input fluid type='password' placeholder='Password' value={this.state.password} onChange={this.handlePassword} />
-									</Grid.Column>
-									<Grid.Column width={16} style={{"marginTop":"-10px"}}>
-										<Button fluid disabled={disable_button} positive fluid loading={this.state.loading} onClick={this.handleLogin}>Login</Button>
-									</Grid.Column>
-									<Grid.Column width={16} style={{"marginTop":"-20px"}}>
-										<Button style={{"backgroundColor":"#03a9f4"}} fluid onClick={this.handleSignup}>Signup</Button>
-									</Grid.Column>
-								</Grid>
+								<Form>
+									<Grid>
+										<Grid.Column width={16}>
+											<Input fluid placeholder='Username' value={this.state.username} onChange={this.handleUsername} />
+										</Grid.Column>
+										<Grid.Column width={16} style={{"marginTop":"-20px"}}>
+											<Input fluid type='password' placeholder='Password' value={this.state.password} onChange={this.handlePassword} />
+										</Grid.Column>
+										<Grid.Column width={16} style={{"marginTop":"-10px"}}>
+											<Button fluid disabled={disable_button} positive fluid loading={this.state.loading} onClick={this.handleLogin}>Login</Button>
+										</Grid.Column>
+										<Grid.Column width={16} style={{"marginTop":"-20px"}}>
+											<Button style={{"backgroundColor":"#03a9f4"}} fluid onClick={this.handleSignup}>Signup</Button>
+										</Grid.Column>
+									</Grid>
+								</Form>
 							</Grid.Column>
 							<Grid.Column width={4}></Grid.Column>
 						</Grid>
@@ -254,6 +260,8 @@ export class Login extends React.Component{
 												<label>Retype password:</label>
 												<Form.Input error={!this.state.passwordMatch} fluid type='password' placeholder='Retype password' value={this.state.retypePassword} onChange={this.handleRetypePassword} />
 											</Form.Field>
+											<p><i>If you are a professor, please contact us at ceo(at)kimborgen(dot)no and we will give you special access</i></p>
+											<br />
 											<h4 style={{"marginTop":"-5px"}}>Optional:</h4>
 											<Form.Field width={16} >
 												<label>First name:</label>

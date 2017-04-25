@@ -1,6 +1,5 @@
 from django.db import models
 import wiki
-#import profiles
 
 # models with fields related to quizes
 
@@ -24,7 +23,7 @@ class Choice(models.Model):
 	is_correct = models.BooleanField(default=False)
 	def __str__(self):
 		return(self.choice_text)
-		
+
 class Answer(models.Model):
 	questionID = models.ForeignKey(Question, related_name='Answer_Question', default=None)
 	choiceID = models.ForeignKey(Choice, related_name='Answer_Choice', default=None, null=True)

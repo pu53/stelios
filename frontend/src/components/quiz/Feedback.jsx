@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Container, Grid, Segment, List, Accordion, Icon} from 'semantic-ui-react';
 import { getData } from '../../helpers.jsx'
@@ -25,21 +24,6 @@ export class FeedbackContainer extends React.Component{
 		this.getIsTrue();
 	}
 
-	// decides when to call different methods since the depent on state
-	// and setState is everything else than instant.
-	componentDidUpdate(){
-		// if(this.state.isTrue.length === this.state.answers.length &&
-		// 	Object.keys(this.state.subtopicTrueTotal).length === 0){
-		// 	// console.log("time to calculate");
-		// 	this.CalcTrueTotal();
-		// }
-		// if(Object.keys(this.state.subtopicTrueTotal).length > 0 &&
-		// 	this.state.render === false){
-		// 	// console.log("time to judge");
-		// 	this.weakTopics();
-		// }
-	}
-
 	/**
 	*	updates state.isTrue with an array with true/false
 	*	dependant on wheter the answer was true or not
@@ -49,10 +33,6 @@ export class FeedbackContainer extends React.Component{
 	getIsTrue(){
 		const answers = this.props.answers;
  		const quizid = this.props.quizid;
- 		
- 		// console.log("Answers from props: " +  this.props.answers)
- 		// console.log("subtopics from props: " + this.props.quizid)
-
 
  		getData('quiz/true/'+quizid.toString(),
  			(() => {}),
@@ -62,13 +42,11 @@ export class FeedbackContainer extends React.Component{
  				var isTrue = []
 
  				for (var i = 0; i < correct.length; i++) {
- 					// console.log("correct: " + correct[i] + "   answers: " + answers[i]);
  					if(correct[i] === answers[i]){
  						isTrue.push(true);
  					}else{
  						isTrue.push(false);
  					}
- 					// console.log(isTrue);
  				}
  				this.CalcTrueTotal(isTrue);
  			}),
@@ -77,8 +55,8 @@ export class FeedbackContainer extends React.Component{
 	}
 
 	/**
-	*	Method for creating the object with [correct, total] array 
-	*	per question in a dict with 
+	*	Method for creating the object with [correct, total] array
+	*	per question in a dict with
 	* generates a list of weak topics based on the answers
 	* on the form [
 	* 	{ID:id, Correct: %correct},
@@ -90,8 +68,6 @@ export class FeedbackContainer extends React.Component{
 
 	CalcTrueTotal(isTrue){
  		const subtopics = this.state.subtopics;
- 		// const isTrue = this.state.isTrue;
-
 
  		// creates empty dict
  		var subtopicObject = {}
@@ -116,41 +92,25 @@ export class FeedbackContainer extends React.Component{
 
 			}
 		}
-		// console.log(subtopicObject);  // this is fine ^^
-		// now, thesubtopics be like
-		// {
-		// 	subtopicID: [x,y]
-		// 	subtopicID: [x,y]
-		// 	....
-		// }
-		// x is correctm Y is total questions about subtopicID.
 
-		// this.setState({
-		// 	subtopicTrueTotal: subtopicObject,
-		// });
-		this.weakTopics(subtopicObject);
+		this.weakTopics(subtopicObject, isTrue);
 	}
 
 
 	/**
-	* generates a list of weak topics based on the answers 
+	* generates a list of weak topics based on the answers
 	* on the form [
-	* 	{ID:id, Correct: %correct}, 
+	* 	{ID:id, Correct: %correct},
  	*	...
 	* ]
-	*
 	*/
-	weakTopics(subtopicObject){
+	weakTopics(subtopicObject, isTrue){
  		const answers = this.state.answers;
  		const subtopics = this.state.subtopics;
  		// const subtopicObject = this.state.subtopicTrueTotal;
 
-
-		// weakTopics = [];
-
 		// the limit for how picky we should be.
 		// perhaps vary based on number of questons about subtopicID?
-		// TODO: make the user choose difficulty
 		const limit = 0.6
 
 		var weaktopicsID=[];
@@ -171,29 +131,52 @@ export class FeedbackContainer extends React.Component{
 				});
 			}
 		}
-
-		// console.log(weaktopicsID);
 		// returns array sorted by correctness
 		this.setState({
+			isTrue: isTrue,
 			weaktopicsID: weaktopicsID,
 			render: true,
 		})
-		// return weaktopicsID;
+	}
 
-	}	
+	getQuestionResult(){
+		const isTrue = this.state.isTrue;
+
+		var i=1;
+		return(
+		<Segment>
+			<Accordion>
+				<Accordion.Title>
+					<h1>Result from quiz<Icon name="dropdown" /></h1>
+				</Accordion.Title>
+				<Accordion.Content>
+				<List bulleted>
+					{
+						isTrue.map((answer) => {
+							return <List.Item>
+								Question {i++}: {answer ? "Correct" : "Wrong"}
+							</List.Item>
+						})
+					}
+				</List>
+				</Accordion.Content>
+			</Accordion>
+		</Segment>
+		);
+	}
 
 	render(){
-		// console.log(this.state.weaktopicsID);
 		if(this.state.render){
 			const weaktopics = this.state.weaktopicsID;
 			if(Object.keys(weaktopics).length > 0){
 				return (<div>
+					{this.getQuestionResult()}
 					<h1>Topics you may want to read a bit about: <br /></h1>
 					<List >
 					{
 						weaktopics.map((subtopic) => {
 							return (
-									<FeedbackSubTopic weaktopic={subtopic} key={subtopic.ID}/>
+								<FeedbackSubTopic weaktopic={subtopic} key={subtopic.ID}/>
 							)
 						}
 					)}
@@ -202,6 +185,7 @@ export class FeedbackContainer extends React.Component{
 			}else{
 				return <h1>
 					Well Done! You have a good understanding of all topics covered by the quiz.
+					{this.getQuestionResult()}
 				</h1>;
 			}
 		}else{
@@ -211,8 +195,8 @@ export class FeedbackContainer extends React.Component{
 }
 
 /**
-Component for the topics the user hsould look into.
-gets data from the database her
+Component for the topics the user should look into.
+gets data from the database here
 @props: weaktopic {ID, Correct} from weaktopics from feedbackcontainer
 */
 
@@ -240,8 +224,6 @@ class FeedbackSubTopic extends React.Component {
 	*/
 	getWeakTopicsData(){
 
-		// console.log("subtopics/"+this.state.weaktopicID+"/");
-
 		getData(
 			"subtopics/"+this.state.weaktopicID+"/",
 			(() => {}),
@@ -262,8 +244,8 @@ class FeedbackSubTopic extends React.Component {
 			<Segment>
 				<Accordion>
 					<Accordion.Title>
-						<h2>{this.state.name} - {this.props.weaktopic.Correct * 100}% correct</h2>
-						<p><b>{this.state.description}</b></p><Icon name="dropdown" />
+						<h2><Icon name="dropdown" /> {this.state.name} - you got {this.props.weaktopic.Correct * 100}% of questions about this topic correct</h2>
+						<p><b>{this.state.description}</b></p>
 					</Accordion.Title>
 					<Accordion.Content>
 						<Markdown source={this.state.content} />
