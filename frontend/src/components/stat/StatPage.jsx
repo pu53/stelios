@@ -14,6 +14,8 @@ export class StatPage extends Component {
 			data: [],
 			questions: [],
 			dataLoading: true,
+			dataLoading2: true,
+			quizQuestionsData: []
 		}
 	}
 
@@ -27,8 +29,22 @@ export class StatPage extends Component {
 		} else {
 			//if there is a id in url
 			//get data
+			this.getQuiz(id)
 			this.getStatistics(id)
 		}
+	}
+
+	getQuiz = (id) => {
+		var url = "quiz/data/" + id + "?fields=questions"
+		var handleStatus = () => {}
+		var handleData = (res) => {
+			this.setState({
+				quizQuestionsData: res.questions,
+				dataLoading2: false
+			})
+		}
+		var handleError = () => {}
+		getData(url, handleStatus, handleData, handleError)
 	}
 
 	getStatistics = (id) => {
@@ -90,7 +106,7 @@ export class StatPage extends Component {
 			return(
 				<p>no url was supplied, go to your userpage and select a quiz</p>
 			)
-		} else if (this.state.dataLoading) {
+		} else if (this.state.dataLoading || this.state.dataLoading2) {
 			return(
 				<p>Loading...</p>
 			)
@@ -99,12 +115,10 @@ export class StatPage extends Component {
 				<div className="statPageWrapper">
 					<QuizStatistics
 						statId={this.state.statId}
-						metric="percentage"
-						type="table"
-						scope="quiz"
 						quizId={this.state.quizId}
 						quizTitle={this.state.quizTitle}
 						questions={this.state.questions}
+						quizQuestionsData={this.state.quizQuestionsData}
 						/>
 				</div>
 				);
