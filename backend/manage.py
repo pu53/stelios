@@ -3,7 +3,10 @@ import os
 import sys
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings.settings_dev")
+    if os.environ.get('DJANGO_PRODUCTION') is not None:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE","backend.settings.settings_prod")
+    else: 
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings.settings_dev")
     try:
         from django.core.management import execute_from_command_line
     except ImportError:
