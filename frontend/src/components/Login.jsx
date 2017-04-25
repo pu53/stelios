@@ -161,7 +161,7 @@ export class Login extends React.Component{
 			email: this.state.email
 		}
 		var handleStatus = (res) => {
-			if (res.status >= 200 && res.status <= 204) {
+			if (parseInt(res.status) >= 200 && parseInt(res.status) <= 204) {
 				this.setState({
 					signupSuccess: true
 				})
@@ -172,11 +172,10 @@ export class Login extends React.Component{
 			}
 		}
 		var handleData = (res) => {
-			localStorage.setItem('stelios_token', res.token);
-			localStorage.setItem('stelios_current_user', res.id);
-			console.log("professor", res);
-			localStorage.setItem('stelios_current_user_professor', res.professor)
-			this.props.success();
+			this.setState({
+				signup: false,
+				password: '',
+			})
 		}
 		var handleError = (err) => {
 			this.setState({
