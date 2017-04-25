@@ -48,6 +48,9 @@ export class StatChoice extends Component {
 					text: res.choice_text,
 					isCorrect: res.is_correct,
 				})
+				if (this.props.updateChoices !== undefined) {
+					this.props.updateChoices([res.choice_text, this.state.choice.length])
+				}
 			}
 			var handleError = (res) => {}
 			getData(url,handleStatus,handleData,handleError)
@@ -56,6 +59,7 @@ export class StatChoice extends Component {
 				text: "Not answered",
 				isCorrect: false
 			})
+			this.props.updateChoices(["Not answered", this.state.choice.length])
 		}
 	}
 
