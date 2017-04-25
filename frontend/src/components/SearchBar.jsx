@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router'
-import { Search, Grid, Label } from 'semantic-ui-react'
+import { Search, Grid, Label} from 'semantic-ui-react'
+import { getData } from '../helpers.jsx'
 import _ from 'lodash'
 
 export class SearchBar extends Component {
@@ -29,55 +30,19 @@ export class SearchBar extends Component {
 		}
 	}
 
+	
 	fetchData() {
-		/*Link path in 3 parts: the host + the table + the fields*/
-		var link = '';
-
-		/*Setting host*/
-		var host = '';
-		if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			host = 'http://localhost:8000/api';
-		}
-		else {
-			host ='https://stelios.no/api/';
-		}
 		/*uses data offered through props*/
 		if(this.props.data !== undefined) {
 			this.setState({data:this.props.data});
 		}
-
-		/*using templates to define a database query*/
+		/*use the helper method from helpers.jsx to load the data*/
 		else {
-
-
-			if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-				link = 'http://localhost:8000/api/subjects/?fields=id,name'
-			// dev code
-			} else {
-				link = 'https://stelios.no/api/subjects/?fields=id,name'
-			// production code
-			}
-
-			var request = new Request(link, {
-				method: 'GET',
-				headers: {
-					'Accept': 'application/json',
-				},
-			});
-
-			fetch(request).then((res) => {
-				console.log(res);
-				return res.json();
-			})
-			.then((res) => {
-			console.log(res);
-
-			this.setState({
-				data:res
-				});
-			}).catch((e) => {console.log(e)});
+			let url = 'subjects/?fields=id,name'
+			getData(url, ()=>{}, (res)=>{this.setState({data:res})}, ()=>{})
 		}
 	}
+
 	//taken from http://react.semantic-ui.com/modules/search#category
 	resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
 
@@ -90,15 +55,8 @@ export class SearchBar extends Component {
 		this.setState({value:event.target.value})
 	}
 
-
-	handleClick(id) {
-		//browserHistory.push("/wiki/" + id);
-		//window.location.reload();
-	}
-
-
 	componentWillMount() {
-	this.resetComponent()
+		this.resetComponent()
 	}
 
 	handleSearchChange = (e, value) => {
@@ -118,14 +76,19 @@ export class SearchBar extends Component {
 
 	render() {
 		if(this.props.type === "semantic") {
-			this.resultRenderer = ({ name, id }) => ( <Label content={name} /> );
+			this.resultRenderer = ({ name, id }) => ( 
+				<Link to={"/wiki/"+(id+1)}>
+					<div style={{'color':'#000000'}}>
+						{name}
+					</div>
+				</Link>);
 			return (
 			  <Grid>
 				<Grid.Column width={16}>
 					<Search
 					loading={this.state.isLoading}
-					onResultSelect={this.handleResultSelect}
 					onSearchChange={this.handleSearchChange}
+					onResultSelect={this.handleResultSelect}
 					results={this.state.results}
 					value={this.state.value}
 					input={{ fluid: true }}
@@ -149,7 +112,7 @@ export class SearchBar extends Component {
 						var link = "/wiki/".concat(data['id']);
 						const re = new RegExp(_.escapeRegExp(this.state.value).toUpperCase(), 'i');
 						if(this.state.value === "" || (this.state.value !== "" && data["name"].toUpperCase().search(re) !== -1)) {
-							return(<li key={data.id}><Link to={"/wiki/"+data['id']} onClick={() => this.handleClick(data['id'])}>{data["name"]}</Link></li>);
+							return(<li key={data.id}><Link to={"/wiki/"+data['id']}>{data["name"]}</Link></li>);
 						}
 					}
 					)}

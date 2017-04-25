@@ -5,6 +5,7 @@ import { Topic } from './Topic'
 import { TopicNav } from './TopicNav'
 import { getData } from '../../helpers'
 import { CustomMessage } from './CustomMessage'
+import { SearchBar } from '../SearchBar'
 
 //supposed to render a single subject w/topics, preferably with jabbe
 //WikiPage is the main component and entry point to the wiki, the data in this component should serve as a replica of what is on the server
@@ -211,6 +212,7 @@ export class WikiPage extends React.Component {
 				<Grid>
 					<Grid.Row>
 						<Grid.Column width={16}>
+							<SearchBar type="semantic"/>
 							<CustomMessage onChangeMessage={this.onChangeMessage} status={-1} message={this.state.message} neg={true} />
 						</Grid.Column>
 						<Grid.Column width={16}>
