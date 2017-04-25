@@ -71,7 +71,7 @@ export class QuizList extends React.Component {
 	render(){
 		console.log(this.state.quizobject);
 		if(Object.keys(this.state.quizobject).length === 0){
-			return <div>loading ... .. . <br />
+			return <div>loading ... <br />
 			or empty </div>;
 		}else{
 			const keys = Object.keys(this.state.quizobject);
