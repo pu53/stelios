@@ -1,33 +1,43 @@
 import React, { Component } from 'react';
 import { Table, Label } from 'semantic-ui-react'
-import { getData } from '../../helpers.jsx' 
+import { getData } from '../../helpers.jsx'
 import './quiz_statistics.css'
-
+import { StatQuestion } from './StatQuestion'
 /*
  * A component containing a table/graph containing data from a specific quiz
  */
 export class QuizStatistics extends Component {
 	constructor(props) {
-		super();
+		super(props);
 		this.state={
-			id:-1,
-			title :'No Title Found',
-			data:{},
-			statusMsg:''
+			loggedIn: false,
+			questions: props.questions
 		};
 	}
-	
-	componentWillMount() {
-		this.fetchData();
+
+	componentWillMount(){
+		this.checkLoggedIn()
 	}
-	
+	componentWillUpdate() {
+		this.checkLoggedIn()
+	}
+
+	componentWillReciveProps(nextProps){
+		if (this.state.questions !== nextProps.questions){
+			this.setState({
+				questions: nextProps.questions
+			})
+		}
+	}
+
 	/* Requests statistical data from the server. If the user is not authenticicated,
 	 * an error flag will be set accordingly */
+	 /*
 	fetchData() {
 		let userId = localStorage.getItem('stelios_current_user')
 		if(userId === 'null')
 			return;
-		
+
 		//Fetches data from the correct api endpoint and loads it into state
 		let url = "result/stats/"+this.props.metric+"/"+this.props.scope+"/"+this.props.statId+"/";
 		getData(
@@ -39,11 +49,11 @@ export class QuizStatistics extends Component {
 			},
 			(res)=>{
 				this.setState({
-					data:res}, 
+					data:res},
 					()=>{
-					/* This setState is set to be called after the one directly
-					 * above, to ensure that this.state.data actually contains
-					 * anything first */
+					// This setState is set to be called after the one directly
+					 // above, to ensure that this.state.data actually contains
+					 // anything first
 					this.setState({
 						title: this.state.data.title,
 						id: this.state.data.id
@@ -51,87 +61,60 @@ export class QuizStatistics extends Component {
 				})
 			},
 			()=>{});
-		
-	}
+
+	} */
 	checkLoggedIn() {
 		if(localStorage.getItem('stelios_current_user') === 'null'){
-			return(<div> You are currently not logged in. </div>)
+			this.setState({
+				loggedIn: false
+			})
 		}
 		else {
-			this.fetchData()
+			this.setState({
+				loggedIn: true
+			})
 		}
 	}
-	
+
 	//Generates the entire table view
-	generateTable(type) {
-		if(this.state.data.length !==0){
+	generateStatisticView() {
+		if(this.state.questions.length !==0){
 			return(
-			<div className="singleTableWrapper">
-				<Table celled unstackable>
-					<Table.Header>
-						<Table.Row>
-							<Table.HeaderCell>Header</Table.HeaderCell>
-							<Table.HeaderCell>Header</Table.HeaderCell>
-							<Table.HeaderCell>Header</Table.HeaderCell>
-						</Table.Row>
-					</Table.Header>
-					<Table.Body>
-						<Table.Row>
-							<Table.Cell>
-								<Label>First</Label>
-							</Table.Cell>
-							<Table.Cell>Cell</Table.Cell>
-							<Table.Cell>Cell</Table.Cell>
-						</Table.Row>
-						<Table.Row>
-							<Table.Cell>Cell</Table.Cell>
-							<Table.Cell>Cell</Table.Cell>
-							<Table.Cell>Cell</Table.Cell>
-						</Table.Row>
-						<Table.Row>
-							<Table.Cell>Cell</Table.Cell>
-							<Table.Cell>Cell</Table.Cell>
-							<Table.Cell>Cell</Table.Cell>
-						</Table.Row>
-					</Table.Body>
-				</Table>
+			<div>
+					{this.state.questions.map((question) => {
+					return(<StatQuestion {...this.props} question={question} />)
+					})}
 			</div>
 			);
 		}
-		
+
 		else {
 			return<div className="loadingText">loading data...</div>
 		}
 	}
-	
+
 	render() {
-		/* Checks whether the current user has been authorized 
+		/* Checks whether the current user has been authorized
 		 * before trying to display the stats
 		 */
-		if(this.state.statusMsg.ok === true){
+		if(this.state.loggedIn){
 			return(
 			<div>
 				<div className="mainTitle">
-					Statistics for quiz nr. {this.state.id}:
-					<br/>
-					{this.state.data.title}
+					Statistics for the quiz: {this.props.quizTitle}
 				</div>
-				
-				<div className="tableContainerWrapper" key = {this.state.data}>
-					Statistics!
-					{this.generateTable(this.props.type)}
+
+				<div className="tableContainerWrapper">
+					{this.generateStatisticView()}
 				</div>
 			</div>
 			)
 		}
-		
 		//If the user was not allowed to view the data, an error message is displayed
 		return(
 			<div className="statPageWrapper">
 				<div className="notAuthMsg">
 					Sorry, you are not permitted to view the statistics for this quiz.
-					<br/>
-					{this.checkLoggedIn()}
 				</div>
 			</div>
 		);
