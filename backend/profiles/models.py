@@ -13,6 +13,11 @@ class Profile(models.Model):
 	subjects = models.ManyToManyField("wiki.Subject", blank=True, related_name='profile')
 	quizes = models.ManyToManyField("quiz.Quiz", blank=True)
 	answers = models.ManyToManyField("quiz.Answer", blank=True, related_name="answer_history")
+	# WARNING WARNING WARNING proffesor is a dumb field to indicate that the user is a proffesor. This variable has NOTHING to do with permissions.
+	#if a user is to be set to a professor it has to be done via the admin interface and set permissions there. These permissions
+	#will determine if the user is authenticated and should be allow access to the backend. This variable here will only be an indication to
+	#the frontend. Anyone could change this field, so do NOT use it for hard authentication.
+	professor = models.BooleanField(default=False, blank=True)
 	def __str__(self):
 		return(self.user.username)
 
@@ -30,9 +35,3 @@ def save_user_profile(sender, instance, **kwargs):
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
-
-	# WARNING WARNING WARNING proffesor is a dumb field to indicate that the user is a proffesor. This variable has NOTHING to do with permissions.
-	#if a user is to be set to a professor it has to be done via the admin interface and set permissions there. These permissions
-	#will determine if the user is authenticated and should be allow access to the backend. This variable here will only be an indication to
-	#the frontend. Anyone could change this field, so do NOT use it for hard authentication.
-	professor = models.BooleanField(default=False, blank=True)
