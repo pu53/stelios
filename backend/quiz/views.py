@@ -205,6 +205,14 @@ class SaveQuizResult(APIView):
 class QuizStatistics(APIView):
 	permission_classes = ((permissions.IsAuthenticatedOrReadOnly,))
 	
+	def findSortKey(self, answer):
+		number = answer['choiceID']
+		print("The sort key function found the number: " + str(number))
+		if number == None:
+			return -1
+		else:
+			return number
+	
 	def get(self, request, metric, scope, pk, format=json):
 		"""
 		The view starts by checking the scope, and retrives data accordingly
@@ -220,16 +228,25 @@ class QuizStatistics(APIView):
 			
 			answers=[]
 			
-			for i in range (len(answer_data)):
-				question = Question.objects.get(id = answer_data[i]['questionID'])
-				question_serializer = QuestionSerializer(question)
-				question_data = question_serializer.data
-				print("This is the data from a single question: " + str(question_data))
-			
 			quiz = Quiz.objects.get(id=pk)
 			quiz_serializer = QuizSerializer(quiz)
 			scope_data = quiz_serializer.data
-		
+			
+			answer_data = sorted(answer_data, key=lambda answer:self.findSortKey(answer))
+			answer_data = sorted(answer_data, key=lambda answer:answer['questionID'])
+			
+			new_answer_data=[]
+			
+			for answer in answer_data:
+				new_answer_data.append(
+					{
+						'questionID': answer['questionID'],
+						'choiceID': answer['choiceID']
+					}
+				)
+			
+			answer_data = new_answer_data
+			
 		data={
 			'title': scope_data["title"],
 			'id': scope_data["id"],
