@@ -207,7 +207,6 @@ class QuizStatistics(APIView):
 	
 	def findSortKey(self, answer):
 		number = answer['choiceID']
-		print("The sort key function found the number: " + str(number))
 		if number == None:
 			return -1
 		else:
