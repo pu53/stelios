@@ -13,21 +13,33 @@ export class StatQuestion extends Component {
 		this.state={
 			question: props.question,
 			text: '',
+			totalNumberOfAnswers: 0
 		};
 	}
 
 	componentWillMount(){
 		if(this.state.question.length > 0 && this.state.question[0].length > 0) {
 			this.getQuestionData(this.state.question[0][0].questionID)
+			var number = 0
+			this.state.question.map((choice) => {
+				number += choice.length
+			})
+			this.setState({
+				totalNumberOfAnswers: number
+			})
 		}
 	}
 
 	componentWillReciveProps(nextProps){
 		if(this.state.question !== nextProps.question) {
-			this.setState({
-				question: nextProps.question
+			var number = 0
+			nextProps.question.map((choice) => {
+				number += choice.length
 			})
-			console.log(nextProps.question);
+			this.setState({
+				question: nextProps.question,
+				totalNumberOfAnswers: number
+			})
 			if(nextProps.question.length > 0 && this.state.question[0].length > 0) {
 				this.getQuestionData(nextProps.question[0][0].questionID)
 			}
@@ -53,12 +65,14 @@ export class StatQuestion extends Component {
 					<Table celled unstackable>
 						<Table.Header>
 							<Table.Row>
-								<Table.HeaderCell colSpan={3}>{this.state.text}</Table.HeaderCell>
+								<Table.HeaderCell width={12}>{this.state.text}</Table.HeaderCell>
+								<Table.HeaderCell>Answers</Table.HeaderCell>
+								<Table.HeaderCell>%</Table.HeaderCell>
 							</Table.Row>
 						</Table.Header>
 						<Table.Body>
 							{this.state.question.map((choice) => {
-								return(<StatChoice {...this.props} choice={choice} />)
+								return(<StatChoice {...this.props} totalNumberOfAnswers={this.state.totalNumberOfAnswers} choice={choice} />)
 							})}
 						</Table.Body>
 					</Table>

@@ -82,7 +82,7 @@ export class QuizStatistics extends Component {
 			return(
 			<div>
 					{this.state.questions.map((question) => {
-						return(<StatQuestion {...this.props} question={question} />)
+					return(<StatQuestion {...this.props} question={question} />)
 					})}
 			</div>
 			);
