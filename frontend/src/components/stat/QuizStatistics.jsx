@@ -76,22 +76,6 @@ export class QuizStatistics extends Component {
 		}
 	}
 
-	//Generates the entire table view
-	generateStatisticView() {
-		if(this.state.questions.length !==0){
-			return(
-			<div>
-					{this.state.questions.map((question) => {
-					return(<StatQuestion {...this.props} question={question} />)
-					})}
-			</div>
-			);
-		}
-
-		else {
-			return<div className="loadingText">loading data...</div>
-		}
-	}
 
 	render() {
 		/* Checks whether the current user has been authorized
@@ -105,7 +89,14 @@ export class QuizStatistics extends Component {
 				</div>
 
 				<div className="tableContainerWrapper">
-					{this.generateStatisticView()}
+					{
+						this.state.questions.length !== 0 ?
+						this.state.questions.map((question) => {
+							return(<StatQuestion {...this.props} question={question} />)
+						})
+						:
+						<p>loading data...</p>
+					}
 				</div>
 			</div>
 			)

@@ -17,12 +17,17 @@ export class StatChoice extends Component {
 	}
 
 	componentWillMount(){
-		if(this.state.choice.length > 0) {
+		if (this.props.missingChoice !== undefined) {
+			this.getChoiceData(this.props.missingChoice.id)
+		} else if(this.state.choice.length > 0) {
 			this.getChoiceData(this.state.choice[0].choiceID)
 		}
 	}
 
 	componentWillReciveProps(nextProps){
+		if(nextProps.missingChoice !== undefined) {
+			this.getChoiceData(nextProps.missingChoice.id)
+		}
 		if(this.state.choice !== nextProps.choice) {
 			this.setState({
 				choice: nextProps.choice
@@ -34,27 +39,34 @@ export class StatChoice extends Component {
 	}
 
 	getChoiceData = (id) => {
-		var url = "choice/" + id + "?fields=choice_text,is_correct"
-		var handleStatus = (res) => {}
-		var handleData = (res) => {
+		console.log(id, typeof id);
+		if(id !== null) {
+			var url = "choice/" + id + "?fields=choice_text,is_correct"
+			var handleStatus = (res) => {}
+			var handleData = (res) => {
+				this.setState({
+					text: res.choice_text,
+					isCorrect: res.is_correct,
+				})
+			}
+			var handleError = (res) => {}
+			getData(url,handleStatus,handleData,handleError)
+		} else {
 			this.setState({
-				text: res.choice_text,
-				isCorrect: res.is_correct,
+				text: "Not answered",
+				isCorrect: false
 			})
 		}
-		var handleError = (res) => {}
-		getData(url,handleStatus,handleData,handleError)
 	}
 
 	render() {
-		console.log(this.state.choice.length);
 		return(
 			<Table.Row positive={this.state.isCorrect}>
 				<Table.Cell width={12}>
 					{this.state.text}
 				</Table.Cell>
-				<Table.Cell>{this.state.choice.length}</Table.Cell>
-				<Table.Cell>{(this.state.choice.length/this.props.totalNumberOfAnswers) * 100}</Table.Cell>
+				<Table.Cell>{this.props.missingChoice !== undefined ? 0 : this.state.choice.length}</Table.Cell>
+				<Table.Cell>{this.props.missingChoice !== undefined ? 0 : Math.round((this.state.choice.length/this.props.totalNumberOfAnswers) * 100)}</Table.Cell>
 			</Table.Row>
 		)
 	}

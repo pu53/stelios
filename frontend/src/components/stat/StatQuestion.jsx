@@ -13,7 +13,9 @@ export class StatQuestion extends Component {
 		this.state={
 			question: props.question,
 			text: '',
-			totalNumberOfAnswers: 0
+			questionId: -1,
+			totalNumberOfAnswers: 0,
+			missingChoices: [],
 		};
 	}
 
@@ -25,8 +27,10 @@ export class StatQuestion extends Component {
 				number += choice.length
 			})
 			this.setState({
-				totalNumberOfAnswers: number
+				totalNumberOfAnswers: number,
+				questionId: this.state.question[0][0].questionID
 			})
+			this.checkIfAnyChoicesNotIncluded(this.state.question[0][0].questionID)
 		}
 	}
 
@@ -38,10 +42,42 @@ export class StatQuestion extends Component {
 			})
 			this.setState({
 				question: nextProps.question,
-				totalNumberOfAnswers: number
+				totalNumberOfAnswers: number,
+				questionId: this.state.question[0][0].questionID
 			})
 			if(nextProps.question.length > 0 && this.state.question[0].length > 0) {
 				this.getQuestionData(nextProps.question[0][0].questionID)
+				this.checkIfAnyChoicesNotIncluded(this.state.question[0][0].questionID)
+			}
+		}
+	}
+
+	checkIfAnyChoicesNotIncluded = (id) => {
+		//iterate the quiz data, when questionId matches id, do another iteration
+		if(id !== -1){
+			console.log("quizQuestionsData", this.props.quizQuestionsData);
+			if(this.props.quizQuestionsData !== undefined && this.props.quizQuestionsData !== []) {
+				this.props.quizQuestionsData.map((question) => {
+					if(question.id === id) {
+						//check if there are some choices that are not present in this.state.question
+						var missing_choises = []
+						console.log(question);
+						question.choices.map((choice) => {
+							//checks if choice is in one or more of the answers
+							var isAny = this.state.question.some((answer) => {
+								console.log("kappa", choice.id, answer[0].choiceID);
+								return parseInt(choice.id) === parseInt(answer[0].choiceID)
+							})
+							if (!isAny) {
+								missing_choises.push(choice)
+							}
+						})
+						console.log("missing choices" , missing_choises);
+						this.setState({
+							missingChoices: missing_choises
+						})
+					}
+				})
 			}
 		}
 	}
@@ -74,6 +110,9 @@ export class StatQuestion extends Component {
 							{this.state.question.map((choice) => {
 								return(<StatChoice {...this.props} totalNumberOfAnswers={this.state.totalNumberOfAnswers} choice={choice} />)
 							})}
+							{ this.state.missingChoices !== [] ? this.state.missingChoices.map((missingChoice) => {
+								return(<StatChoice {...this.props} missingChoice={missingChoice} />)
+							}) : null}
 						</Table.Body>
 					</Table>
 					<br />
