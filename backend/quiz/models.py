@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime, timedelta
 import wiki
 
 # models with fields related to quizes
@@ -6,7 +7,7 @@ import wiki
 class Quiz(models.Model):
 	title = models.CharField(max_length=200)
 	subject = models.ForeignKey("wiki.Subject", default=None, blank=True)
-	deadline = models.DateTimeField('Deadline', null=True, default=None, blank=True)
+	deadline = models.DateTimeField('Deadline', null=True, default=datetime.now()+timedelta(days=30), blank=True)
 	def __str__(self):
 		return(self.title)
 
