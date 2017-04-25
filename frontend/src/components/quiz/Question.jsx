@@ -70,49 +70,6 @@ export class Question extends Component {
 		var nextCursor = 'default'
 		var prevCursor = 'default'
 		var visibility = 'visible'
-		
-		/*defining styles within render like this is probably not great
-		 * but for the first draft it's ok*/
-
-		var styleNavButtonPrev= {
-			minHeight:'50px',
-			backgroundColor:'#6c6c6c',
-			color:'#ffffff',
-			minWidth:'50%',
-			position:'relative',
-			display:'flex',
-			alignItems:'center',
-			borderRadius:'10px',
-			visibility:'visible',
-			cursor: 'default'
-		}
-		var styleNavButtonNext= {
-			minHeight:'50px',
-			backgroundColor:'#6c6c6c',
-			color:'#ffffff',
-			minWidth:'50%',
-			position:'relative',
-			display:'flex',
-			alignItems:'center',
-			borderRadius:'10px'
-		}
-
-		/*
-		var style3= {
-			textAlign:'center',
-			width:'100%',
-			MozUserSelect:'none',
-			WebkitUserSelect:'none',
-			MsUserSelect:'none',
-			UserSelect:'none'
-		};
-		*/
-
-		/*chechs to see if any of the navbuttons needs adjustment for first/last*/
-		/*Nice pale error red:#EF4E45*/
-		var nextText='Next';
-		/*var backgroundColor = '#6c6c6c'*/
-		/*var cursor = ''*/
 
 		if(this.state.lastQuestion===true) {
 			nextText='Finish';

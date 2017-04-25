@@ -73,7 +73,7 @@ export class QuizPage extends Component {
 	}
 
 	onChangeMessage = (status,message='',neg=false) => {
-		console.log("in onChangeMessage in quiz");
+		//console.log("in onChangeMessage in quiz");
 		this.setState({
 			status,message,neg
 		})
@@ -87,7 +87,7 @@ export class QuizPage extends Component {
 	
 	finishLoad() {
 		this.done_loading = true;
-		console.log("Load done, and the data is: " + this.state.quizData)
+		//console.log("Load done, and the data is: " + this.state.quizData)
 		this.forceUpdate()
 	}
 	

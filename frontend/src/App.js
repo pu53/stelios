@@ -40,18 +40,18 @@ export class App extends Component {
 	
 	componentWillUpdate() {
 		if(window.location.href.split("/")[3] === "") {
-			console.log("Start updating, going to home page from" + this.state.activeItem)
+			//console.log("Start updating, going to home page from" + this.state.activeItem)
 			if(this.state.activeItem !== "home") {
 				this.setState({activeItem:"home"})
 			}
-			console.log("Stop updating")
+			//console.log("Stop updating")
 		}
 		
 		else if(this.state.activeItem !== window.location.href.split("/")[3])
 		{
-			console.log("Start updating, going to " + window.location.href.split("/")[3] + " the current state is " + this.state.activeItem)
+			//console.log("Start updating, going to " + window.location.href.split("/")[3] + " the current state is " + this.state.activeItem)
 			this.setState({activeItem:(window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")})
-			console.log("Stop updating")
+			//console.log("Stop updating")
 		}
 	}
     successLogin() {

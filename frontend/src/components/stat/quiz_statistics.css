@@ -1,0 +1,47 @@
+
+.statPageWrapper {
+	box-sizing: border-box;
+	position:relative;
+	margin-left:2%;
+	margin-right:2%;
+	margin-top: 10px;
+	min-width:96%;
+	padding: 10px;
+	font-size:30px;
+	border-style:dashed;
+}
+
+.notAuthMsg {
+	position:relative;
+	font-size:20px;
+	line-height:150%;
+	color: #aa0000;
+}
+
+.loadingText {
+	font-size: 20px;
+	text-align: center;
+	padding-top: 100px;
+	padding-bottom: 120px;
+}
+
+.mainTitle {
+	position:relative;
+	line-height: 150%;
+	text-align:left;
+}
+
+.tableContainerWrapper {
+	position:relative;
+	border-style: dotted;
+	
+	font-size: 25px;
+	
+	margin-top: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.singleTableWrapper {
+	position:relative;
+}

@@ -13,8 +13,9 @@ urlpatterns = [
 	url(r'^quiz/data/(?P<pk>[0-9]+)/$', views.QuizData.as_view()),
 	url(r'^quiz/true/(?P<pk>[0-9]+)$', views.QuizCorrectAnswers.as_view()),
 	url(r'^quizsubjectname/$', views.quizSubjectName.as_view()),
-	url(r'result/quiz/(?P<pk>[0-9]+)$', views.SingleQuizResults.as_view()),
-	url(r'result/quiz/save/$', views.SaveQuizResult.as_view())
+	url(r'result/quiz/(?P<pk>[0-9]+)/$', views.SingleQuizResults.as_view()),
+	url(r'result/quiz/save/$', views.SaveQuizResult.as_view()),
+	url(r'result/stats/(?P<metric>[a-zA-Z0-9_]+)/(?P<scope>[a-zA-Z0-9_]+)/(?P<pk>[0-9]+)/$', views.QuizStatistics.as_view())
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

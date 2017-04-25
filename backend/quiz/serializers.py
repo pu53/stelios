@@ -44,6 +44,10 @@ class AnswerSerializer(serializers.ModelSerializer):
 		model = Answer
 		fields = ('questionID','choiceID','quizID', 'answer_history')
 
+class AnswerSerializerNoHistory (serializers.ModelSerializer):
+	class Meta:
+		model = Answer
+		fields = ('questionID','choiceID','quizID')
 
 class BlankAnswerSerializer(serializers.ModelSerializer):
 	class Meta:
