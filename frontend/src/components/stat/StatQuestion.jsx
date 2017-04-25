@@ -3,7 +3,7 @@ import { Table, Label } from 'semantic-ui-react'
 import { getData } from '../../helpers.jsx'
 import './quiz_statistics.css'
 import { StatChoice } from './StatChoice'
-
+import { Chart } from 'react-google-charts';
 /*
  * A component containing a table/graph containing data from a specific quiz
  */
@@ -16,6 +16,7 @@ export class StatQuestion extends Component {
 			questionId: -1,
 			totalNumberOfAnswers: 0,
 			missingChoices: [],
+			choices: [['Choice text', 'amount of answers']]
 		};
 	}
 
@@ -94,7 +95,16 @@ export class StatQuestion extends Component {
 		getData(url,handleStatus,handleData,handleError)
 	}
 
+	updateChoices = (choice) => {
+		var choices = JSON.parse(JSON.stringify(this.state.choices));
+		choices.push(choice)
+		this.setState({
+			choices
+		})
+	}
+
 	render() {
+		console.log(this.state.amountsOfNotAnswered);
 		if(this.state.question.length > 0 ){
 			return(
 				<div className="singleTableWrapper">
@@ -108,11 +118,34 @@ export class StatQuestion extends Component {
 						</Table.Header>
 						<Table.Body>
 							{this.state.question.map((choice) => {
-								return(<StatChoice {...this.props} totalNumberOfAnswers={this.state.totalNumberOfAnswers} choice={choice} />)
+								return(<StatChoice {...this.props}
+													totalNumberOfAnswers={this.state.totalNumberOfAnswers}
+													choice={choice}
+													updateChoices={this.updateChoices}
+													/>)
 							})}
 							{ this.state.missingChoices !== [] ? this.state.missingChoices.map((missingChoice) => {
 								return(<StatChoice {...this.props} missingChoice={missingChoice} />)
 							}) : null}
+							<Table.Row>
+								<Table.Cell colSpan='3'>
+									{
+										this.state.question.length === this.state.choices.length - 1 ?
+									<Chart
+	                   chartType='PieChart'
+	                   width= '100%'
+	                   data= {this.state.choices}
+	                   options= {{
+	                      title: 'Answers to quiz',
+	                      pieHole: 0.4,
+	                      is3D: true,
+	                   }}
+	                   />
+									 :
+									 null
+								 }
+								</Table.Cell>
+							</Table.Row>
 						</Table.Body>
 					</Table>
 					<br />
