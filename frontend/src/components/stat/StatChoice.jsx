@@ -12,7 +12,7 @@ export class StatChoice extends Component {
 		this.state={
 			choice: props.choice,
 			text: '',
-			isCorrect: false
+			isCorrect: false,
 		};
 	}
 
@@ -41,20 +41,20 @@ export class StatChoice extends Component {
 				text: res.choice_text,
 				isCorrect: res.is_correct,
 			})
-			console.log(res.choice_text, res.is_correct);
 		}
 		var handleError = (res) => {}
 		getData(url,handleStatus,handleData,handleError)
 	}
 
 	render() {
+		console.log(this.state.choice.length);
 		return(
 			<Table.Row positive={this.state.isCorrect}>
 				<Table.Cell width={12}>
 					{this.state.text}
 				</Table.Cell>
-				<Table.Cell>Cell</Table.Cell>
-				<Table.Cell>Cell</Table.Cell>
+				<Table.Cell>{this.state.choice.length}</Table.Cell>
+				<Table.Cell>{(this.state.choice.length/this.props.totalNumberOfAnswers) * 100}</Table.Cell>
 			</Table.Row>
 		)
 	}
