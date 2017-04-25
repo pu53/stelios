@@ -120,6 +120,7 @@ export class StatPage extends Component {
 						questions={this.state.questions}
 						quizQuestionsData={this.state.quizQuestionsData}
 						/>
+					<br />
 				</div>
 				);
 			}
