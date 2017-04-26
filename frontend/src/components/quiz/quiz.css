@@ -79,7 +79,7 @@
 	position:relative;
 	display:flex;
 	align-items:center;
-	border-radius:10px;
+	#border-radius:10px;
 }
 .styleNavButtonNext {
 	min-height:50px;
@@ -89,7 +89,7 @@
 	position:relative;
 	display:flex;
 	align-items:center;
-	border-radius:10px;
+	#border-radius:10px;
 }
 .navText {
 	text-align:center;
@@ -116,7 +116,7 @@
 	display:flex;
 	align-items: center;
 	border-color:#C5CAE9;
-	border-radius:10px;
+	#border-radius:10px;
 	border-style:none;
 }
 
