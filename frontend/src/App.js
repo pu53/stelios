@@ -90,7 +90,7 @@ export class App extends Component {
 				  <NavLink to="/wiki" ><Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Wiki</Menu.Item></NavLink>
 				  <NavLink to="/quiz" ><Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Quiz</Menu.Item></NavLink>
 				  <Menu.Menu position='right'>
-					{this.state.token === "null" ?
+					{this.state.token === null  ?
 					<Menu.Item onClick={() => this.handleLogin(login_text)} style={{"color":"#FFFFFF"}}>{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item>
 					:
 					<Dropdown item text={"User"} style={{"color":"#FFFFFF"}}>

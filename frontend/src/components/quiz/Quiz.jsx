@@ -8,8 +8,7 @@ import { sendData } from '../../helpers.jsx'
 /*The head element of a quiz. Fetches all the data for all the quiestions included
  * in the quiz and passes them on to the subcomponents when needed*/
 export class Quiz extends Component {
-	/* Data fetched in the parent component is passed down through props
-	 */
+	/* Data fetched in the parent component is passed down through props */
 	constructor(props) {
 		super(props);
 
