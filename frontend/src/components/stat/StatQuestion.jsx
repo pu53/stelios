@@ -130,19 +130,19 @@ export class StatQuestion extends Component {
 							<Table.Row>
 								<Table.Cell colSpan='3'>
 									{
-										this.state.question.length === this.state.choices.length - 1 ?
-									<Chart
-	                   chartType='PieChart'
-	                   width= '100%'
-	                   data= {this.state.choices}
-	                   options= {{
-	                      title: 'Answers to quiz',
-	                      pieHole: 0.4,
-	                      is3D: true,
-	                   }}
-	                   />
-									 :
-									 null
+									this.state.question.length === this.state.choices.length - 1 ?
+										<Chart
+											chartType='PieChart'
+											width= '100%'
+											data= {this.state.choices}
+											options= {{
+												title: 'Answers to quiz',
+												pieHole: 0.4,
+												is3D: true,
+											}}
+										/>
+									:
+									null
 								 }
 								</Table.Cell>
 							</Table.Row>
