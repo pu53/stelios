@@ -24,6 +24,7 @@ class UserCreate(generics.CreateAPIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = UserCreateSerializer
 
+#API view for all user data and corresponding quiz and subject data
 class UserData(APIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 
@@ -62,10 +63,11 @@ class UserData(APIView):
 
         return Response(user_data)
 
-
+#API view for adding subjects to students subjet list
 class addSubject(APIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 
+    #Add subjet
     def put(self, request, format=json):
         print("yolo test")
         print(request.data)
@@ -78,6 +80,7 @@ class addSubject(APIView):
 
         return Response({})
 
+    #remove quizes
     def delete(self, request, format=json):
         subject = Subject.objects.get(id=request.data["subject"])
         user = User.objects.get(id=request.data["user"])

@@ -128,6 +128,7 @@ export class StatQuestion extends Component {
 								return(<StatChoice {...this.props} missingChoice={missingChoice} />)
 							}) : null}
 							<Table.Row>
+								{/* Creating a pie chart of the results*/}
 								<Table.Cell colSpan='3'>
 									{
 									this.state.question.length === this.state.choices.length - 1 ?
