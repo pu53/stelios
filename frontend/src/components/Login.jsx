@@ -30,7 +30,7 @@ export class Login extends React.Component{
   }
 
   handlePassword = (e, {value}) => {
-		if(this.state.password !== value){
+		if(this.state.password !== value || this.state.password.length < 8){
 			this.setState({
 				password: value,
 				passwordMatch: false
@@ -44,7 +44,7 @@ export class Login extends React.Component{
   }
 
 	handleRetypePassword = (e, {value}) =>{
-		if(this.state.password !== value){
+		if(this.state.password !== value || this.state.password.length < 8){
 			this.setState({
 				retypePassword: value,
 				passwordMatch: false
@@ -102,7 +102,6 @@ export class Login extends React.Component{
 	      })
 	      localStorage.setItem('stelios_token', res.token);
 		  	localStorage.setItem('stelios_current_user', res.id);
-				console.log(res);
 				localStorage.setItem('stelios_current_user_professor', res.professor);
 				this.props.success();
 			}
@@ -272,8 +271,8 @@ export class Login extends React.Component{
 												<Form.Input fluid placeholder='Username' value={this.state.username} onChange={this.handleUsername} />
 											</Form.Field>
 											<Form.Field width={16}>
-												<label>Password:</label>
-												<Form.Input fluid type='password' placeholder='Password' value={this.state.password} onChange={this.handlePassword} />
+												<label>Password with more than 8 characters:</label>
+												<Form.Input fluid type='password' placeholder='Password with more than 8 characters' value={this.state.password} onChange={this.handlePassword} />
 											</Form.Field>
 											<Form.Field width={16}>
 												<label>Retype password:</label>
