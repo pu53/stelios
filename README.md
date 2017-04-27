@@ -7,10 +7,10 @@ A web app that will **revolutionize learning experience**!
 This project is our main assigment for the course **TDT4140**.
 
 ## Installation
-#Prerequirements are nodejs 7.x, npm 4.x, a postgresql server and python 3. You can skip some of the commands below if you have these
-#For the PostgreSQL server in development we use the default user postgres with the default password postgres.
-# If you set up this in production You must also make a user, stelios_user.
-# You must also give stelios_user all permissions for the database stelios_backend if in production.
+Prerequirements are nodejs 7.x, npm 4.x, a postgresql server and python 3. You can skip some of the commands below if you have these
+For the PostgreSQL server in development we use the default user postgres with the default password postgres.
+If you set up this in production You must also make a user, stelios_user.
+You must also give stelios_user all permissions for the database stelios_backend if in production.
 
 ### Backend
 ```bash
