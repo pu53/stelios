@@ -18,7 +18,8 @@ export class Question extends Component {
 		this.nextQuestion = this.nextQuestion.bind(this);
 		this.prevQuestion = this.prevQuestion.bind(this);
 	}
-
+	
+	/*loads the current question on mount*/
 	componentDidMount() {
 		this.setState({
 			data:this.props.data,
@@ -34,7 +35,6 @@ export class Question extends Component {
 	}
 
 	changeToggle(id) {
-		/*console.log("Callback from" + id);*/
 		if(id === this.state.chosenAnswer) {
 			this.setState({chosenAnswer:-1});
 		}
@@ -42,14 +42,14 @@ export class Question extends Component {
 			this.setState({chosenAnswer:id});
 		}
 	}
-
+	
+	/*the question component uses a callback method to request new 
+	 * question data from the parent quiz component*/
 	nextQuestion() {
-		//console.log("internaly chosen: " + this.state.chosenAnswer);
 		this.props.onChange(1,this.state.chosenAnswer);
 	}
 
 	prevQuestion() {
-		//console.log("internaly chosen: " + this.state.chosenAnswer);
 		this.props.onChange(-1, this.state.chosenAnswer);
 	}
 
@@ -63,8 +63,7 @@ export class Question extends Component {
 	}
 
 	render() {
-		/*chechs to see if any of the navbuttons needs adjustment for first/last*/
-		/*Nice pale error red:#EF4E45*/
+		/*checks to see if any of the navbuttons needs adjustment for first/last*/
 		var nextText='Next';
 		var backgroundColor = ''
 		var nextCursor = 'default'
@@ -89,9 +88,9 @@ export class Question extends Component {
 				<div className="styleText" >
 					{this.state.data["text"]}
 				</div>
-				{/*chosen:{this.state.chosenAnswer}*/}
 				<div>
-					{
+					{/*Iterates over the answers corresponding to the question,
+					   and displays them with answer components*/
 						this.state.data.choices.map((choice)=> {
 							return(
 								<Answer
@@ -102,7 +101,7 @@ export class Question extends Component {
 								curOn={this.state.chosenAnswer}/>)
 						})
 					}
-
+					{/*The buttons used to navigate between questions*/}
 					<div className="styleNavButtons" >
 						<button className="styleNavButtonPrev" style={{visibility:visibility, cursor:prevCursor}} onClick={this.prevQuestion} disabled={this.state.firstQuestion}>
 							<div className="navText">Previous</div>

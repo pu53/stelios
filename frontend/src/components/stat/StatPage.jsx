@@ -48,13 +48,13 @@ export class StatPage extends Component {
 	}
 
 	getStatistics = (id) => {
-		var url = "result/stats/percentage/quiz/" + id + "/" //masive url dont ask
+		var url = "result/stats/percentage/quiz/" + id + "/" //masive url don't ask
 		var handleStatus = (res) => {}
 		var handleData = (res) => {
 			var questions = []
 			var last_question = res.answers[0].questionID
 			var current_question = []
-			//WARNING most of these variables is strings not numbers
+			//WARNING most of these variables are strings not numbers
 			//makes a question array and pushes all answers to the one question
 			res.answers.map((answer) => {
 				if (last_question !== answer.questionID) {
@@ -69,7 +69,7 @@ export class StatPage extends Component {
 				questions.push(current_question)
 			}
 			var newQuestions = []
-			//now questions contains arrays of singel questions
+			//now questions contains arrays of single questions
 			questions.map((question) => {
 				var newQuestion = []
 				var last_answer_id = question[0].choiceID

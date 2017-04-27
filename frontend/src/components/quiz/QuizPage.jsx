@@ -5,6 +5,7 @@ import { QuizList } from './QuizList.jsx';
 import './quiz_page.css'
 import { Template } from './Template'
 import { CustomMessage } from './CustomMessage'
+import { getData } from '../../helpers.jsx'
 
 export class QuizPage extends Component {
 	constructor(props) {
@@ -24,45 +25,21 @@ export class QuizPage extends Component {
 	componentWillMount() {
 		this.fetchData()
 	}
-	 newQuizData = (quiz_data) => {
+	
+	newQuizData = (quiz_data) => {
 		this.setState({
 			quiz_data
 		})
 	}
+	
 	fetchData() {
-		var suffix = this.state.url_suffix
-		var link = '';
-		//Constructing request link, by choosing enviroment
-		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-			link = 'http://localhost:8000/api/';
-		} else {
-			link = 'https://stelios.no/api/';
-		}
-
-		//Adding suffix and parameter to the link path, completing it
-		link += suffix + this.props.params.quizId;
-
-		//Generate request
-		var request = new Request(link, {
-			method: 'GET',
-			headers: {
-				'Accept': 'application/json',
-			},
-		});
-
-		//Fetch data
-		fetch(request).then((res) => {
-			//console.log("Status: "+ res.status)
-			return res.json();
-		})
-		.then((res) => {
-			//console.log("found data: " + res);
-			this.setState({
-				quizData:res
-			}, this.finishLoad())
-		}).catch((e) => {
-			console.log(e);
-		});
+		let url = "quiz/data/"+this.props.params.quizId+"/"
+		getData(url, 
+				()=>{}, 
+				(res)=>{this.setState({
+					quizData:res
+				}, this.finishLoad())},
+				()=>{})
 	}
 
 	onNewClick = (e) => {
@@ -87,15 +64,11 @@ export class QuizPage extends Component {
 
 	finishLoad() {
 		this.done_loading = true;
-		//console.log("Load done, and the data is: " + this.state.quizData)
 		this.forceUpdate()
 	}
 
 	render() {
 		if(this.state.quizState === "inQuiz" && this.state.quizData.questions !== undefined) {
-			console.log("in render, the data in state is: ");
-			console.log(this.state.quizData);
-
 			return(
 				<Grid>
 					<Grid.Row>
