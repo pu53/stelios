@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { NavLink } from './components/NavLink.jsx';
-import { IndexLink } from 'react-router'
+import { IndexLink, Link } from 'react-router'
 import { Menu, Dropdown, Icon, Grid, Segment, Image } from 'semantic-ui-react'
 import { SearchBar } from './components/SearchBar'
 import { Login } from './components/Login'
@@ -97,16 +96,16 @@ export class App extends Component {
 				<div style={{"width":"100%", "backgroundColor": "#303F9F"}}>
 				<Menu pointing secondary style={{"padding":"10px 0px 10px 30px"}}>
 				  <IndexLink to="/"><Menu.Item name="home" active={this.state.activeItem === 'home'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Home</Menu.Item></IndexLink>
-				  <NavLink to="/wiki" ><Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Wiki</Menu.Item></NavLink>
-				  <NavLink to="/quiz" ><Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Quiz</Menu.Item></NavLink>
+				  <Link to="/wiki" ><Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Wiki</Menu.Item></Link>
+				  <Link to="/quiz" ><Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Quiz</Menu.Item></Link>
 				  <Menu.Menu position='right'>
 					{this.state.token === null  ?
 					<Menu.Item onClick={() => this.handleLogin(login_text)} style={{"color":"#FFFFFF"}}>{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item>
 					:
 					<Dropdown item text={"User"} style={{"color":"#FFFFFF"}}>
 						<Dropdown.Menu>
-							<Dropdown.Item><NavLink to="/user" ><Menu.Item name="user" onClick={this.handleItemClick}  ><Icon name='user' />Profile</Menu.Item></NavLink></Dropdown.Item>
-							<NavLink to="/" ><Dropdown.Item><Menu.Item onClick={() => this.handleLogin(login_text)}><Icon name='log out' />{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item></Dropdown.Item></NavLink>
+							<Dropdown.Item><Link to="/user" ><Menu.Item name="user" onClick={this.handleItemClick}  ><Icon name='user' />Profile</Menu.Item></Link></Dropdown.Item>
+							<Link to="/" ><Dropdown.Item><Menu.Item onClick={() => this.handleLogin(login_text)}><Icon name='log out' />{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item></Dropdown.Item></Link>
 						</Dropdown.Menu>
 					</Dropdown>
 					}
