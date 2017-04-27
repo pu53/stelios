@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Menu, Label, Header, Icon, Grid } from 'semantic-ui-react'
+import { Menu, Label, Header, Icon, Grid, Segment } from 'semantic-ui-react'
 import { Link } from 'react-router'
 
 /* Creates a list of links to a users quizes */
@@ -64,6 +64,7 @@ export class UserQuizes extends React.Component {
 						</Link>;
 					})}
 				</Menu>
+				</Segment>
 				}
 			</div>
 		);
