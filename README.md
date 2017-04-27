@@ -7,6 +7,7 @@ A web app that will **revolutionize learning experience**!
 This project is our main assigment for the course **TDT4140**.
 
 ## Installation
+#You have to have postgres installed and running. In development we use the default user postgres with the default password postgres.
 #You must also make a user, stelios_user in prodcution, just use postgres (the user) in development.
 #You must also give stelios_user all permissions for the database stelios_backend if in production
 ### Backend
@@ -37,11 +38,11 @@ now you can go to localhost:3000 to get the frontend.
 to browse the api you can go to localhost:8000/api/ to get a list over all api urls. for example localhost:8000/api/subjects/
 to get into the admin interface go to localhost:8000/api/admin/
 
-To set up a user to have professor priviliges you have to go to the users profile and set the professor flag to true.
+To set up a user to have professor priviliges you have to go to the users profile in the admin interface and set the professor flag to true.
 Then you have to go to the user and give them all the permissions.
 
 In order for the site to work properly you may have to have 1 subject allready created. To do this go to
-localhost:8000/api/admin/ and log in with the superuser you created above. Then go to subjects and create one. From there you use the frontends logic to create new subjects, topics, quizes and so on. 
+localhost:8000/api/admin/ and log in with the superuser you created above. Then go to subjects and create one. From there you use the frontends logic to create new subjects, topics, quizes and so on.
 
 
 ## Usage
