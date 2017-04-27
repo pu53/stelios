@@ -8,20 +8,24 @@ This project is our main assigment for the course **TDT4140**.
 
 ## Installation
 Prerequirements are nodejs 7.x, npm 4.x, a postgresql server and python 3. You can skip some of the commands below if you have these
+
 For the PostgreSQL server in development we use the default user postgres with the default password postgres.
+
 If you set up this in production You must also make a user, stelios_user.
+
 You must also give stelios_user all permissions for the database stelios_backend if in production.
 
 ### Backend
 ```bash
 git clone https://github.com/pu53/stelios.git
+cd stelios/
 curl -sL https://deb.nodesource.com/setup_7.x -o nodesource_setup.sh
 sudo bash nodesource_setup.sh
 sudo apt-get install nodejs
 sudo apt-get install build-essential
 
 sudo apt-get install postgresql postgresql-contrib
-#install postgres with the default settings. postgres as username and postgres as password
+#install postgres with the default settings. postgres as username and postgres as password. You can look at backend/backend/settings/settings_dev.py if you want to look for the settings related with the database.
 sudu -u postgres psql -c 'CREATE DATABASE stelios_backend;'
 
 cd backend/
@@ -38,7 +42,7 @@ python3 manage.py runserver
 
 ### Frontend
 ```bash
-open a new terminal and run these commands
+open a new terminal, navigate to the stelios folder and run these commands
 cd frontend/
 npm install
 npm start
