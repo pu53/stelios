@@ -58,7 +58,9 @@ export class Login extends React.Component{
 	}
 
   handleLogin = (e) => {
-    e.preventDefault();
+		if(e !== undefined) {
+    	e.preventDefault();
+		}
 		this.setState({
 			loading: true
 		});
@@ -150,6 +152,9 @@ export class Login extends React.Component{
 	}
 
 	handleSignupSend = (e) => {
+		this.setState({
+			loading: true
+		})
 		e.preventDefault()
 		var url = "signup/"
 		var method = "POST"
@@ -187,17 +192,14 @@ export class Login extends React.Component{
 					retypePassword: '',
 				})
 			} else {
-				this.setState({
-					signup: false,
-					password: '',
-					retypePassword: '',
-				})
+				this.handleLogin();
 			}
 
 		}
 		var handleError = (err) => {
 			this.setState({
-				message: e
+				message: e,
+				loading:false
 			})
 		}
 		// .call was used because "this" was not sent to function
