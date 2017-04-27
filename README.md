@@ -7,13 +7,22 @@ A web app that will **revolutionize learning experience**!
 This project is our main assigment for the course **TDT4140**.
 
 ## Installation
-#You have to have postgres installed and running. In development we use the default user postgres with the default password postgres.
-#You must also make a user, stelios_user in prodcution, just use postgres (the user) in development.
-#You must also give stelios_user all permissions for the database stelios_backend if in production
+#Prerequirements are nodejs 7.x, npm 4.x, a postgresql server and python 3. You can skip some of the commands below if you have these
+#For the PostgreSQL server in development we use the default user postgres with the default password postgres.
+# If you set up this in production You must also make a user, stelios_user.
+# You must also give stelios_user all permissions for the database stelios_backend if in production.
+
 ### Backend
 ```bash
+git clone https://github.com/pu53/stelios.git
+curl -sL https://deb.nodesource.com/setup_7.x -o nodesource_setup.sh
+sudo bash nodesource_setup.sh
+sudo apt-get install nodejs
+sudo apt-get install build-essential
 
-psql -c 'CREATE DATABASE stelios_backend;' -U <username>
+sudo apt-get install postgresql postgresql-contrib
+#install postgres with the default settings. postgres as username and postgres as password
+sudu -u postgres psql -c 'CREATE DATABASE stelios_backend;'
 
 cd backend/
 
@@ -29,19 +38,20 @@ python3 manage.py runserver
 
 ### Frontend
 ```bash
+open a new terminal and run these commands
 cd frontend/
 npm install
 npm start
 ```
 
-now you can go to localhost:3000 to get the frontend.
+now you can go to localhost:3000 to load the frontend.
 to browse the api you can go to localhost:8000/api/ to get a list over all api urls. for example localhost:8000/api/subjects/
 to get into the admin interface go to localhost:8000/api/admin/
 
 To set up a user to have professor priviliges you have to go to the users profile in the admin interface and set the professor flag to true.
 Then you have to go to the user and give them all the permissions.
 
-In order for the site to work properly you may have to have 1 subject allready created. To do this go to
+In order for the site to work properly you may (still unclear) have to have 1 subject allready created. To do this go to
 localhost:8000/api/admin/ and log in with the superuser you created above. Then go to subjects and create one. From there you use the frontends logic to create new subjects, topics, quizes and so on.
 
 
