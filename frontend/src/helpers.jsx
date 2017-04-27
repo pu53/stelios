@@ -37,7 +37,7 @@ export function getData(url, handleStatus, handleData, handleError) {
 
 	console.log("Current user: " + token)
 	console.log("Current user: " + typeof token)
-	
+
 	if(token !== null) {
 		console.log("Authorized request")
 		request = new Request(link, {
@@ -106,7 +106,7 @@ export function getData(url, handleStatus, handleData, handleError) {
 export function sendData(url, method_, body, handleStatus, handleData, handleError) {
 	//checks if token is avalible, if not the function selfDestructs
 	var token = localStorage.getItem('stelios_token');
-	if (token === "null" && url !== "signup/") {
+	if (token === null && url !== "signup/") {
 		this.setState({
 			message: "You need to login first",
 			neg: true,

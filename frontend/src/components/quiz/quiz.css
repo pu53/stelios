@@ -20,7 +20,6 @@
 	min-width:80%;
 	padding:10px;
 	position:relative;
-	background-color:#F2F2F2;
 }
 
 .topInfo {
@@ -46,7 +45,7 @@
 
 .styleQuestion {
 	width:100%;
-	overflow:auto; 
+	overflow:auto;
 	position:relative;
 	border-top-style:solid;
 	border-top-color:#c5c5c5;
@@ -54,8 +53,8 @@
 }
 
 .styleText {
-	font-size:18px; 
-	overflow:hidden; 
+	font-size:18px;
+	overflow:hidden;
 	padding:5px;
 	margin-bottom:20px;
 	line-height:1.5;
@@ -107,8 +106,8 @@
 
 .answerStyle1 {
 	position:relative;
-	cursor:pointer; 
-	text-align:center; 
+	cursor:pointer;
+	text-align:center;
 	background-color:#C5CAE9;
 	color:#ffffff;
 	min-height:50px;
