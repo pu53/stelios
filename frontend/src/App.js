@@ -79,6 +79,10 @@ export class App extends Component {
 	}
 
 	handleItemClick = (e, {name}) => {
+		//if you are in quiz, reload the site
+		if(name === this.state.activeItem && name === "quiz") {
+			window.location.reload()
+		}
 		this.setState({
 			activeItem: name
 		})
