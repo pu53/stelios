@@ -268,7 +268,7 @@ export class Topic extends React.Component {
 				name={this.state.name}
 				description={this.state.description}
 			/>
-		{ this.props.steliosToken !== "null" && this.state.activeTopicId !== -1 && this.props.steliosUserProfessor !== "false" ?
+		{ this.props.steliosToken !== null && this.state.activeTopicId !== -1 && this.props.steliosUserProfessor !== "false" ?
 				<div>
 					<Button style={{"marginRight":"4%"}} basic floated="right" content="Create a new subtopic" onClick={this.onNewSubTopic}/>
 					<br />
@@ -294,7 +294,7 @@ export class Topic extends React.Component {
 
 			</Element>
 			}
-			{ this.props.steliosToken !== "null" && this.state.activeTopicId !== -1 && this.props.steliosUserProfessor !== "false" && this.state.subtopics.length > 0  ?
+			{ this.props.steliosToken !== null && this.state.activeTopicId !== -1 && this.props.steliosUserProfessor !== "false" && this.state.subtopics.length > 0  ?
 			<div>
 				<Button style={{"marginRight":"4%"}} basic floated="right" content="Create a new subtopic" onClick={this.onNewSubTopic}/>
 				<br />
