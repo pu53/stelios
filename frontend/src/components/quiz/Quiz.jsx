@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import './quiz.css'
-import { Container, Segment } from 'semantic-ui-react';
+import { Container, Segment, Button } from 'semantic-ui-react';
 import { FeedbackContainer } from './Feedback.jsx';
 import { Question } from './Question.jsx'
 import { sendData } from '../../helpers.jsx'
+import { Template } from './Template'
 
 /*The head element of a quiz. Fetches all the data for all the quiestions included
  * in the quiz and passes them on to the subcomponents when needed*/
@@ -20,7 +21,8 @@ export class Quiz extends Component {
 			currently_asking:1,
 			title:"No title found",
 			questions:[],
-			answers:[]
+			answers:[],
+			edit: false,
 			};
 
 		this.changeQuestion=this.changeQuestion.bind(this);
@@ -29,12 +31,12 @@ export class Quiz extends Component {
 	componentWillMount() {
 		this.fetchData();
 	}
-	
+
 	componentWillReceiveProps(nextProps) {
 		this.fetchData();
 	}
-	
-	//Restructure the data, and add data from props to state
+
+	//add data from props to state
 	fetchData() {
 		if (this.props.data !== undefined) {
 			this.setState({
@@ -87,7 +89,7 @@ export class Quiz extends Component {
 		else if(this.state.currently_asking + increment > this.state.number_of_questions){
 			var tempAnswers=this.state.answers;
 			tempAnswers[this.state.currently_asking-1] = chosenAlternative;
-			
+
 			this.setState({
 				finished:true,
 				answers:tempAnswers
@@ -103,10 +105,27 @@ export class Quiz extends Component {
 		}
 	}
 
-	
+	editQuiz = (e) => {
+		e.preventDefault()
+		this.setState({
+			edit: true
+		})
+	}
+
 	render() {
+//<<<<<<< HEAD
 		// About: {this.state.questions[this.state.currently_asking-1].subtopic.map((subtopic) => {subtopic.name})}
-		if(this.state.finished===false) {
+		//if(this.state.finished===false) {
+//=======
+		//Uses a boolean flag to determine whether to render a quiz, or the feedback component
+		if (this.state.edit) {
+			return(
+				<Template
+					data={this.props.data}
+					/>
+			)
+		} else if(this.state.finished===false) {
+//>>>>>>> c6009d05091c61cb50b2c8267ee015c7fd53d218
 			const subtopics = this.state.questions[this.state.currently_asking-1].subtopic;
 			var subtopicNames = [];
 			for (var i = 0; i < subtopics.length; i++) {
@@ -117,7 +136,9 @@ export class Quiz extends Component {
 				<div className="quizContainer">
 					<h1 className="mainTitle">
 						{this.state.title}
+						<Button style={{"marginLeft":"20px"}} onClick={this.editQuiz}>Edit this quiz</Button>
 					</h1>
+
 					<div className="topInfo">
 						<div className="topInfoProgres">
 							Question: {this.state.currently_asking}/{this.state.number_of_questions}
@@ -136,7 +157,7 @@ export class Quiz extends Component {
 					</div>
 				</div>
 			</Container>
-		); 
+		);
 		}
 		else {
 			this.postAnswers()
