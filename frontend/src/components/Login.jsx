@@ -160,11 +160,14 @@ export class Login extends React.Component{
 			last_name: this.state.lastName,
 			email: this.state.email
 		}
+		var got400 = false
 		var handleStatus = (res) => {
 			if (parseInt(res.status) >= 200 && parseInt(res.status) <= 204) {
 				this.setState({
 					signupSuccess: true
 				})
+			} else if (parseInt(res.status) === 400) {
+				got400 = true
 			} else {
 				this.setState({
 					message: "User could not be created"
@@ -172,10 +175,25 @@ export class Login extends React.Component{
 			}
 		}
 		var handleData = (res) => {
-			this.setState({
-				signup: false,
-				password: '',
-			})
+			if(got400) {
+				var stringBuilder = ""
+				Object.keys(res).map((field) => {
+					res[field].map((string) => {
+						stringBuilder += string + "\n"
+					})
+				})
+				this.setState({
+					message: stringBuilder,
+					retypePassword: '',
+				})
+			} else {
+				this.setState({
+					signup: false,
+					password: '',
+					retypePassword: '',
+				})
+			}
+
 		}
 		var handleError = (err) => {
 			this.setState({
