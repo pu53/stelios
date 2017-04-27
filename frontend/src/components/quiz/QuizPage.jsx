@@ -103,7 +103,9 @@ export class QuizPage extends Component {
 							<CustomMessage onChangeMessage={this.onChangeMessage} status={-1} message={this.state.message} neg={true} />
 						</Grid.Column>
 						<Grid.Column width={16}>
-							<Quiz data={this.state.quizData} refresh={this.fetchData}/>
+							<Segment>
+								<Quiz data={this.state.quizData} refresh={this.fetchData}/>
+							</Segment>
 						</Grid.Column>
 					</Grid.Row>
 				</Grid>
