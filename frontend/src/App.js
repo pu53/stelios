@@ -6,6 +6,7 @@ import { SearchBar } from './components/SearchBar'
 import { Login } from './components/Login'
 
 
+//this is the main component and is rendered on every page
 export class App extends Component {
 	constructor(props) {
 		super();
@@ -92,10 +93,14 @@ export class App extends Component {
 				<h1><IndexLink to="/" style={{"color":"#FFFFFF"}}>Stelios</IndexLink></h1>
 				</div>
 				<div style={{"width":"100%", "backgroundColor": "#303F9F"}}>
+
+				{/* Navigation menu on top of web page */}
 				<Menu pointing secondary style={{"padding":"10px 0px 10px 30px"}}>
 				  <IndexLink to="/"><Menu.Item name="home" active={this.state.activeItem === 'home'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Home</Menu.Item></IndexLink>
 				  <Link to="/wiki" ><Menu.Item name="wiki" active={this.state.activeItem === 'wiki'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Wiki</Menu.Item></Link>
 				  <Link to="/quiz" ><Menu.Item name="quiz" active={this.state.activeItem === 'quiz'} onClick={this.handleItemClick} style={{"color":"#FFFFFF"}}>Quiz</Menu.Item></Link>
+
+				  {/* Dropdown menu for accessing the profile page */}
 				  <Menu.Menu position='right'>
 					{this.state.token === null  ?
 					<Menu.Item onClick={() => this.handleLogin(login_text)} style={{"color":"#FFFFFF"}}>{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item>
@@ -111,6 +116,8 @@ export class App extends Component {
 				</Menu>
 			  </div>
 			</Segment>
+
+			{/* main_content contains the objects shown between the header and footer */}
 			<div id="main_content">
 			  <Grid>
 				{this.state.show_login ?

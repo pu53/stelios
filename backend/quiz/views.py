@@ -1,4 +1,3 @@
-
 from quiz.models import Choice, Quiz, Question, Answer
 from profiles.models import Profile
 
@@ -89,6 +88,7 @@ class QuizData(APIView):
 
 		return Response(content)
 
+#A view for retrieving quiz results.
 class SingleQuizResults(APIView):
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 
@@ -204,14 +204,14 @@ class SaveQuizResult(APIView):
 #A view supplying an authenticated user with result statistics
 class QuizStatistics(APIView):
 	permission_classes = ((permissions.IsAuthenticatedOrReadOnly,))
-	
+
 	def findSortKey(self, answer):
 		number = answer['choiceID']
 		if number == None:
 			return -1
 		else:
 			return number
-	
+
 	def get(self, request, metric, scope, pk, format=json):
 		"""
 		The view starts by checking the scope, and retrives data accordingly
@@ -224,18 +224,18 @@ class QuizStatistics(APIView):
 			answers = Answer.objects.filter(quizID=pk)
 			answer_serializer = AnswerSerializerNoHistory(answers, many=True)
 			answer_data = answer_serializer.data
-			
+
 			answers=[]
-			
+
 			quiz = Quiz.objects.get(id=pk)
 			quiz_serializer = QuizSerializer(quiz)
 			scope_data = quiz_serializer.data
-			
+
 			answer_data = sorted(answer_data, key=lambda answer:self.findSortKey(answer))
 			answer_data = sorted(answer_data, key=lambda answer:answer['questionID'])
-			
+
 			new_answer_data=[]
-			
+
 			for answer in answer_data:
 				new_answer_data.append(
 					{
@@ -243,9 +243,9 @@ class QuizStatistics(APIView):
 						'choiceID': answer['choiceID']
 					}
 				)
-			
+
 			answer_data = new_answer_data
-			
+
 		data={
 			'title': scope_data["title"],
 			'id': scope_data["id"],
@@ -253,6 +253,7 @@ class QuizStatistics(APIView):
 		}
 		return Response(data)
 
+#View for quiz solutions, used for correction
 class QuizCorrectAnswers(APIView):
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 
