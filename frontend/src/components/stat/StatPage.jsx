@@ -11,7 +11,6 @@ export class StatPage extends Component {
 			data: [],
 			quizId: -1,
 			quizTitle: '',
-			data: [],
 			questions: [],
 			dataLoading: true,
 			dataLoading2: true,

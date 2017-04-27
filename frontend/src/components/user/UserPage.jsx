@@ -40,11 +40,11 @@ export class UserPage extends React.Component {
 			return (
 				<div style={{width:'100%'}}>
 				{/* 'Welcome <username>' */}
-				<WelcomeMessage username = {this.state.data.username} />
+				<WelcomeMessage username={this.state.data.username} />
 				{/* list of links to users subjects */}
-				<UserSubjects subjects = {this.state.data.subjects} />
+				<UserSubjects subjects={this.state.data.subjects} />
 				{/* list of links to users quizes */}
-				<UserQuizes quizes = {this.state.data.quizes} />
+				<UserQuizes quizes={this.state.data.quizes} />
 				</div>
 			);
 		}else{

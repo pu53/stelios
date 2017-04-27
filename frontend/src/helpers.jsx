@@ -21,7 +21,6 @@
 					function defaults to an empty function
 */
 export function getData(url, handleStatus, handleData, handleError) {
-	//console.log("fetching data");
 	//builds the link with respect to production/development
 	var link = '';
 	if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -29,17 +28,12 @@ export function getData(url, handleStatus, handleData, handleError) {
 	} else {
 		link = 'https://stelios.no/api/'+ url;
 	}
+
 	//generated request
-
 	let token = localStorage.getItem("stelios_token");
-
 	let request = ""
-
-	console.log("Current user: " + token)
-	console.log("Current user: " + typeof token)
-
+	//Sends a request with authorization
 	if(token !== null) {
-		console.log("Authorized request")
 		request = new Request(link, {
 		method: 'GET',
 		headers: {
@@ -48,8 +42,8 @@ export function getData(url, handleStatus, handleData, handleError) {
 		},
 		});
 	}
+	//Sends a request without authorization
 	else {
-		console.log("Unauthorized request")
 		request = new Request(link, {
 		method: 'GET',
 		headers: {
@@ -61,14 +55,12 @@ export function getData(url, handleStatus, handleData, handleError) {
 	//javascripts fetch method. after fetch is executed and respone is recived,
 	//the first .then() is called, and after that the next .then()
 	fetch(request).then((res) => {
-		console.log(res.status)
 		handleStatus(res)
 		return res.json();
 	})
 	.then((res) => {
 		handleData(res);
 	}).catch((e) => {
-		console.log(e);
 		handleError(e);
 	});
 }
@@ -147,7 +139,6 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
 		});
 	}
 	fetch(request).then((res) => {
-		console.log("statusFunc: ", res);
 		handleStatus(res);
 		if (res.status >= 200 && res.status <= 203) {
 		return res.json();
@@ -157,19 +148,16 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
 		return false
 	})
 	.then((res) => {
-		console.log("status: ", res);
 		if (res !== false) {
 		handleData(res)
 		}
 	}).catch((e) => {
-		console.log(e);
 		handleError(e.toString());
 	});
 	}
 
 //simple getData function, because of simplicity. Read documentation above for more info.
 export function getDataSimple(url, handleData) {
-	console.log("fetching data");
 	//builds the link with respect to production/development
 	var link = '';
 	if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -188,12 +176,10 @@ export function getDataSimple(url, handleData) {
 	//javascripts fetch method. after fetch is executed and respone is recived,
 	//the first .then() is called, and after that the next .then()
 	fetch(request).then((res) => {
-		console.log(res.status)
 		return res.json();
 	})
 	.then((res) => {
 		handleData(res)
 	}).catch((e) => {
-		console.log(e);
 	});
 }

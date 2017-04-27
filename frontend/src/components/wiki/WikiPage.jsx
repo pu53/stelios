@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Divider, Segment } from 'semantic-ui-react'
+import { Grid, Segment } from 'semantic-ui-react'
 import { Subject } from './Subject'
 import { Topic } from './Topic'
 import { TopicNav } from './TopicNav'
@@ -219,7 +219,7 @@ export class WikiPage extends React.Component {
 							<Segment>
 								<Subject raised
 									{...this.props}
-									updateTopics = {this.updateTopics}
+									updateTopics={this.updateTopics}
 									onSubjectNew={this.onSubjectNew}
 									onSubjectNotNew={this.onSubjectNotNew}
 									subjectId={this.state.subjectId}
