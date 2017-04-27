@@ -140,18 +140,15 @@ export function sendData(url, method_, body, handleStatus, handleData, handleErr
 	}
 	fetch(request).then((res) => {
 		handleStatus(res);
-		if (res.status >= 200 && res.status <= 203) {
-		return res.json();
-		} else if (res.status === 204) {
+		if (res.status === 204) {
 			return true
 		}
-		return false
+		return res.json();
 	})
 	.then((res) => {
 		if (res !== false) {
 		handleData(res)
-		}
-	}).catch((e) => {
+	}}).catch((e) => {
 		handleError(e.toString());
 	});
 	}

@@ -73,6 +73,10 @@ export class App extends Component {
 	}
 
 	handleItemClick = (e, {name}) => {
+		//if you are in quiz, reload the site
+		if(name === this.state.activeItem && name === "quiz") {
+			window.location.reload()
+		}
 		this.setState({
 			activeItem: name
 		})
@@ -121,11 +125,6 @@ export class App extends Component {
 				  :
 				  null
 				}
-				<Grid.Row>
-				  <Grid.Column width={16}>
-					{/*<SearchBar type="semantic"/>*/}
-				  </Grid.Column>
-				</Grid.Row>
 			  </Grid>
 			  {React.cloneElement(this.props.children, { steliosToken: this.state.token, steliosUser: this.state.current_user, steliosUserProfessor: this.state.current_user_professor })}
 			</div>

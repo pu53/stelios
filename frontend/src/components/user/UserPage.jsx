@@ -19,7 +19,7 @@ export class UserPage extends React.Component {
 		this.getSubject(this.state.userId)
 		}
 	}
-	
+
 	/*Lambda expression getting userdata using the helper method*/
 	getSubject = (id) => {
 		var url = "users/data/" + id + "/";
@@ -38,7 +38,7 @@ export class UserPage extends React.Component {
 		 * an empty div*/
 		if(Object.keys(this.state.data).length > 0){
 			return (
-				<div style={{width:'100%'}}>
+				<div style={{width:'100%', "marginTop":"20px"}}>
 				{/* 'Welcome <username>' */}
 				<WelcomeMessage username={this.state.data.username} />
 				{/* list of links to users subjects */}
