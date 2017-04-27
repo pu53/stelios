@@ -15,6 +15,8 @@ export class Home extends React.Component {
 					<div className="searchBarWrapper">
 						<SearchBar type="semantic"/>
 					</div>
+					<br />
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/SdURdAeQFyI" frameborder="0" allowfullscreen></iframe>
 				</div>
 			</div>
 		);
