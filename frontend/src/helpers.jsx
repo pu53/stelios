@@ -35,9 +35,10 @@ export function getData(url, handleStatus, handleData, handleError) {
 
 	let request = ""
 
-	//console.log("Current user: " + token)
-
-	if(token !== 'null') {
+	console.log("Current user: " + token)
+	console.log("Current user: " + typeof token)
+	
+	if(token !== null) {
 		console.log("Authorized request")
 		request = new Request(link, {
 		method: 'GET',

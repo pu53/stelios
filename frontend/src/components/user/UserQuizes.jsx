@@ -9,7 +9,7 @@ export class UserQuizes extends React.Component {
 
 	/* Creates a list of links to a users quizes */
 	render() {
-		if(localStorage.getItem('stelios_current_user_professor')===true){
+		if(localStorage.getItem('stelios_current_user_professor')==='true'){
 			return (
 				<div>
 				<br />
