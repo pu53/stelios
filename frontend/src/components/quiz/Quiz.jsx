@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './quiz.css'
-import { Container, Segment, Button } from 'semantic-ui-react';
+import { Container, Segment } from 'semantic-ui-react';
 import { FeedbackContainer } from './Feedback.jsx';
 import { Question } from './Question.jsx'
 import { sendData } from '../../helpers.jsx'
@@ -105,26 +105,13 @@ export class Quiz extends Component {
 		}
 	}
 
-	editQuiz = (e) => {
-		e.preventDefault()
-		this.setState({
-			edit: true
-		})
-	}
-
 	render() {
 //<<<<<<< HEAD
 		// About: {this.state.questions[this.state.currently_asking-1].subtopic.map((subtopic) => {subtopic.name})}
 		//if(this.state.finished===false) {
 //=======
 		//Uses a boolean flag to determine whether to render a quiz, or the feedback component
-		if (this.state.edit) {
-			return(
-				<Template
-					data={this.props.data}
-					/>
-			)
-		} else if(this.state.finished===false) {
+		if(this.state.finished===false) {
 //>>>>>>> c6009d05091c61cb50b2c8267ee015c7fd53d218
 			const subtopics = this.state.questions[this.state.currently_asking-1].subtopic;
 			var subtopicNames = [];
@@ -132,31 +119,32 @@ export class Quiz extends Component {
 				subtopicNames.push(subtopics[i].name);
 			}
 			return (
-			<Container className="quizWrapper">
-				<div className="quizContainer">
-					<h1 className="mainTitle">
-						{this.state.title}
-						<Button style={{"marginLeft":"20px"}} onClick={this.editQuiz}>Edit this quiz</Button>
-					</h1>
+				<Segment>
+					<Container className="quizWrapper">
+						<div className="quizContainer">
+							<h1 className="mainTitle">
+								{this.state.title}
+							</h1>
 
-					<div className="topInfo">
-						<div className="topInfoProgres">
-							Question: {this.state.currently_asking}/{this.state.number_of_questions}
+							<div className="topInfo">
+								<div className="topInfoProgres">
+									Question: {this.state.currently_asking}/{this.state.number_of_questions}
+								</div>
+								<div className="topInfoSubTopic">
+									About: {this.state.questions[this.state.currently_asking-1].subtopic[0].name}
+								</div>
+							</div>
+							<div>
+								<Question
+									data={this.state.questions[this.state.currently_asking-1]}
+									onChange={this.changeQuestion}
+									firstQuestion={this.state.currently_asking === 1}
+									lastQuestion={this.state.currently_asking === this.state.number_of_questions}
+									chosen={this.state.answers[this.state.currently_asking-1]}/>
+							</div>
 						</div>
-						<div className="topInfoSubTopic">
-							About: {this.state.questions[this.state.currently_asking-1].subtopic[0].name}
-						</div>
-					</div>
-					<div>
-						<Question
-							data={this.state.questions[this.state.currently_asking-1]}
-							onChange={this.changeQuestion}
-							firstQuestion={this.state.currently_asking === 1}
-							lastQuestion={this.state.currently_asking === this.state.number_of_questions}
-							chosen={this.state.answers[this.state.currently_asking-1]}/>
-					</div>
-				</div>
-			</Container>
+					</Container>
+			</Segment>
 		);
 		}
 		else {
