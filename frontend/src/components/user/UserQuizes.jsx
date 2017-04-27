@@ -17,6 +17,7 @@ export class UserQuizes extends React.Component {
 			<br />
 			<Header size='large'>Quizes</Header>
 				{localStorage.getItem('stelios_current_user_professor')==='true'?
+					<Segment style={{"padding":"0 0 0 0"}}>
 					<Menu fluid vertical>
 					{this.props.quizes.map(function(quiz, index){
 						return <div key={index}>
@@ -52,7 +53,8 @@ export class UserQuizes extends React.Component {
 						</div>;
 						})}
 				</Menu>
-				:<Menu fluid vertical>
+				</Segment>
+				:<Segment style={{"padding":"0 0 0 0"}}><Menu fluid vertical>
 					{this.props.quizes.map(function(quiz, index){
 						return 
 						<Link to={'/quiz/'+quiz.id} key={index}> 
