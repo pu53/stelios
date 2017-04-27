@@ -9,9 +9,9 @@ import quiz
 
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
-	study = models.CharField(max_length=100, default='MTDT')
+	study = models.CharField(max_length=100, default='MTDT') #obsolete
 	subjects = models.ManyToManyField("wiki.Subject", blank=True, related_name='profile')
-	quizes = models.ManyToManyField("quiz.Quiz", blank=True)
+	quizes = models.ManyToManyField("quiz.Quiz", blank=True) #obsolete, quizes found by the users subjects
 	answers = models.ManyToManyField("quiz.Answer", blank=True, related_name="answer_history")
 	# WARNING WARNING WARNING proffesor is a dumb field to indicate that the user is a proffesor. This variable has NOTHING to do with permissions.
 	#if a user is to be set to a professor it has to be done via the admin interface and set permissions there. These permissions
@@ -22,6 +22,7 @@ class Profile(models.Model):
 		return(self.user.username)
 
 
+# methods for user creation
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
 	if created:

@@ -30,7 +30,7 @@ export class Login extends React.Component{
   }
 
   handlePassword = (e, {value}) => {
-		if(this.state.password !== value){
+		if(this.state.password !== value || this.state.password.length < 8){
 			this.setState({
 				password: value,
 				passwordMatch: false
@@ -44,7 +44,7 @@ export class Login extends React.Component{
   }
 
 	handleRetypePassword = (e, {value}) =>{
-		if(this.state.password !== value){
+		if(this.state.password !== value || this.state.password.length < 8){
 			this.setState({
 				retypePassword: value,
 				passwordMatch: false
@@ -58,7 +58,9 @@ export class Login extends React.Component{
 	}
 
   handleLogin = (e) => {
-    e.preventDefault();
+		if(e !== undefined) {
+    	e.preventDefault();
+		}
 		this.setState({
 			loading: true
 		});
@@ -100,7 +102,6 @@ export class Login extends React.Component{
 	      })
 	      localStorage.setItem('stelios_token', res.token);
 		  	localStorage.setItem('stelios_current_user', res.id);
-				console.log(res);
 				localStorage.setItem('stelios_current_user_professor', res.professor);
 				this.props.success();
 			}
@@ -150,6 +151,9 @@ export class Login extends React.Component{
 	}
 
 	handleSignupSend = (e) => {
+		this.setState({
+			loading: true
+		})
 		e.preventDefault()
 		var url = "signup/"
 		var method = "POST"
@@ -160,11 +164,14 @@ export class Login extends React.Component{
 			last_name: this.state.lastName,
 			email: this.state.email
 		}
+		var got400 = false
 		var handleStatus = (res) => {
 			if (parseInt(res.status) >= 200 && parseInt(res.status) <= 204) {
 				this.setState({
 					signupSuccess: true
 				})
+			} else if (parseInt(res.status) === 400) {
+				got400 = true
 			} else {
 				this.setState({
 					message: "User could not be created"
@@ -172,14 +179,26 @@ export class Login extends React.Component{
 			}
 		}
 		var handleData = (res) => {
-			this.setState({
-				signup: false,
-				password: '',
-			})
+			if(got400) {
+				var stringBuilder = ""
+				Object.keys(res).map((field) => {
+					res[field].map((string) => {
+						stringBuilder += string + "\n"
+					})
+				})
+				this.setState({
+					message: stringBuilder,
+					retypePassword: '',
+				})
+			} else {
+				this.handleLogin();
+			}
+
 		}
 		var handleError = (err) => {
 			this.setState({
-				message: e
+				message: e,
+				loading:false
 			})
 		}
 		// .call was used because "this" was not sent to function
@@ -252,8 +271,8 @@ export class Login extends React.Component{
 												<Form.Input fluid placeholder='Username' value={this.state.username} onChange={this.handleUsername} />
 											</Form.Field>
 											<Form.Field width={16}>
-												<label>Password:</label>
-												<Form.Input fluid type='password' placeholder='Password' value={this.state.password} onChange={this.handlePassword} />
+												<label>Password with more than 8 characters:</label>
+												<Form.Input fluid type='password' placeholder='Password with more than 8 characters' value={this.state.password} onChange={this.handlePassword} />
 											</Form.Field>
 											<Form.Field width={16}>
 												<label>Retype password:</label>

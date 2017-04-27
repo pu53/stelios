@@ -103,7 +103,7 @@ export class Edit extends React.Component {
       var body = {name: this.state.name, description: this.state.description}
       // adds component specefics fields to body:
       if (_markdown_content) {
-        body['markdown_content'] = _markdown_content
+        body['content'] = _markdown_content
       }
       if (this.props.header === "topics" && method === "POST") {
         body['subjects'] = [this.props.subjectId]

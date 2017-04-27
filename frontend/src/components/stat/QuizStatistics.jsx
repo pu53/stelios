@@ -4,7 +4,7 @@ import { getData } from '../../helpers.jsx'
 import './quiz_statistics.css'
 import { StatQuestion } from './StatQuestion'
 /*
- * A component containing a table/graph containing data from a specific quiz
+ * A component containing a table and graph displaying quiz data
  */
 export class QuizStatistics extends Component {
 	constructor(props) {
@@ -29,40 +29,7 @@ export class QuizStatistics extends Component {
 			})
 		}
 	}
-
-	/* Requests statistical data from the server. If the user is not authenticicated,
-	 * an error flag will be set accordingly */
-	 /*
-	fetchData() {
-		let userId = localStorage.getItem('stelios_current_user')
-		if(userId === 'null')
-			return;
-
-		//Fetches data from the correct api endpoint and loads it into state
-		let url = "result/stats/"+this.props.metric+"/"+this.props.scope+"/"+this.props.statId+"/";
-		getData(
-			url,
-			(res)=>{
-				this.setState({
-					statusMsg:res
-				})
-			},
-			(res)=>{
-				this.setState({
-					data:res},
-					()=>{
-					// This setState is set to be called after the one directly
-					 // above, to ensure that this.state.data actually contains
-					 // anything first
-					this.setState({
-						title: this.state.data.title,
-						id: this.state.data.id
-					})
-				})
-			},
-			()=>{});
-
-	} */
+	
 	checkLoggedIn() {
 		if(localStorage.getItem('stelios_current_user') === 'null'){
 			this.setState({

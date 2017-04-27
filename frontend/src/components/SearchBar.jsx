@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router'
-import { Search, Grid, Label} from 'semantic-ui-react'
+import { Search, Grid} from 'semantic-ui-react'
 import { getData } from '../helpers.jsx'
 import _ from 'lodash'
 
@@ -24,7 +24,6 @@ export class SearchBar extends Component {
 	componentDidMount() {
 		this.fetchData();
 		/*fetching potential custom resultRenderer*/
-		this.resultRenderer;
 		if(this.props.resultRenderer !== undefined) {
 			this.setState({customRenderer: true});
 		}
@@ -44,6 +43,7 @@ export class SearchBar extends Component {
 	}
 
 	//taken from http://react.semantic-ui.com/modules/search#category
+	//the following lines set up callback methods used by the searchbar
 	resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
 
 	handleResultSelect = (e, result) => {
@@ -53,10 +53,6 @@ export class SearchBar extends Component {
 
 	enterText(event) {
 		this.setState({value:event.target.value})
-	}
-
-	componentWillMount() {
-		this.resetComponent()
 	}
 
 	handleSearchChange = (e, value) => {
@@ -73,8 +69,13 @@ export class SearchBar extends Component {
 			 console.log(this.state.results);
 		}, 10)
 	}
+	//Here the callback assignment is done
+	componentWillMount() {
+		this.resetComponent()
+	}
 
 	render() {
+		//The 'type' property is used to chose what sort of search bar will be rendered
 		if(this.props.type === "semantic") {
 			this.resultRenderer = ({ name, id }) => ( 
 				<Link to={"/wiki/"+(id+1)}>
@@ -99,20 +100,19 @@ export class SearchBar extends Component {
 					</Grid>
 				);
 		}
-
+		//The 'filter' type is mostly discontinued
 		else if(this.props.type === "filter") {
 			return(
 				<div>
 					<form>
 						<input type="text" onChange={this.enterText}></input>
 					</form>
-
 					<ul> {
 						this.state.data.map((data) => {
 						var link = "/wiki/".concat(data['id']);
 						const re = new RegExp(_.escapeRegExp(this.state.value).toUpperCase(), 'i');
 						if(this.state.value === "" || (this.state.value !== "" && data["name"].toUpperCase().search(re) !== -1)) {
-							return(<li key={data.id}><Link to={"/wiki/"+data['id']}>{data["name"]}</Link></li>);
+							return(<li key={data.id}><Link to={link}>{data["name"]}</Link></li>);
 						}
 					}
 					)}

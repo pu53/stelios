@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from '../NavLink.jsx';
+
 import { Menu, Header } from 'semantic-ui-react'
 
 export class FetchUserData extends React.Component {

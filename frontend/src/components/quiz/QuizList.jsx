@@ -3,6 +3,8 @@ import { getData } from '../../helpers.jsx';
 import { Accordion, Icon, Button, List} from 'semantic-ui-react';
 import { Link } from 'react-router'
 
+
+/*A component listing links to all available quizes */
 export class QuizList extends React.Component {
 	constructor(props){
 		super(props);
@@ -36,22 +38,17 @@ export class QuizList extends React.Component {
 
 	makeQuizObject(quizes){
 		var object = {};
-
 		for (var i = 0; i < quizes.length; i++) {
 			const quiz = quizes[i];
-
 			var temp;
 			if (!object.hasOwnProperty(quiz.name)) {
 				temp = [];
-		    	console.log("new subject " + quiz.name);
-		    	temp.push(quiz);
-		    	object[quiz.name] = temp;
-		    }else{
-		    	console.log("old subject " + quiz.name);
-		    	temp = object[quiz.name];
-		    	temp.push(quiz);
-
-		    }
+				temp.push(quiz);
+				object[quiz.name] = temp;
+			}else{
+				temp = object[quiz.name];
+				temp.push(quiz);
+			}
 		}
 
 
