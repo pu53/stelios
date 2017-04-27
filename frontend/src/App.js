@@ -17,23 +17,36 @@ export class App extends Component {
 			show_login: false,
 			activeItem: (window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")
 		})
+
+		//We used to to set these items to the string "null", this is now changed to what it should be, the object null.
+		//because prevoius browsers still have the string "null" change it to the object null, in other words remove the element
+		if(localStorage.getItem('stelios_token') === "null") {
+			localStorage.removeItem('stelios_token')
+		}
+		if(localStorage.getItem('stelios_current_user' === "null")){
+			localStorage.removeItem('stelios_current_user')
+		}
+		if(localStorage.getItem('stelios_current_user_professor') === "null") {
+			localStorage.removeItem('stelios_current_user_professor')
+		}
 	}
 
 	handleLogin(e) {
+		console.log("kappa", e);
 		if (e === "login") {
 			this.setState({
 				show_login: !this.state.show_login
 			});
 		} else {
 			this.setState({
-				token: "null",
-				current_user: "null",
-				current_user_professor: "null",
+				token: null,
+				current_user: null,
+				current_user_professor: null,
 				show_login: false
 			});
-			localStorage.setItem('stelios_token', "null");
-			localStorage.setItem('stelios_current_user', "null")
-			localStorage.setItem('stelios_current_user_professor', "null")
+			localStorage.removeItem('stelios_token');
+			localStorage.removeItem('stelios_current_user')
+			localStorage.removeItem('stelios_current_user_professor')
 		}
 	}
 
@@ -64,9 +77,6 @@ export class App extends Component {
 			current_user_professor: localStorage.getItem('stelios_current_user_professor'),
 			show_login: false
 		});
-		console.log("in app");
-		console.log(typeof localStorage.getItem('stelios_current_user_professor'));
-		console.log(localStorage.getItem('stelios_current_user_professor'));
 	}
 
 	handleItemClick = (e, {name}) => {
