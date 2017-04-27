@@ -40,6 +40,11 @@ export class Template extends Component {
   } */
 
   componentDidUpdate() {
+    //check if question not have subtopics... because this is not allowed. If state is not new, then get them from server :)
+    console.log(this.state.questions);
+    this.state.questions.map((question) => {
+      console.log(question);
+    })
     if (this.state.done) {
       this.props.changeQuizState("none")
     }
@@ -84,22 +89,32 @@ export class Template extends Component {
       }
     }
     getData(url_2,handleStatus_2,handleData_2,handleError_2)
-
-    var data = this.props.data
-    this.setState({
-      id: data.id,
-      title: data.title,
-      questions: data.questions,
-    })
-    var url = "quiz/" + data.id + "?fields=subject"
-    var handleStatus = () => {}
-    var handleData = (res) => {
-      this.setState({
-        subject: res.subject
+    if(this.props.new === undefined) {
+      var data = this.props.data
+      var questions = this.props.data.questions
+      var new_questions = questions.map((q) => {
+        q.subtopic = q.subtopic.map((sub) => {
+          return sub.id
+        })
+        return q
       })
+
+      this.setState({
+        id: data.id,
+        title: data.title,
+        questions: new_questions,
+      })
+      var url = "quiz/" + data.id + "?fields=subject"
+      var handleStatus = () => {}
+      var handleData = (res) => {
+        this.setState({
+          subject: res.subject
+        })
+      }
+      var handleError = () => {}
+      getData(url,handleStatus,handleData,handleError)
     }
-    var handleError = () => {}
-    getData(url,handleStatus,handleData,handleError)
+
   }
 
   onTitleChange = (e) => {
@@ -326,6 +341,7 @@ export class Template extends Component {
             </Segment>
 
             {this.state.questions.map((q,i) => {
+              console.log(q);
               return(
                 <Segment>
                   <Form.Field>
