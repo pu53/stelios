@@ -25,7 +25,7 @@ export class Quiz extends Component {
 
 		this.changeQuestion=this.changeQuestion.bind(this);
 	}
-	//On mount, a method that fetche data from props to state is called
+	//On mount, a method that restructures and adds data to state is called
 	componentWillMount() {
 		this.fetchData();
 	}
@@ -34,7 +34,7 @@ export class Quiz extends Component {
 		this.fetchData();
 	}
 	
-	//add data from props to state
+	//Restructure the data, and add data from props to state
 	fetchData() {
 		if (this.props.data !== undefined) {
 			this.setState({
@@ -64,7 +64,8 @@ export class Quiz extends Component {
 		//taking the quiz is not a logged in user, the immidiate feedback will be
 		//visible as normal, but the results will not be saved
 		let userID = localStorage.getItem('stelios_current_user')
-		if(userID === null){
+		if(userID === 'null'){
+			console.log("Not logged in, quiz will not be saved");
 			return;
 		}
 		//Wraps the answer data in a dictionary, ready to be sent to backend
@@ -104,7 +105,7 @@ export class Quiz extends Component {
 
 	
 	render() {
-		//Uses a boolean flag to determine whether to render a quiz, or the feedback component
+		// About: {this.state.questions[this.state.currently_asking-1].subtopic.map((subtopic) => {subtopic.name})}
 		if(this.state.finished===false) {
 			const subtopics = this.state.questions[this.state.currently_asking-1].subtopic;
 			var subtopicNames = [];
