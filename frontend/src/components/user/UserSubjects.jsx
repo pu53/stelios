@@ -18,6 +18,6 @@ export class UserSubjects extends React.Component {
 					})}
 				</Menu>
 			</div>
-        );
-    }
+		);
+	}
 }

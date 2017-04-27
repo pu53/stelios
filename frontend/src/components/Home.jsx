@@ -2,6 +2,7 @@ import React from 'react'
 import { SearchBar } from './SearchBar'
 import './home.css'
 
+/*This is the component containing the home page*/
 export class Home extends React.Component {
 	constructor(props){
 		super(props)

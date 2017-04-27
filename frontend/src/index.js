@@ -10,7 +10,8 @@ import { QuizPage } from './components/quiz/QuizPage'
 import { StatPage } from './components/stat/StatPage'
 import '../semantic/dist/semantic.min.css';
 
-
+/*This is where the react renderer receives the data it renders,
+ *and where the react routers are set up*/
 ReactDOM.render((
 	<Router history={browserHistory}>
 		<Route path="/" component={App}>
