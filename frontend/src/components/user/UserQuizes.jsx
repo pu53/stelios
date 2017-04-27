@@ -22,16 +22,46 @@ export class UserQuizes extends React.Component {
 						return <div key={index}>
 							<Grid><Grid.Row>
 							{/*First comes the quiz link*/}
-							<Grid.Column width={12}><Link to={'/quiz/'+quiz.id} key={index}><Menu.Item><Icon name='tasks' /><Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item></Link></Grid.Column>
+							<Grid.Column width={12}>
+								<Link to={'/quiz/'+quiz.id} key={index}>
+									<Menu.Item>
+										<Icon name='tasks' />
+										<Label color='teal'>
+											{quiz.deadline}
+										</Label>{ quiz.title }
+									</Menu.Item>
+								</Link>
+							</Grid.Column>
 							{/*Then the statistics link*/}
-							<Grid.Column width={4}><Link to={"/stat/quiz/"+quiz.id}><div style={{ 'height':'100%', 'borderLeft':'solid','borderWidth':'2px','borderColor':'#666666','display':'flex', 'alignItems':'center','color':'black', 'justifyContent':'center'}}>Statistics</div></Link></Grid.Column>
+							<Grid.Column width={4}>
+								<Link to={"/stat/quiz/"+quiz.id}>
+									<div style={{
+										'height':'100%', 
+										'borderLeft':'solid',
+										'borderWidth':'2px',
+										'borderColor':'#666666',
+										'display':'flex', 
+										'alignItems':'center',
+										'color':'black', 
+										'justifyContent':'center'}}>
+										Statistics
+									</div>
+								</Link>
+							</Grid.Column>
 							</Grid.Row></Grid>
 						</div>;
 						})}
 				</Menu>
 				:<Menu fluid vertical>
 					{this.props.quizes.map(function(quiz, index){
-						return <Link to={'/quiz/'+quiz.id} key={index}> <Menu.Item> <Icon name='tasks' /> <Label color='teal'>{quiz.deadline}</Label>{ quiz.title }</Menu.Item></Link>;
+						return 
+						<Link to={'/quiz/'+quiz.id} key={index}> 
+							<Menu.Item> <Icon name='tasks' /> 
+								<Label color='teal'>
+									{quiz.deadline}
+								</Label>{ quiz.title }
+							</Menu.Item>
+						</Link>;
 					})}
 				</Menu>
 				}
