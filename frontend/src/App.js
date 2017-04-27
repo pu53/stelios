@@ -4,6 +4,7 @@ import { IndexLink, Link } from 'react-router'
 import { Menu, Dropdown, Icon, Grid, Segment, Image } from 'semantic-ui-react'
 import { SearchBar } from './components/SearchBar'
 import { Login } from './components/Login'
+import { getData } from './helpers'
 
 
 //this is the main component and is rendered on every page
@@ -15,7 +16,8 @@ export class App extends Component {
 			current_user: localStorage.getItem('stelios_current_user'),
 			current_user_professor: localStorage.getItem('stelios_current_user_professor'),
 			show_login: false,
-			activeItem: (window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")
+			activeItem: (window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home"),
+			name: 'user'
 		})
 
 		//We used to to set these items to the string "null", this is now changed to what it should be, the object null.
@@ -51,6 +53,18 @@ export class App extends Component {
 
 	componentWillMount() {
 		this.setState({activeItem:(window.location.href.split("/")[3] !== ""?window.location.href.split("/")[3]:"home")})
+		//get the name of the user:
+		if(this.state.current_user !== null) {
+			var url = "users/" + this.state.current_user + "/"
+			var handleStatus = () => {}
+			var handleData = (res) => {
+				this.setState({
+					name: res.username
+				})
+			}
+			var handleError = () => {}
+			getData(url, handleStatus, handleData, handleError)
+		}
 	}
 
 	componentWillUpdate() {
@@ -71,6 +85,16 @@ export class App extends Component {
 			current_user_professor: localStorage.getItem('stelios_current_user_professor'),
 			show_login: false
 		});
+		//get the name of the user:
+		var url = "users/" + localStorage.getItem('stelios_current_user') + "/"
+		var handleStatus = () => {}
+		var handleData = (res) => {
+			this.setState({
+				name: res.username
+			})
+		}
+		var handleError = () => {}
+		getData(url, handleStatus, handleData, handleError)
 	}
 
 	handleItemClick = (e, {name}) => {
@@ -105,7 +129,7 @@ export class App extends Component {
 					{this.state.token === null  ?
 					<Menu.Item onClick={() => this.handleLogin(login_text)} style={{"color":"#FFFFFF"}}>{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item>
 					:
-					<Dropdown item text={"User"} style={{"color":"#FFFFFF"}}>
+					<Dropdown item text={this.state.name} style={{"color":"#FFFFFF"}}>
 						<Dropdown.Menu>
 							<Dropdown.Item><Link to="/user" ><Menu.Item name="user" onClick={this.handleItemClick}  ><Icon name='user' />Profile</Menu.Item></Link></Dropdown.Item>
 							<Link to="/" ><Dropdown.Item><Menu.Item onClick={() => this.handleLogin(login_text)}><Icon name='log out' />{login_text[0].toUpperCase() + login_text.slice(1)}</Menu.Item></Dropdown.Item></Link>
