@@ -1,5 +1,9 @@
 [![Build Status](https://www.travis-ci.org/pu53/stelios.svg?branch=master)](https://www.travis-ci.org/pu53/stelios)
-[![Coverage Status](https://coveralls.io/repos/github/pu53/stelios/badge.svg?branch=master)](https://coveralls.io/github/pu53/stelios?branch=master)
+[![Coverage Status](https://img.shields.io/badge/Coverage-LOL-red.svg)](https://coveralls.io/github/pu53/stelios?branch=master)
+[![My Name](https://img.shields.io/badge/My%20Name-Jeff-green.svg)](http://images2.storyjumper.com/transcoder.png?trim&id=16-4hltn1jwl3-il14efj9&maxw=512&maxh=512)
+[![Made By](https://img.shields.io/badge/Made%20By-Andreas-blue.svg)](https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Sabaoth_icon_%28Russia%2C_19_c.%29_2.jpeg/220px-Sabaoth_icon_%28Russia%2C_19_c.%29_2.jpeg)
+[![Fuck It](https://img.shields.io/badge/Fuck%20It-Ship%20It-yellow.svg)](http://images2.storyjumper.com/transcoder.png?trim&id=16-4hltn1jwl3-il14efj9&maxw=512&maxh=512)
+[![Homepage](https://img.shields.io/badge/You%20Are%20In-Homepage-lightgrey.svg)](http://stelios.no)
 
 # Stelios
 A web app that will **revolutionize learning experience**!
