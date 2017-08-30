@@ -6,7 +6,7 @@
 [![Homepage](https://img.shields.io/badge/You%20Are%20In-Homepage-lightgrey.svg)](http://stelios.no)
 
 # Stelios
-A web app that will **revolutionize learning experience**!
+Vi har en wiki, som er sortert på fag, og en flervalgsquiz...
 
 This project is our main assigment for the course **TDT4140**.
 
