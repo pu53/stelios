@@ -18,8 +18,33 @@ export class Template extends Component {
       done: false
     }
   }
+/*
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data.id !== this.state.id) {
+      var data = nextProps.data
+      this.setState({
+        id: data.id,
+        title: data.title,
+        questions: data.questions,
+      })
+      var url = "quiz/" + data.id + "?fields=subject"
+      var handleStatus = () => {}
+      var handleData = (res) => {
+        this.setState({
+          subject: res.subject
+        })
+      }
+      var handleError = () => {}
+      getData(url,handleStatus,handleData,handleError)
+    }
+  } */
 
   componentDidUpdate() {
+    //check if question not have subtopics... because this is not allowed. If state is not new, then get them from server :)
+    console.log(this.state.questions);
+    this.state.questions.map((question) => {
+      console.log(question);
+    })
     if (this.state.done) {
       this.props.changeQuizState("none")
     }
@@ -28,26 +53,68 @@ export class Template extends Component {
   //This function gets all subjects and all subtopics, only with id and name
   componentWillMount() {
     var url = "subjects/?fields=id,name";
-    var handleStatus = (res) => {this.props.onChangeMessage(res.status)}
+    var handleStatus = (res) => {
+      if(this.props.onChangeMessage !== undefined) {
+        this.props.onChangeMessage(res.status)
+      }
+    }
     var handleData = (res) => {
       var newRes = res.map((subject) => {
         return {key: subject.id, value: subject.id, text: subject.name}
       })
       this.setState({subjects: newRes})
     }
-    var handleError = (err) => {this.props.onChangeMessage(-1,err,true)}
+    var handleError = (err) => {
+      if(this.props.onChangeMessage !== undefined) {
+        this.props.onChangeMessage(-1,err,true)
+      }
+    }
     getData(url,handleStatus,handleData,handleError)
 
     var url_2 = "subtopics/?fields=id,name";
-    var handleStatus_2 = (res) => {this.props.onChangeMessage(res.status)}
+    var handleStatus_2 = (res) => {
+      if(this.props.onChangeMessage !== undefined) {
+        this.props.onChangeMessage(res.status)
+      }
+    }
     var handleData_2 = (res) => {
       var newRes = res.map((subTopic) => {
         return {key: subTopic.id, value: subTopic.id, text: subTopic.name}
       })
       this.setState({allSubTopics: newRes})
     }
-    var handleError_2 = (err) => {this.props.onChangeMessage(-1,err,true)}
+    var handleError_2 = (err) => {
+      if(this.props.onChangeMessage !== undefined) {
+        this.props.onChangeMessage(-1,err,true)
+      }
+    }
     getData(url_2,handleStatus_2,handleData_2,handleError_2)
+    if(this.props.new === undefined) {
+      var data = this.props.data
+      var questions = this.props.data.questions
+      var new_questions = questions.map((q) => {
+        q.subtopic = q.subtopic.map((sub) => {
+          return sub.id
+        })
+        return q
+      })
+
+      this.setState({
+        id: data.id,
+        title: data.title,
+        questions: new_questions,
+      })
+      var url = "quiz/" + data.id + "?fields=subject"
+      var handleStatus = () => {}
+      var handleData = (res) => {
+        this.setState({
+          subject: res.subject
+        })
+      }
+      var handleError = () => {}
+      getData(url,handleStatus,handleData,handleError)
+    }
+
   }
 
   onTitleChange = (e) => {
@@ -168,7 +235,9 @@ export class Template extends Component {
                 questions: questions_copy
               })
               if (index === this.state.questions.length-1 && ind === question.choices.length-1) {
-                this.props.onChangeMessage(-1, "success!", false)
+                if(this.props.onChangeMessage !== undefined) {
+                  this.props.onChangeMessage(-1, "success!", false)
+                }
                 this.setState({
                   done: true
                 })
@@ -272,6 +341,7 @@ export class Template extends Component {
             </Segment>
 
             {this.state.questions.map((q,i) => {
+              console.log(q);
               return(
                 <Segment>
                   <Form.Field>
